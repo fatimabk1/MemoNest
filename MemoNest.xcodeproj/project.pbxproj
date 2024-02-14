@@ -20,6 +20,8 @@
 		085743472B7D257C00E546A1 /* NameIconProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743462B7D257C00E546A1 /* NameIconProtocol.swift */; };
 		085743492B7D262100E546A1 /* FolderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743482B7D262100E546A1 /* FolderListViewModel.swift */; };
 		0857434C2B7D265300E546A1 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434B2B7D265300E546A1 /* DataManager.swift */; };
+		0857434E2B7D3E1000E546A1 /* PlayBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434D2B7D3E0F00E546A1 /* PlayBackView.swift */; };
+		085743502B7D408100E546A1 /* ListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434F2B7D408100E546A1 /* ListRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,8 @@
 		085743462B7D257C00E546A1 /* NameIconProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameIconProtocol.swift; sourceTree = "<group>"; };
 		085743482B7D262100E546A1 /* FolderListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListViewModel.swift; sourceTree = "<group>"; };
 		0857434B2B7D265300E546A1 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		0857434D2B7D3E0F00E546A1 /* PlayBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayBackView.swift; sourceTree = "<group>"; };
+		0857434F2B7D408100E546A1 /* ListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +161,8 @@
 			children = (
 				085743142B7D245E00E546A1 /* ContentView.swift */,
 				085743432B7D251E00E546A1 /* FolderListView.swift */,
+				0857434D2B7D3E0F00E546A1 /* PlayBackView.swift */,
+				0857434F2B7D408100E546A1 /* ListRow.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -311,9 +317,11 @@
 				0857434C2B7D265300E546A1 /* DataManager.swift in Sources */,
 				085743442B7D251E00E546A1 /* FolderListView.swift in Sources */,
 				085743492B7D262100E546A1 /* FolderListViewModel.swift in Sources */,
+				085743502B7D408100E546A1 /* ListRow.swift in Sources */,
 				085743402B7D24E100E546A1 /* File.swift in Sources */,
 				085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */,
 				085743422B7D24E800E546A1 /* Folder.swift in Sources */,
+				0857434E2B7D3E1000E546A1 /* PlayBackView.swift in Sources */,
 				085743472B7D257C00E546A1 /* NameIconProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
