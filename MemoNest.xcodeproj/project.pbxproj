@@ -14,6 +14,12 @@
 		085743242B7D245F00E546A1 /* MemoNestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743232B7D245F00E546A1 /* MemoNestTests.swift */; };
 		0857432E2B7D245F00E546A1 /* MemoNestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857432D2B7D245F00E546A1 /* MemoNestUITests.swift */; };
 		085743302B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857432F2B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift */; };
+		085743402B7D24E100E546A1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857433F2B7D24E100E546A1 /* File.swift */; };
+		085743422B7D24E800E546A1 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743412B7D24E800E546A1 /* Folder.swift */; };
+		085743442B7D251E00E546A1 /* FolderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743432B7D251E00E546A1 /* FolderListView.swift */; };
+		085743472B7D257C00E546A1 /* NameIconProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743462B7D257C00E546A1 /* NameIconProtocol.swift */; };
+		085743492B7D262100E546A1 /* FolderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743482B7D262100E546A1 /* FolderListViewModel.swift */; };
+		0857434C2B7D265300E546A1 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434B2B7D265300E546A1 /* DataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +50,12 @@
 		085743292B7D245F00E546A1 /* MemoNestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MemoNestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0857432D2B7D245F00E546A1 /* MemoNestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestUITests.swift; sourceTree = "<group>"; };
 		0857432F2B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		0857433F2B7D24E100E546A1 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		085743412B7D24E800E546A1 /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
+		085743432B7D251E00E546A1 /* FolderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListView.swift; sourceTree = "<group>"; };
+		085743462B7D257C00E546A1 /* NameIconProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameIconProtocol.swift; sourceTree = "<group>"; };
+		085743482B7D262100E546A1 /* FolderListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListViewModel.swift; sourceTree = "<group>"; };
+		0857434B2B7D265300E546A1 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,8 +106,11 @@
 		085743112B7D245E00E546A1 /* MemoNest */ = {
 			isa = PBXGroup;
 			children = (
+				085743452B7D255A00E546A1 /* Helpers */,
+				0857433E2B7D24C400E546A1 /* ViewModels */,
+				0857433D2B7D24C000E546A1 /* Views */,
+				0857433C2B7D24BB00E546A1 /* Models */,
 				085743122B7D245E00E546A1 /* MemoNestApp.swift */,
-				085743142B7D245E00E546A1 /* ContentView.swift */,
 				085743162B7D245F00E546A1 /* Assets.xcassets */,
 				085743182B7D245F00E546A1 /* Preview Content */,
 			);
@@ -125,6 +140,41 @@
 				0857432F2B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift */,
 			);
 			path = MemoNestUITests;
+			sourceTree = "<group>";
+		};
+		0857433C2B7D24BB00E546A1 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0857433F2B7D24E100E546A1 /* File.swift */,
+				085743412B7D24E800E546A1 /* Folder.swift */,
+				0857434B2B7D265300E546A1 /* DataManager.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0857433D2B7D24C000E546A1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				085743142B7D245E00E546A1 /* ContentView.swift */,
+				085743432B7D251E00E546A1 /* FolderListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0857433E2B7D24C400E546A1 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				085743482B7D262100E546A1 /* FolderListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		085743452B7D255A00E546A1 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				085743462B7D257C00E546A1 /* NameIconProtocol.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,7 +308,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				085743152B7D245E00E546A1 /* ContentView.swift in Sources */,
+				0857434C2B7D265300E546A1 /* DataManager.swift in Sources */,
+				085743442B7D251E00E546A1 /* FolderListView.swift in Sources */,
+				085743492B7D262100E546A1 /* FolderListViewModel.swift in Sources */,
+				085743402B7D24E100E546A1 /* File.swift in Sources */,
 				085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */,
+				085743422B7D24E800E546A1 /* Folder.swift in Sources */,
+				085743472B7D257C00E546A1 /* NameIconProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
