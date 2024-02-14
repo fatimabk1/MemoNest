@@ -1,0 +1,593 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743122B7D245E00E546A1 /* MemoNestApp.swift */; };
+		085743152B7D245E00E546A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743142B7D245E00E546A1 /* ContentView.swift */; };
+		085743172B7D245F00E546A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 085743162B7D245F00E546A1 /* Assets.xcassets */; };
+		0857431A2B7D245F00E546A1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 085743192B7D245F00E546A1 /* Preview Assets.xcassets */; };
+		085743242B7D245F00E546A1 /* MemoNestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743232B7D245F00E546A1 /* MemoNestTests.swift */; };
+		0857432E2B7D245F00E546A1 /* MemoNestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857432D2B7D245F00E546A1 /* MemoNestUITests.swift */; };
+		085743302B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857432F2B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		085743202B7D245F00E546A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 085743072B7D245E00E546A1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0857430E2B7D245E00E546A1;
+			remoteInfo = MemoNest;
+		};
+		0857432A2B7D245F00E546A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 085743072B7D245E00E546A1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0857430E2B7D245E00E546A1;
+			remoteInfo = MemoNest;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0857430F2B7D245E00E546A1 /* MemoNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		085743122B7D245E00E546A1 /* MemoNestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestApp.swift; sourceTree = "<group>"; };
+		085743142B7D245E00E546A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		085743162B7D245F00E546A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		085743192B7D245F00E546A1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		0857431F2B7D245F00E546A1 /* MemoNestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MemoNestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		085743232B7D245F00E546A1 /* MemoNestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestTests.swift; sourceTree = "<group>"; };
+		085743292B7D245F00E546A1 /* MemoNestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MemoNestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0857432D2B7D245F00E546A1 /* MemoNestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestUITests.swift; sourceTree = "<group>"; };
+		0857432F2B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0857430C2B7D245E00E546A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0857431C2B7D245F00E546A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		085743262B7D245F00E546A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		085743062B7D245E00E546A1 = {
+			isa = PBXGroup;
+			children = (
+				085743112B7D245E00E546A1 /* MemoNest */,
+				085743222B7D245F00E546A1 /* MemoNestTests */,
+				0857432C2B7D245F00E546A1 /* MemoNestUITests */,
+				085743102B7D245E00E546A1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		085743102B7D245E00E546A1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0857430F2B7D245E00E546A1 /* MemoNest.app */,
+				0857431F2B7D245F00E546A1 /* MemoNestTests.xctest */,
+				085743292B7D245F00E546A1 /* MemoNestUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		085743112B7D245E00E546A1 /* MemoNest */ = {
+			isa = PBXGroup;
+			children = (
+				085743122B7D245E00E546A1 /* MemoNestApp.swift */,
+				085743142B7D245E00E546A1 /* ContentView.swift */,
+				085743162B7D245F00E546A1 /* Assets.xcassets */,
+				085743182B7D245F00E546A1 /* Preview Content */,
+			);
+			path = MemoNest;
+			sourceTree = "<group>";
+		};
+		085743182B7D245F00E546A1 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				085743192B7D245F00E546A1 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		085743222B7D245F00E546A1 /* MemoNestTests */ = {
+			isa = PBXGroup;
+			children = (
+				085743232B7D245F00E546A1 /* MemoNestTests.swift */,
+			);
+			path = MemoNestTests;
+			sourceTree = "<group>";
+		};
+		0857432C2B7D245F00E546A1 /* MemoNestUITests */ = {
+			isa = PBXGroup;
+			children = (
+				0857432D2B7D245F00E546A1 /* MemoNestUITests.swift */,
+				0857432F2B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift */,
+			);
+			path = MemoNestUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0857430E2B7D245E00E546A1 /* MemoNest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 085743332B7D245F00E546A1 /* Build configuration list for PBXNativeTarget "MemoNest" */;
+			buildPhases = (
+				0857430B2B7D245E00E546A1 /* Sources */,
+				0857430C2B7D245E00E546A1 /* Frameworks */,
+				0857430D2B7D245E00E546A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MemoNest;
+			productName = MemoNest;
+			productReference = 0857430F2B7D245E00E546A1 /* MemoNest.app */;
+			productType = "com.apple.product-type.application";
+		};
+		0857431E2B7D245F00E546A1 /* MemoNestTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 085743362B7D245F00E546A1 /* Build configuration list for PBXNativeTarget "MemoNestTests" */;
+			buildPhases = (
+				0857431B2B7D245F00E546A1 /* Sources */,
+				0857431C2B7D245F00E546A1 /* Frameworks */,
+				0857431D2B7D245F00E546A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				085743212B7D245F00E546A1 /* PBXTargetDependency */,
+			);
+			name = MemoNestTests;
+			productName = MemoNestTests;
+			productReference = 0857431F2B7D245F00E546A1 /* MemoNestTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		085743282B7D245F00E546A1 /* MemoNestUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 085743392B7D245F00E546A1 /* Build configuration list for PBXNativeTarget "MemoNestUITests" */;
+			buildPhases = (
+				085743252B7D245F00E546A1 /* Sources */,
+				085743262B7D245F00E546A1 /* Frameworks */,
+				085743272B7D245F00E546A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0857432B2B7D245F00E546A1 /* PBXTargetDependency */,
+			);
+			name = MemoNestUITests;
+			productName = MemoNestUITests;
+			productReference = 085743292B7D245F00E546A1 /* MemoNestUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		085743072B7D245E00E546A1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					0857430E2B7D245E00E546A1 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					0857431E2B7D245F00E546A1 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 0857430E2B7D245E00E546A1;
+					};
+					085743282B7D245F00E546A1 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 0857430E2B7D245E00E546A1;
+					};
+				};
+			};
+			buildConfigurationList = 0857430A2B7D245E00E546A1 /* Build configuration list for PBXProject "MemoNest" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 085743062B7D245E00E546A1;
+			productRefGroup = 085743102B7D245E00E546A1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0857430E2B7D245E00E546A1 /* MemoNest */,
+				0857431E2B7D245F00E546A1 /* MemoNestTests */,
+				085743282B7D245F00E546A1 /* MemoNestUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0857430D2B7D245E00E546A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0857431A2B7D245F00E546A1 /* Preview Assets.xcassets in Resources */,
+				085743172B7D245F00E546A1 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0857431D2B7D245F00E546A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		085743272B7D245F00E546A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0857430B2B7D245E00E546A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				085743152B7D245E00E546A1 /* ContentView.swift in Sources */,
+				085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0857431B2B7D245F00E546A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				085743242B7D245F00E546A1 /* MemoNestTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		085743252B7D245F00E546A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				085743302B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift in Sources */,
+				0857432E2B7D245F00E546A1 /* MemoNestUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		085743212B7D245F00E546A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0857430E2B7D245E00E546A1 /* MemoNest */;
+			targetProxy = 085743202B7D245F00E546A1 /* PBXContainerItemProxy */;
+		};
+		0857432B2B7D245F00E546A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0857430E2B7D245E00E546A1 /* MemoNest */;
+			targetProxy = 0857432A2B7D245F00E546A1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		085743312B7D245F00E546A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		085743322B7D245F00E546A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		085743342B7D245F00E546A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"MemoNest/Preview Content\"";
+				DEVELOPMENT_TEAM = N483G6TVAZ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fatimabk.MemoNest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		085743352B7D245F00E546A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"MemoNest/Preview Content\"";
+				DEVELOPMENT_TEAM = N483G6TVAZ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fatimabk.MemoNest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		085743372B7D245F00E546A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N483G6TVAZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fatimabk.MemoNestTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MemoNest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MemoNest";
+			};
+			name = Debug;
+		};
+		085743382B7D245F00E546A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N483G6TVAZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fatimabk.MemoNestTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MemoNest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MemoNest";
+			};
+			name = Release;
+		};
+		0857433A2B7D245F00E546A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N483G6TVAZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fatimabk.MemoNestUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MemoNest;
+			};
+			name = Debug;
+		};
+		0857433B2B7D245F00E546A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N483G6TVAZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fatimabk.MemoNestUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MemoNest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0857430A2B7D245E00E546A1 /* Build configuration list for PBXProject "MemoNest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				085743312B7D245F00E546A1 /* Debug */,
+				085743322B7D245F00E546A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		085743332B7D245F00E546A1 /* Build configuration list for PBXNativeTarget "MemoNest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				085743342B7D245F00E546A1 /* Debug */,
+				085743352B7D245F00E546A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		085743362B7D245F00E546A1 /* Build configuration list for PBXNativeTarget "MemoNestTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				085743372B7D245F00E546A1 /* Debug */,
+				085743382B7D245F00E546A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		085743392B7D245F00E546A1 /* Build configuration list for PBXNativeTarget "MemoNestUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0857433A2B7D245F00E546A1 /* Debug */,
+				0857433B2B7D245F00E546A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 085743072B7D245E00E546A1 /* Project object */;
+}
