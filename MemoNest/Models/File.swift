@@ -10,6 +10,6 @@ import Foundation
 struct File: NameIconProtocol {
     let id = UUID()
     var name: String
-    var parent: UUID?
+    var folder: UUID?
     let icon = "headphones"
 }

@@ -17,8 +17,8 @@ final class FolderListViewModel: ObservableObject {
     }
     
     private func fetchCurrentItems(from parent: UUID?) {
-        DataManager.shared.fetchFolders() { [weak self] folders in
-            DataManager.shared.fetchFiles() { files in
+        DataManager.shared.fetchFolders(parentID: currentFolder) { [weak self] folders in
+            DataManager.shared.fetchFiles(parentID: self?.currentFolder) { files in
                 DispatchQueue.main.async {
                     self?.items = folders + files // logic in VM for ordering, etc
                 }
