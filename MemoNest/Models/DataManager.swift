@@ -16,15 +16,21 @@ final class DataManager {
     
     static let shared = DataManager()
     private init() {
-        let folderA = Folder(name: "A")
-        let folderB = Folder(name: "B")
-        let folderC = Folder(name: "C")
-        self.folders = [folderA, folderB, folderC]
-        
-        let file1 = File(name: "1")
-        let file2 = File(name: "2")
-        let file3 = File(name: "3")
-        self.files = [file1, file2, file3]
+        let folderA = Folder(name: "Folder A")
+        let folderB = Folder(name: "Folder B")
+        let folderC = Folder(name: "Folder C")
+        let folderAA1 = Folder(name: "Folder AA1", parent: folderA.id)
+        let folderAA2 = Folder(name: "Folder AA2", parent: folderA.id)
+        let folderAAA1 = Folder(name: "Folder AAA1", parent: folderAA1.id)
+        self.folders = [folderA, folderB, folderC, folderAA1, folderAA2, folderAAA1]
+        let file1 = File(name: "File1 in Library")
+        let file2 = File(name: "File2 in Library")
+        let file3 = File(name: "File3 in Library")
+        let fileA1 = File(name: "File in Folder A", folder: folderA.id)
+        let fileAA1 = File(name: "File in Folder AA1", folder: folderAA1.id)
+        let fileAA2 = File(name: "File in Folder AA2", folder: folderAA2.id)
+        let fileAAA1 = File(name: "File in Folder AAA1", folder: folderAAA1.id)
+        self.files = [file1, file2, file3, fileA1, fileAA1, fileAA2, fileAAA1]
     }
     
     private func removeSingleFolder(folderID: UUID, completion: @escaping () -> Void) {
@@ -52,7 +58,7 @@ final class DataManager {
             var nestedFolders = [UUID]()
             removalList.append(folderID)
             nestedFolders.append(folderID)
-            
+                        
             // BFS compile list of all nested folders under folder to delete
             while !nestedFolders.isEmpty {
                 let fid = nestedFolders.removeFirst()
@@ -63,27 +69,45 @@ final class DataManager {
                     }
                 }
             }
+            printRemovalList(folderIDs: removalList)
             
             // delete files within each folder to be deleted
             for fid in removalList {
                 self.fetchFiles(parentID: fid) { files in
                     for file in files {
                         self.removeFile(fileID: file.id) {}
+                        self.printLibraryContents()
                     }
                 }
             }
             
             // delete folders
             for fid in removalList {
-                self.fetchFolders(parentID: fid) { folders in
-                    for folder in folders {
-                        self.removeSingleFolder(folderID: folder.id) {}
-                    }
-                }
+                self.removeSingleFolder(folderID: fid) {}
+                self.printLibraryContents()
             }
+            self.printLibraryContents()
             completion()
         }
     }
+    
+    private func printLibraryContents() {
+        print("\nLIBRARY:")
+        for folder in folders {
+            print(folder.name)
+        }
+        for file in files {
+            print(file.name)
+        }
+    }
+    
+    private func printRemovalList(folderIDs: [UUID]) {
+        print("\nRemoval list:")
+        for f in folderIDs {
+            print(self.folders.filter({$0.id == f}).first?.name ?? "NO match")
+        }
+    }
+    
     func moveFolder(folderID: UUID, newParentID: UUID?, completion: @escaping () -> Void) {
         DispatchQueue.global().async { [weak self] in
             guard let self else { return }
@@ -135,7 +159,8 @@ final class DataManager {
     }
     func removeFile(fileID: UUID, completion: @escaping () -> Void) {
         DispatchQueue.global().async { [weak self] in
-            self?.files.removeAll(where: {$0.id == fileID})
+            guard let self else { return }
+            files.removeAll(where: {$0.id == fileID})
             completion()
         }
     }
