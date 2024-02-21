@@ -42,6 +42,15 @@ final class FolderListViewModel: ObservableObject {
         self.fetchCurrentItems(from: currentFolderID)
     }
     
+    func navigateToParentFolder() {
+        guard let currentFolder else { return }
+        DataManager.shared.fetchSingleFolder(folderID: currentFolder.parent) { [weak self] parentFolder in
+            guard let self else { return }
+            self.currentFolder = parentFolder
+            self.fetchCurrentItems(from: currentFolderID)
+        }
+    }
+    
     func setPlaybackFile(file: File) {
         self.playbackFile = file
         self.hasPlaybackFile = true

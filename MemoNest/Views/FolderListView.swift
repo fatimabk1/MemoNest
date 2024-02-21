@@ -11,44 +11,77 @@ struct FolderListView: View {
     @ObservedObject var viewModel = FolderListViewModel()
     
     var body: some View {
-        ZStack {
-            NavigationStack {
-                List {
-                    ForEach(viewModel.items, id: \.id) { item in
-                        ListRow(name: item.name, icon: item.icon) {
+        if let memo = viewModel.playbackFile {
+            PlayBackView(file: memo)
+        } else {
+            ZStack {
+                NavigationStack {
+                    TitleBar(viewModel: viewModel)
+                    List {
+                        ForEach(viewModel.items, id: \.id) { item in
                             if item is Folder {
-                                viewModel.navigateToFolder(folder: item as! Folder)
+                                ListRow(name: item.name, icon: item.icon) {
+                                    viewModel.navigateToFolder(folder: item as! Folder)
+                                }
                             } else {
-                                viewModel.setPlaybackFile(file: item as! File)
+                                NavigationLink {
+                                    PlayBackView(file: item as! File)
+                                } label: {
+//                                    Text(item.name)
+                                    ListRow(name: item.name, icon: item.icon) {}
+                                }
+                            }
+                        }
+                    }
+                    .listStyle(.inset)
+                    .scrollContentBackground(.hidden)
+                    .onAppear {
+                        viewModel.handleOnAppear()
+                    }
+                    .toolbar {
+                        ToolbarItem {
+                            EditButton()
+                        }
+                        ToolbarItemGroup(placement: .bottomBar) {
+                            Button("New Folder") {
+                                viewModel.addFolder()
+                            }
+                            
+                            Button("New File") {
+                                viewModel.addFile()
                             }
                         }
                     }
                 }
-                .onAppear {
-                    viewModel.handleOnAppear()
-                }
-                .navigationTitle(viewModel.currentFolderTitle)
-                .toolbar {
-                    ToolbarItem {
-                        EditButton()
-                    }
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        Button("New Folder") {
-                            viewModel.addFolder()
-                        }
-                        
-                        Button("New File") {
-                            viewModel.addFile()
-                        }
-                    }
-                }
-            }
-            if viewModel.hasPlaybackFile {
-                if let file = viewModel.playbackFile {
-                    PlayBackView(file: file)
-                }
+                //            if viewModel.hasPlaybackFile {
+                //                if let file = viewModel.playbackFile {
+                //                    PlayBackView(file: file)
+                //                }
+                //            }
             }
         }
+    }
+}
+
+struct TitleBar: View {
+    @ObservedObject var viewModel: FolderListViewModel
+    
+    var body: some View {
+        HStack {
+            if viewModel.currentFolder != nil {
+                Button {
+                    viewModel.navigateToParentFolder()
+                } label: {
+                    Text("<")
+                        .font(.largeTitle)
+                        .foregroundStyle(.black)
+                }
+            }
+            Text(viewModel.currentFolderTitle)
+                .font(.largeTitle)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

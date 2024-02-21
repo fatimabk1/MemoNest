@@ -110,6 +110,17 @@ final class DataManager {
             completion()
         }
     }
+    func fetchSingleFolder(folderID: UUID?, completion: @escaping (Folder?) -> Void) {
+        DispatchQueue.global().async { [weak self] in
+            guard let self else { return }
+            if let folderID {
+                let parentFolder = folders.first(where: {$0.id == folderID})
+                completion(parentFolder)
+            } else {
+                completion(nil)
+            }
+        }
+    }
     
     // MARK: file functions
     func fetchFiles(parentID: UUID?, completion: @escaping ([File]) -> Void ) {
