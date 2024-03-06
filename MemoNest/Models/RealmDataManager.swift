@@ -1,21 +1,17 @@
 //
-//  DataManager.swift
+//  RealmDataManager.swift
 //  MemoNest
 //
-//  Created by Fatima Kahbi on 2/14/24.
+//  Created by Fatima Kahbi on 3/6/24.
 //
 
 import Foundation
 
-// conforms to protocol, concrete implementation
-// TODO: write protocol w/functions, vars
-// TODO: add Realm implementation with real data
-final class DataManager {
-    private var files: [File] // TODO, SHOULD BE DB
+final class RealmDataManager: DataManager {
+    private var files: [File]
     private var folders: [Folder]
-    
-    static let shared = DataManager()
-    private init() {
+ 
+    init() {
         let folderA = Folder(name: "Folder A")
         let folderB = Folder(name: "Folder B")
         let folderC = Folder(name: "Folder C")
@@ -33,16 +29,18 @@ final class DataManager {
         self.files = [file1, file2, file3, fileA1, fileAA1, fileAA2, fileAAA1]
     }
     
-    private func removeSingleFolder(folderID: UUID, completion: @escaping () -> Void) {
-        DispatchQueue.global().async { [weak self] in
-            self?.folders.removeAll(where: {$0.id == folderID})
-            completion()
-        }
+    internal func removeSingleFolder(folderID: UUID, completion: @escaping () -> Void) {
+    DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
+        self?.folders.removeAll(where: {$0.id == folderID})
+        completion()
     }
+}
     
     // MARK: folder functions
     func fetchFolders(parentID: UUID?, completion: @escaping ([Folder]) -> Void) {
-        completion(folders.filter({$0.parent == parentID}))
+        DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
+            completion((self?.folders ?? []).filter({$0.parent == parentID}))
+        }
     }
     func addFolder(folderName: String, parent: UUID?, completion: @escaping () -> Void) {
         DispatchQueue.global().async { [weak self] in
@@ -50,6 +48,27 @@ final class DataManager {
             completion()
         }
     }
+    
+    /*
+     - option 1: recursive. make sure to wait for async to complete before continuing to next node/item
+     - option 2: function gives folders in leaf --> root order.
+         Iterate over folders and delete all content async
+         Then delete folder for that item
+         Once complete, all functions for deletion have been dispatched.
+     - ** option 3: list all folder ids. delete folders and files, making sure to watch what can happen at the same time vs what we need to wait for (for each vs while)
+     
+     - A
+        - A1
+            -f1
+        - A2
+            -f2
+            - AA2
+                -f3
+        - f4
+     
+     [AA2, A2, A1, A]
+     
+     */
     func removeFolder(folderID: UUID, completion: @escaping () -> Void) {
         DispatchQueue.global().async { [weak self] in
             guard let self else { return }
@@ -60,20 +79,26 @@ final class DataManager {
             nestedFolders.append(folderID)
                         
             // BFS compile list of all nested folders under folder to delete
+            // NOTE: over-called while because fetchFolders is not being waited for / nestedFolders has delay in updating. - while loop blocks artificially until it finishes. bad performance
+            //A for loop would be better because it is called for each item.
+            //Don't need to wait bc processing does not rely on updates to the list we are iterating on
             while !nestedFolders.isEmpty {
-                let fid = nestedFolders.removeFirst()
-                self.fetchFolders(parentID: fid) { folders in
+                let folderID = nestedFolders.removeFirst()
+                self.fetchFolders(parentID: folderID) { folders in
                     for folder in folders {
                         removalList.append(folder.id)
                         nestedFolders.append(folder.id)
                     }
                 }
             }
+            
+            //NOTE: everything below executes before fetchFolders returns bc we didn't properly wait for
+            // async function to return. Waiting means nested inside closure.
             printRemovalList(folderIDs: removalList)
             
             // delete files within each folder to be deleted
-            for fid in removalList {
-                self.fetchFiles(parentID: fid) { files in
+            for folderID in removalList {
+                self.fetchFiles(parentID: folderID) { files in
                     for file in files {
                         self.removeFile(fileID: file.id) {}
                         self.printLibraryContents()
@@ -82,14 +107,15 @@ final class DataManager {
             }
             
             // delete folders
-            for fid in removalList {
-                self.removeSingleFolder(folderID: fid) {}
+            for folderID in removalList {
+                self.removeSingleFolder(folderID: folderID) {}
                 self.printLibraryContents()
             }
             self.printLibraryContents()
             completion()
         }
     }
+    
     
     private func printLibraryContents() {
         print("\nLIBRARY:")
@@ -158,7 +184,7 @@ final class DataManager {
         }
     }
     func removeFile(fileID: UUID, completion: @escaping () -> Void) {
-        DispatchQueue.global().async { [weak self] in
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1) { [weak self] in
             guard let self else { return }
             files.removeAll(where: {$0.id == fileID})
             completion()
@@ -190,4 +216,5 @@ final class DataManager {
             completion()
         }
     }
+    
 }

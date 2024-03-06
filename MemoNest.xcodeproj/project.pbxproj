@@ -17,11 +17,15 @@
 		085743402B7D24E100E546A1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857433F2B7D24E100E546A1 /* File.swift */; };
 		085743422B7D24E800E546A1 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743412B7D24E800E546A1 /* Folder.swift */; };
 		085743442B7D251E00E546A1 /* FolderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743432B7D251E00E546A1 /* FolderListView.swift */; };
-		085743472B7D257C00E546A1 /* NameIconProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743462B7D257C00E546A1 /* NameIconProtocol.swift */; };
+		085743472B7D257C00E546A1 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743462B7D257C00E546A1 /* Item.swift */; };
 		085743492B7D262100E546A1 /* FolderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743482B7D262100E546A1 /* FolderListViewModel.swift */; };
-		0857434C2B7D265300E546A1 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434B2B7D265300E546A1 /* DataManager.swift */; };
+		0857434C2B7D265300E546A1 /* MockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434B2B7D265300E546A1 /* MockDataManager.swift */; };
 		0857434E2B7D3E1000E546A1 /* PlayBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434D2B7D3E0F00E546A1 /* PlayBackView.swift */; };
 		085743502B7D408100E546A1 /* ListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434F2B7D408100E546A1 /* ListRow.swift */; };
+		086ED08C2B98C81E00A30EBC /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED08B2B98C81E00A30EBC /* DataManager.swift */; };
+		086ED08E2B98C9C200A30EBC /* RealmDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED08D2B98C9C200A30EBC /* RealmDataManager.swift */; };
+		086ED0912B98CA2400A30EBC /* FileDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED0902B98CA2400A30EBC /* FileDB.swift */; };
+		086ED0932B98CA2C00A30EBC /* FolderDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED0922B98CA2C00A30EBC /* FolderDB.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,11 +59,15 @@
 		0857433F2B7D24E100E546A1 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		085743412B7D24E800E546A1 /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
 		085743432B7D251E00E546A1 /* FolderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListView.swift; sourceTree = "<group>"; };
-		085743462B7D257C00E546A1 /* NameIconProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameIconProtocol.swift; sourceTree = "<group>"; };
+		085743462B7D257C00E546A1 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		085743482B7D262100E546A1 /* FolderListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListViewModel.swift; sourceTree = "<group>"; };
-		0857434B2B7D265300E546A1 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		0857434B2B7D265300E546A1 /* MockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataManager.swift; sourceTree = "<group>"; };
 		0857434D2B7D3E0F00E546A1 /* PlayBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayBackView.swift; sourceTree = "<group>"; };
 		0857434F2B7D408100E546A1 /* ListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRow.swift; sourceTree = "<group>"; };
+		086ED08B2B98C81E00A30EBC /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		086ED08D2B98C9C200A30EBC /* RealmDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDataManager.swift; sourceTree = "<group>"; };
+		086ED0902B98CA2400A30EBC /* FileDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDB.swift; sourceTree = "<group>"; };
+		086ED0922B98CA2C00A30EBC /* FolderDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDB.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +123,7 @@
 				0857433D2B7D24C000E546A1 /* Views */,
 				0857433C2B7D24BB00E546A1 /* Models */,
 				085743122B7D245E00E546A1 /* MemoNestApp.swift */,
+				086ED08F2B98CA1300A30EBC /* RealmDatabase */,
 				085743162B7D245F00E546A1 /* Assets.xcassets */,
 				085743182B7D245F00E546A1 /* Preview Content */,
 			);
@@ -151,7 +160,8 @@
 			children = (
 				0857433F2B7D24E100E546A1 /* File.swift */,
 				085743412B7D24E800E546A1 /* Folder.swift */,
-				0857434B2B7D265300E546A1 /* DataManager.swift */,
+				0857434B2B7D265300E546A1 /* MockDataManager.swift */,
+				086ED08D2B98C9C200A30EBC /* RealmDataManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -178,9 +188,19 @@
 		085743452B7D255A00E546A1 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				085743462B7D257C00E546A1 /* NameIconProtocol.swift */,
+				085743462B7D257C00E546A1 /* Item.swift */,
+				086ED08B2B98C81E00A30EBC /* DataManager.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		086ED08F2B98CA1300A30EBC /* RealmDatabase */ = {
+			isa = PBXGroup;
+			children = (
+				086ED0902B98CA2400A30EBC /* FileDB.swift */,
+				086ED0922B98CA2C00A30EBC /* FolderDB.swift */,
+			);
+			path = RealmDatabase;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -314,15 +334,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				085743152B7D245E00E546A1 /* ContentView.swift in Sources */,
-				0857434C2B7D265300E546A1 /* DataManager.swift in Sources */,
+				0857434C2B7D265300E546A1 /* MockDataManager.swift in Sources */,
 				085743442B7D251E00E546A1 /* FolderListView.swift in Sources */,
 				085743492B7D262100E546A1 /* FolderListViewModel.swift in Sources */,
 				085743502B7D408100E546A1 /* ListRow.swift in Sources */,
 				085743402B7D24E100E546A1 /* File.swift in Sources */,
 				085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */,
+				086ED0932B98CA2C00A30EBC /* FolderDB.swift in Sources */,
+				086ED0912B98CA2400A30EBC /* FileDB.swift in Sources */,
 				085743422B7D24E800E546A1 /* Folder.swift in Sources */,
+				086ED08C2B98C81E00A30EBC /* DataManager.swift in Sources */,
 				0857434E2B7D3E1000E546A1 /* PlayBackView.swift in Sources */,
-				085743472B7D257C00E546A1 /* NameIconProtocol.swift in Sources */,
+				085743472B7D257C00E546A1 /* Item.swift in Sources */,
+				086ED08E2B98C9C200A30EBC /* RealmDataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

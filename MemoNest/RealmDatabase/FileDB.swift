@@ -1,13 +1,13 @@
 //
-//  File.swift
+//  FileDB.swift
 //  MemoNest
 //
-//  Created by Fatima Kahbi on 2/14/24.
+//  Created by Fatima Kahbi on 3/6/24.
 //
 
 import Foundation
 
-struct File: Item {
+struct FileDB: Item {
     let id = UUID()
     var name: String
     var folder: UUID?
