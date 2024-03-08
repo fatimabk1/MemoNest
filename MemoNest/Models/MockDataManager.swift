@@ -10,9 +10,10 @@ import Foundation
 // conforms to protocol, concrete implementation
 // TODO: add Realm implementation with real data
 final class MockDataManager: DataManager {
+    
     private var files: [File]
     private var folders: [Folder]
- 
+    
     init() {
         let folderA = Folder(name: "Folder A")
         let folderB = Folder(name: "Folder B")
@@ -32,11 +33,11 @@ final class MockDataManager: DataManager {
     }
     
     internal func removeSingleFolder(folderID: UUID, completion: @escaping () -> Void) {
-    DispatchQueue.global().async { [weak self] in
-        self?.folders.removeAll(where: {$0.id == folderID})
-        completion()
+        DispatchQueue.global().async { [weak self] in
+            self?.folders.removeAll(where: {$0.id == folderID})
+            completion()
+        }
     }
-}
     
     // MARK: folder functions
     func fetchFolders(parentID: UUID?, completion: @escaping ([Folder]) -> Void) {
@@ -51,83 +52,44 @@ final class MockDataManager: DataManager {
         }
     }
     
-    /*
-     - option 1: recursive. make sure to wait for async to complete before continuing to next node/item
-     - option 2: function gives folders in leaf --> root order.
-         Iterate over folders and delete all content async
-         Then delete folder for that item
-         Once complete, all functions for deletion have been dispatched.
-     - ** option 3: list all folder ids. delete folders and files, making sure to watch what can happen at the same time vs what we need to wait for (for each vs while)
-     
-     - A
-        - A1
-            -f1
-        - A2
-            -f2
-            - AA2
-                -f3
-        - f4
-     
-     [AA2, A2, A1, A]
-     
-     */
+    // recursive remove folder w/in async blocks
     func removeFolder(folderID: UUID, completion: @escaping () -> Void) {
         DispatchQueue.global().async { [weak self] in
-            guard let self else { return }
+            guard let self else {return}
             
-            // START HERE
-            var removalList = [UUID]()
-            var nestedFolders = [UUID]()
-            removalList.append(folderID)
-            nestedFolders.append(folderID)
+            var foldersToDelete: [UUID] = [folderID]
+            processFolder()
             
-            for folderID in nestedFolders {
+            func processFolder() {
+                guard !foldersToDelete.isEmpty else {
+                    completion()
+                    return
+                }
+                
+                let folderID = foldersToDelete.removeFirst()
+                
+                // fetch folders, then append to delete list, then delete parent folder
                 self.fetchFolders(parentID: folderID) { folders in
                     for folder in folders {
-                        removalList.append(folder.id)
-                        nestedFolders.append(folder.id)
+                        foldersToDelete.append(folder.id)
                     }
-                }
-            }
-                        
-            // BFS compile list of all nested folders under folder to delete
-            // NOTE: over-called while because fetchFolders is not being waited for / nestedFolders has delay in updating. - while loop blocks artificially until it finishes. bad performance
-            //A for loop would be better because it is called for each item.
-            //Don't need to wait bc processing does not rely on updates to the list we are iterating on
-            while !nestedFolders.isEmpty {
-                let folderID = nestedFolders.removeFirst()
-                self.fetchFolders(parentID: folderID) { folders in
-                    for folder in folders {
-                        removalList.append(folder.id)
-                        nestedFolders.append(folder.id)
+                    self.removeSingleFolder(folderID: folderID) {
+                        // process next folder after removing current folder to ensure
+                        // UI refreshes after folder is deleted
+                        processFolder()
                     }
+                   
                 }
-            }
-            
-            //NOTE: everything below executes before fetchFolders returns bc we didn't properly wait for
-            // async function to return. Waiting means nested inside closure.
-            printRemovalList(folderIDs: removalList)
-            
-            // delete files within each folder to be deleted
-            for folderID in removalList {
+                // IN-PARALLEL: fetch files, then remove files
                 self.fetchFiles(parentID: folderID) { files in
                     for file in files {
                         self.removeFile(fileID: file.id) {}
-                        self.printLibraryContents()
                     }
                 }
+                
             }
-            
-            // delete folders
-            for folderID in removalList {
-                self.removeSingleFolder(folderID: folderID) {}
-                self.printLibraryContents()
-            }
-            self.printLibraryContents()
-            completion()
         }
     }
-    
     
     private func printLibraryContents() {
         print("\nLIBRARY:")

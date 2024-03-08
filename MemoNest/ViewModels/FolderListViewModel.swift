@@ -49,8 +49,10 @@ final class FolderListViewModel: ObservableObject {
         guard let currentFolder else { return }
         database.fetchSingleFolder(folderID: currentFolder.parent) { [weak self] parentFolder in
             guard let self else { return }
-            self.currentFolder = parentFolder
-            self.fetchCurrentItems(fromID: currentFolderID)
+            DispatchQueue.main.async {
+                self.currentFolder = parentFolder
+                self.fetchCurrentItems(fromID: self.currentFolderID)
+            }
         }
     }
     func setPlaybackFile(file: File) {
@@ -69,18 +71,19 @@ final class FolderListViewModel: ObservableObject {
         }
     }
     
-    
     // MARK: folder functions
     func addFolder(folderName: String = "New Folder") {
         database.addFolder(folderName: folderName, parent: currentFolderID) {
             self.fetchCurrentItems(fromID: self.currentFolderID)
         }
     }
+    
     private func removeFolder(folder: Folder) {
         database.removeFolder(folderID: folder.id) {
             self.fetchCurrentItems(fromID: self.currentFolderID)
         }
     }
+    
     func moveFolder(folder: Folder, destination: Folder) {
         database.moveFolder(folderID: folder.id, newParentID: destination.id) {
             self.fetchCurrentItems(fromID: self.currentFolderID)
