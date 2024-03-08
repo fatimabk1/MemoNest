@@ -11,8 +11,8 @@ import Foundation
 // TODO: add Realm implementation with real data
 final class MockDataManager: DataManager {
     
-    private var files: [File]
-    private var folders: [Folder]
+    var files = [File]()
+    var folders = [Folder]()
     
     init() {
         let folderA = Folder(name: "Folder A")
@@ -31,13 +31,13 @@ final class MockDataManager: DataManager {
         let fileAAA1 = File(name: "File in Folder AAA1", folder: folderAAA1.id)
         self.files = [file1, file2, file3, fileA1, fileAA1, fileAA2, fileAAA1]
     }
-    
-    internal func removeSingleFolder(folderID: UUID, completion: @escaping () -> Void) {
-        DispatchQueue.global().async { [weak self] in
-            self?.folders.removeAll(where: {$0.id == folderID})
-            completion()
-        }
+        
+    func removeSingleFolder(folderID: UUID, completion: @escaping () -> Void) {
+    DispatchQueue.global().async { [weak self] in
+        self?.folders.removeAll(where: {$0.id == folderID})
+        completion()
     }
+}
     
     // MARK: folder functions
     func fetchFolders(parentID: UUID?, completion: @escaping ([Folder]) -> Void) {
@@ -100,14 +100,7 @@ final class MockDataManager: DataManager {
             print(file.name)
         }
     }
-    
-    private func printRemovalList(folderIDs: [UUID]) {
-        print("\nRemoval list:")
-        for f in folderIDs {
-            print(self.folders.filter({$0.id == f}).first?.name ?? "NO match")
-        }
-    }
-    
+        
     func moveFolder(folderID: UUID, newParentID: UUID?, completion: @escaping () -> Void) {
         DispatchQueue.global().async { [weak self] in
             guard let self else { return }
@@ -138,8 +131,8 @@ final class MockDataManager: DataManager {
         DispatchQueue.global().async { [weak self] in
             guard let self else { return }
             if let folderID {
-                let parentFolder = folders.first(where: {$0.id == folderID})
-                completion(parentFolder)
+                let folder = folders.first(where: {$0.id == folderID})
+                completion(folder)
             } else {
                 completion(nil)
             }

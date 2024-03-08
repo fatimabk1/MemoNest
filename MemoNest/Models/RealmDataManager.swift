@@ -8,8 +8,8 @@
 import Foundation
 
 final class RealmDataManager: DataManager {
-    private var files: [File]
-    private var folders: [Folder]
+    var files: [File]
+    var folders: [Folder]
  
     init() {
         let folderA = Folder(name: "Folder A")

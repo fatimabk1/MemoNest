@@ -7,7 +7,10 @@
 
 import Foundation
 
-protocol DataManager {    
+protocol DataManager {   
+    var files: [File] { get }
+    var folders: [Folder] { get }
+    
     // folder functions
     func removeSingleFolder(folderID: UUID, completion: @escaping () -> Void);
     func fetchFolders(parentID: UUID?, completion: @escaping ([Folder]) -> Void);

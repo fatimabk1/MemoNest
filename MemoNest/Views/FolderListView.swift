@@ -39,18 +39,22 @@ struct FolderListView: View {
                     print(indexSet)
                     viewModel.removeItem(atIndices: indexSet)
                 })
-                .onMove(perform: { indices, newOffset in
-                    /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Code@*/ /*@END_MENU_TOKEN@*/
-                })
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(viewModel.currentFolderTitle)
             .navigationBarItems(leading: BackButton(hasParentFolder: viewModel.currentFolder != nil) {viewModel.navigateToParentFolder()} )
-            .navigationBarItems(trailing: EditButton())
+            .navigationBarItems(trailing: EditModeButton())
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Button("New Folder") { viewModel.addFolder() }
-                    Button("New File") { viewModel.addFile() }
+//                    Button("New Folder") { viewModel.addFolder() }
+//                    Button("New File") { viewModel.addFile() }
+                    Spacer()
+                    Menu {
+                        Button("Add Folder", action: { viewModel.addFolder() })
+                        Button("Add File", action: {viewModel.addFile() })
+                    } label: {
+                        Image(systemName: "plus.circle")
+                    }
                 }
             }
             .listStyle(.inset)
@@ -64,23 +68,16 @@ struct FolderListView: View {
     
 }
 
-
-struct BackButton: View {
-    let hasParentFolder: Bool
-    let backFunction: () -> Void
-    
+struct EditModeButton: View {
     var body: some View {
-        if hasParentFolder {
-            Button {
-                backFunction()
-            } label: {
-                Image(systemName: "chevron.backward")
-            }
-        } else {
-            EmptyView()
+        Button {
+            
+        } label: {
+            Text("Edit")
         }
     }
 }
+
 
 #Preview {
     FolderListView(currentFolder: nil, database: MockDataManager())
