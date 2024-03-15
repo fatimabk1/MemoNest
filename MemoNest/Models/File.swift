@@ -13,3 +13,10 @@ struct File: Item {
     var folder: UUID?
     let icon = "headphones"
 }
+
+// Adapter pattern
+extension File {
+    func asFileDB() -> FileDB {
+        return FileDB(name: self.name, folder: self.folder)
+    }
+}

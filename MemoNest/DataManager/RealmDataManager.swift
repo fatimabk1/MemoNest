@@ -1,19 +1,21 @@
 //
-//  MockDataManager.swift
+//  RealmDataManager.swift
 //  MemoNest
 //
-//  Created by Fatima Kahbi on 2/14/24.
+//  Created by Fatima Kahbi on 3/6/24.
 //
 
 import Foundation
 
-// conforms to protocol, concrete implementation
-// TODO: add Realm implementation with real data
-final class MockDataManager: DataManager {
+final class RealmDataManager: DataManager {
+    func removeAll(ids: [UUID], completion: @escaping () -> Void) {
+//        <#code#>
+    }
     
-    var files = [File]()
-    var folders = [Folder]()
     
+    var files: [File]
+    var folders: [Folder]
+ 
     init() {
         let folderA = Folder(name: "Folder A")
         let folderB = Folder(name: "Folder B")
@@ -31,17 +33,19 @@ final class MockDataManager: DataManager {
         let fileAAA1 = File(name: "File in Folder AAA1", folder: folderAAA1.id)
         self.files = [file1, file2, file3, fileA1, fileAA1, fileAA2, fileAAA1]
     }
-        
-    func removeSingleFolder(folderID: UUID, completion: @escaping () -> Void) {
-    DispatchQueue.global().async { [weak self] in
+    
+    internal func removeSingleFolder(folderID: UUID, completion: @escaping () -> Void) {
+    DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
         self?.folders.removeAll(where: {$0.id == folderID})
         completion()
     }
 }
     
+    func listContentRecursive(folderID: UUID, completion: @escaping ([UUID]) -> Void) {}
+    
     // MARK: folder functions
     func fetchFolders(parentID: UUID?, completion: @escaping ([Folder]) -> Void) {
-        DispatchQueue.global().async { [weak self] in
+        DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
             completion((self?.folders ?? []).filter({$0.parent == parentID}))
         }
     }
@@ -52,44 +56,73 @@ final class MockDataManager: DataManager {
         }
     }
     
-    // recursive remove folder w/in async blocks
+    /*
+     - option 1: recursive. make sure to wait for async to complete before continuing to next node/item
+     - option 2: function gives folders in leaf --> root order.
+         Iterate over folders and delete all content async
+         Then delete folder for that item
+         Once complete, all functions for deletion have been dispatched.
+     - ** option 3: list all folder ids. delete folders and files, making sure to watch what can happen at the same time vs what we need to wait for (for each vs while)
+     
+     - A
+        - A1
+            -f1
+        - A2
+            -f2
+            - AA2
+                -f3
+        - f4
+     
+     [AA2, A2, A1, A]
+     
+     */
     func removeFolder(folderID: UUID, completion: @escaping () -> Void) {
         DispatchQueue.global().async { [weak self] in
-            guard let self else {return}
+            guard let self else { return }
             
-            var foldersToDelete: [UUID] = [folderID]
-            processFolder()
-            
-            func processFolder() {
-                guard !foldersToDelete.isEmpty else {
-                    completion()
-                    return
-                }
-                
-                let folderID = foldersToDelete.removeFirst()
-                
-                // fetch folders, then append to delete list, then delete parent folder
+            var removalList = [UUID]()
+            var nestedFolders = [UUID]()
+            removalList.append(folderID)
+            nestedFolders.append(folderID)
+                        
+            // BFS compile list of all nested folders under folder to delete
+            // NOTE: over-called while because fetchFolders is not being waited for / nestedFolders has delay in updating. - while loop blocks artificially until it finishes. bad performance
+            //A for loop would be better because it is called for each item.
+            //Don't need to wait bc processing does not rely on updates to the list we are iterating on
+            while !nestedFolders.isEmpty {
+                let folderID = nestedFolders.removeFirst()
                 self.fetchFolders(parentID: folderID) { folders in
                     for folder in folders {
-                        foldersToDelete.append(folder.id)
+                        removalList.append(folder.id)
+                        nestedFolders.append(folder.id)
                     }
-                    self.removeSingleFolder(folderID: folderID) {
-                        // process next folder after removing current folder to ensure
-                        // UI refreshes after folder is deleted
-                        processFolder()
-                    }
-                   
                 }
-                // IN-PARALLEL: fetch files, then remove files
+            }
+            
+            //NOTE: everything below executes before fetchFolders returns bc we didn't properly wait for
+            // async function to return. Waiting means nested inside closure.
+            printRemovalList(folderIDs: removalList)
+            
+            // delete files within each folder to be deleted
+            for folderID in removalList {
                 self.fetchFiles(parentID: folderID) { files in
                     for file in files {
                         self.removeFile(fileID: file.id) {}
+                        self.printLibraryContents()
                     }
                 }
-                
             }
+            
+            // delete folders
+            for folderID in removalList {
+                self.removeSingleFolder(folderID: folderID) {}
+                self.printLibraryContents()
+            }
+            self.printLibraryContents()
+            completion()
         }
     }
+    
     
     private func printLibraryContents() {
         print("\nLIBRARY:")
@@ -100,7 +133,14 @@ final class MockDataManager: DataManager {
             print(file.name)
         }
     }
-        
+    
+    private func printRemovalList(folderIDs: [UUID]) {
+        print("\nRemoval list:")
+        for f in folderIDs {
+            print(self.folders.filter({$0.id == f}).first?.name ?? "NO match")
+        }
+    }
+    
     func moveFolder(folderID: UUID, newParentID: UUID?, completion: @escaping () -> Void) {
         DispatchQueue.global().async { [weak self] in
             guard let self else { return }
@@ -131,8 +171,8 @@ final class MockDataManager: DataManager {
         DispatchQueue.global().async { [weak self] in
             guard let self else { return }
             if let folderID {
-                let folder = folders.first(where: {$0.id == folderID})
-                completion(folder)
+                let parentFolder = folders.first(where: {$0.id == folderID})
+                completion(parentFolder)
             } else {
                 completion(nil)
             }
@@ -151,7 +191,7 @@ final class MockDataManager: DataManager {
         }
     }
     func removeFile(fileID: UUID, completion: @escaping () -> Void) {
-        DispatchQueue.global().async { [weak self] in
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1) { [weak self] in
             guard let self else { return }
             files.removeAll(where: {$0.id == fileID})
             completion()
@@ -183,4 +223,5 @@ final class MockDataManager: DataManager {
             completion()
         }
     }
+    
 }

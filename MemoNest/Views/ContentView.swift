@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    let database = MockDataManager()
     var body: some View {
         NavigationStack {
-            FolderListView(currentFolder: nil, database: database)
+            FolderListView(currentFolder: nil)
         }
     }
 }

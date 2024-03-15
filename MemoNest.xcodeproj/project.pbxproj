@@ -29,7 +29,7 @@
 		086ED09A2B9B54F400A30EBC /* FolderListViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED0992B9B54F400A30EBC /* FolderListViewModelTest.swift */; };
 		086ED09C2B9B595B00A30EBC /* MockDataManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED09B2B9B595B00A30EBC /* MockDataManagerTest.swift */; };
 		086ED09E2B9B630D00A30EBC /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED09D2B9B630D00A30EBC /* BackButton.swift */; };
-		086ED0A02B9B642000A30EBC /* EditableListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED09F2B9B642000A30EBC /* EditableListRow.swift */; };
+		086ED0A02B9B642000A30EBC /* RenameItemPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED09F2B9B642000A30EBC /* RenameItemPopup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,7 +75,7 @@
 		086ED0992B9B54F400A30EBC /* FolderListViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListViewModelTest.swift; sourceTree = "<group>"; };
 		086ED09B2B9B595B00A30EBC /* MockDataManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataManagerTest.swift; sourceTree = "<group>"; };
 		086ED09D2B9B630D00A30EBC /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
-		086ED09F2B9B642000A30EBC /* EditableListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableListRow.swift; sourceTree = "<group>"; };
+		086ED09F2B9B642000A30EBC /* RenameItemPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenameItemPopup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,11 +127,11 @@
 			isa = PBXGroup;
 			children = (
 				085743122B7D245E00E546A1 /* MemoNestApp.swift */,
-				085743452B7D255A00E546A1 /* Helpers */,
+				085743452B7D255A00E546A1 /* Protocols */,
 				0857433E2B7D24C400E546A1 /* ViewModels */,
 				0857433D2B7D24C000E546A1 /* Views */,
 				0857433C2B7D24BB00E546A1 /* Models */,
-				086ED08F2B98CA1300A30EBC /* RealmDatabase */,
+				086ED08F2B98CA1300A30EBC /* DataManager */,
 				085743162B7D245F00E546A1 /* Assets.xcassets */,
 				085743182B7D245F00E546A1 /* Preview Content */,
 			);
@@ -173,8 +173,6 @@
 			children = (
 				0857433F2B7D24E100E546A1 /* File.swift */,
 				085743412B7D24E800E546A1 /* Folder.swift */,
-				0857434B2B7D265300E546A1 /* MockDataManager.swift */,
-				086ED08D2B98C9C200A30EBC /* RealmDataManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -187,7 +185,7 @@
 				0857434D2B7D3E0F00E546A1 /* PlayBackView.swift */,
 				0857434F2B7D408100E546A1 /* ListRow.swift */,
 				086ED09D2B9B630D00A30EBC /* BackButton.swift */,
-				086ED09F2B9B642000A30EBC /* EditableListRow.swift */,
+				086ED09F2B9B642000A30EBC /* RenameItemPopup.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -200,22 +198,24 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		085743452B7D255A00E546A1 /* Helpers */ = {
+		085743452B7D255A00E546A1 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
 				085743462B7D257C00E546A1 /* Item.swift */,
 				086ED08B2B98C81E00A30EBC /* DataManager.swift */,
 			);
-			path = Helpers;
+			path = Protocols;
 			sourceTree = "<group>";
 		};
-		086ED08F2B98CA1300A30EBC /* RealmDatabase */ = {
+		086ED08F2B98CA1300A30EBC /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
+				0857434B2B7D265300E546A1 /* MockDataManager.swift */,
+				086ED08D2B98C9C200A30EBC /* RealmDataManager.swift */,
 				086ED0902B98CA2400A30EBC /* FileDB.swift */,
 				086ED0922B98CA2C00A30EBC /* FolderDB.swift */,
 			);
-			path = RealmDatabase;
+			path = DataManager;
 			sourceTree = "<group>";
 		};
 		086ED0942B9B545000A30EBC /* Helpers */ = {
@@ -399,7 +399,7 @@
 				0857434E2B7D3E1000E546A1 /* PlayBackView.swift in Sources */,
 				085743472B7D257C00E546A1 /* Item.swift in Sources */,
 				086ED08E2B98C9C200A30EBC /* RealmDataManager.swift in Sources */,
-				086ED0A02B9B642000A30EBC /* EditableListRow.swift in Sources */,
+				086ED0A02B9B642000A30EBC /* RenameItemPopup.swift in Sources */,
 				086ED09E2B9B630D00A30EBC /* BackButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

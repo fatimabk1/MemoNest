@@ -13,3 +13,9 @@ struct Folder: Item {
     var parent: UUID?
     let icon = "folder"
 }
+
+extension Folder {
+    func asFolderDB() -> FolderDB {
+        return FolderDB(name: self.name, parent: self.parent)
+    }
+}
