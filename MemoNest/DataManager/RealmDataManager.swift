@@ -7,10 +7,9 @@
 
 import Foundation
 
-final class RealmDataManager: DataManager {
-    func removeAll(ids: [UUID], completion: @escaping () -> Void) {
-//        <#code#>
-    }
+// TODO: implement DataManager protocol
+final class RealmDataManager {
+
     
     
     var files: [File]

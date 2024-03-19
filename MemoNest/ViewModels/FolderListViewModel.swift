@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 // TODO: make it so functions accept an Item
 // check for file/folder HERE not in view or view model for better
@@ -19,6 +20,8 @@ final class FolderListViewModel: ObservableObject {
     
     private let database: DataManager
     private let queue: DispatchQueue
+    private var cancellables = Set<AnyCancellable>()
+    
         
     // MARK: computed properties
     var currentFolderID: UUID? {
@@ -37,14 +40,13 @@ final class FolderListViewModel: ObservableObject {
 
     
     func loadItems(atFolderID folderID: UUID?) {
-    database.fetchFolders(parentID: currentFolderID) { [weak self] folders in
-        self?.database.fetchFiles(parentID: self?.currentFolderID) { files in
-            self?.queue.async {
-                self?.items = folders + files // logic in VM for ordering, etc
+        database.fetchFolders(parentID: folderID)
+            .zip(database.fetchFiles(parentID: folderID))
+            .sink { [weak self] folders, files in
+                self?.items = folders + files
             }
-        }
+            .store(in: &cancellables)
     }
-}
     
     func handleOnAppear() {
         self.loadItems(atFolderID: currentFolderID)
@@ -52,17 +54,33 @@ final class FolderListViewModel: ObservableObject {
     
     func renameItem(item: Item, name: String) {
         if item is Folder {
-            database.renameFolder(folderID: item.id, name: name) { [weak self] in
-                guard let self else { return }
-                self.loadItems(atFolderID: self.currentFolderID)
-            }
+            database.renameFolder(folderID: item.id, name: name)
+                .sink { [weak self] in
+                    self?.loadItems(atFolderID: self?.currentFolderID)
+                }
+                .store(in: &cancellables)
         } else {
-            database.renameFile(fileID: item.id, name: name) { [weak self] in
-                guard let self else { return }
-                self.loadItems(atFolderID: self.currentFolderID)
-            }
+            database.renameFile(fileID: item.id, name: name)
+                .sink { [weak self] in
+                    self?.loadItems(atFolderID: self?.currentFolderID)
+                }
+                .store(in: &cancellables)
         }
     }
+    
+//    func renameItem(item: Item, name: String) {
+//        if item is Folder {
+//            database.renameFolder(folderID: item.id, name: name) { [weak self] in
+//                guard let self else { return }
+//                self.loadItems(atFolderID: self.currentFolderID)
+//            }
+//        } else {
+//            database.renameFile(fileID: item.id, name: name) { [weak self] in
+//                guard let self else { return }
+//                self.loadItems(atFolderID: self.currentFolderID)
+//            }
+//        }
+//    }
     
     func goBack() {
         guard let currentFolder else { return }

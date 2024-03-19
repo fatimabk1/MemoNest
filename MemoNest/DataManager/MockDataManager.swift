@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 // conforms to protocol, concrete implementation
 // TODO: add Realm implementation with real data
@@ -13,6 +14,10 @@ import Foundation
 
 
 final class MockDataManager: DataManager {
+    func removeFolder(folderID: UUID, completion: @escaping () -> Void) {
+        //
+    }
+    
     func listContentRecursive(folderID: UUID, completion: @escaping ([UUID]) -> Void) {
         //
     }
@@ -29,14 +34,23 @@ final class MockDataManager: DataManager {
     
     
     // fetch
-    func fetchFiles(parentID: UUID?, completion: @escaping ([File]) -> Void ) {
-        completion(files.filter({$0.folder == parentID}))
-    }
-    func fetchFolders(parentID: UUID?, completion: @escaping ([Folder]) -> Void) {
-        DispatchQueue.global().async { [weak self] in
-            completion((self?.folders ?? []).filter({$0.parent == parentID}))
+    func fetchFiles(parentID: UUID?) -> AnyPublisher<[File], Never> {
+        Future<[File], Never> { promise in
+            DispatchQueue.global().async { [weak self] in
+                promise(.success(self?.files.filter({$0.folder == parentID}) ?? []))
+            }
         }
+        .eraseToAnyPublisher()
     }
+    func fetchFolders(parentID: UUID?) -> AnyPublisher<[Folder], Never> {
+        Future<[Folder], Never> { promise in
+            DispatchQueue.global().async { [weak self] in
+                promise(.success((self?.folders ?? []).filter({$0.parent == parentID})))
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+    
     
     // remove
 //    func listContentRecursive(folderID: UUID) async -> [UUID] {
@@ -45,42 +59,42 @@ final class MockDataManager: DataManager {
 //    }
     
     
-    func removeFolder(folderID: UUID, completion: @escaping () -> Void) {
-        DispatchQueue.global().async { [weak self] in
-            guard let self else {return}
-            var foldersToDelete: [UUID] = [folderID]
-            
-            func processFolder() {
-                guard !foldersToDelete.isEmpty else {
-                    completion()
-                    return
-                }
-                
-                let folderID = foldersToDelete.removeFirst()
-                
-                // fetch folders, then append to delete list, then delete parent folder
-                self.fetchFolders(parentID: folderID) { folders in
-                    for folder in folders {
-                        foldersToDelete.append(folder.id)
-                    }
-                    self.removeSingleFolder(folderID: folderID) {
-                        // process next folder after removing current folder to ensure
-                        // UI refreshes after folder is deleted
-                        processFolder()
-                    }
-                   
-                }
-                // IN-PARALLEL: fetch files, then remove files
-                self.fetchFiles(parentID: folderID) { files in
-                    for file in files {
-                        self.removeFile(fileID: file.id) {}
-                    }
-                }
-            }
-            
-            processFolder()
-        }
-    }
+//    func removeFolder(folderID: UUID, completion: @escaping () -> Void) {
+//        DispatchQueue.global().async { [weak self] in
+//            guard let self else {return}
+//            var foldersToDelete: [UUID] = [folderID]
+//            
+//            func processFolder() {
+//                guard !foldersToDelete.isEmpty else {
+//                    completion()
+//                    return
+//                }
+//                
+//                let folderID = foldersToDelete.removeFirst()
+//                
+//                // fetch folders, then append to delete list, then delete parent folder
+//                self.fetchFolders(parentID: folderID) { folders in
+//                    for folder in folders {
+//                        foldersToDelete.append(folder.id)
+//                    }
+//                    self.removeSingleFolder(folderID: folderID) {
+//                        // process next folder after removing current folder to ensure
+//                        // UI refreshes after folder is deleted
+//                        processFolder()
+//                    }
+//                   
+//                }
+//                // IN-PARALLEL: fetch files, then remove files
+//                self.fetchFiles(parentID: folderID) { files in
+//                    for file in files {
+//                        self.removeFile(fileID: file.id) {}
+//                    }
+//                }
+//            }
+//            
+//            processFolder()
+//        }
+//    }
 
     func removeAll(ids: [UUID], completion: @escaping () -> Void) {
         //
@@ -94,33 +108,63 @@ final class MockDataManager: DataManager {
     }
     
     // rename
-    func renameFolder(folderID: UUID, name: String, completion: @escaping () -> Void){
-        DispatchQueue.global().async { [weak self] in
-            guard let self else { return }
-            
-            let index = self.folders.firstIndex(where: {$0.id == folderID})
-            guard let index else { return }
-            
-            var folder = self.folders[index]
-            folder.name = name
-            self.folders[index] = folder
-            completion()
+    func renameFolder(folderID: UUID, name: String) -> AnyPublisher<Void, Never> {
+        Future<Void, Never> { promise in
+            DispatchQueue.global().async { [weak self] in
+                guard let self else { return }
+                let index = self.folders.firstIndex(where: {$0.id == folderID})
+                guard let index else { return }
+                
+                var folder = self.folders[index]
+                folder.name = name
+                self.folders[index] = folder
+            }
         }
+        .eraseToAnyPublisher()
     }
-    func renameFile(fileID: UUID, name: String, completion: @escaping () -> Void){
-        DispatchQueue.global().async { [weak self] in
-            guard let self else { return }
-            
-            let index = self.files.firstIndex(where: {$0.id == fileID})
-            guard let index else { return }
-            
-            var file = self.files[index]
-            file.name = name
-            self.files[index] = file
-            completion()
+    func renameFile(fileID: UUID, name: String) -> AnyPublisher<Void, Never> {
+        Future<Void, Never> { promise in
+            DispatchQueue.global().async { [weak self] in
+                guard let self else { return }
+                
+                let index = self.files.firstIndex(where: {$0.id == fileID})
+                guard let index else { return }
+                
+                var file = self.files[index]
+                file.name = name
+                self.files[index] = file
+            }
         }
+        .eraseToAnyPublisher()
     }
     
+//    func renameFolder(folderID: UUID, name: String, completion: @escaping () -> Void){
+//        DispatchQueue.global().async { [weak self] in
+//            guard let self else { return }
+//            
+//            let index = self.folders.firstIndex(where: {$0.id == folderID})
+//            guard let index else { return }
+//            
+//            var folder = self.folders[index]
+//            folder.name = name
+//            self.folders[index] = folder
+//            completion()
+//        }
+//    }
+//    func renameFile(fileID: UUID, name: String, completion: @escaping () -> Void){
+//        DispatchQueue.global().async { [weak self] in
+//            guard let self else { return }
+//            
+//            let index = self.files.firstIndex(where: {$0.id == fileID})
+//            guard let index else { return }
+//            
+//            var file = self.files[index]
+//            file.name = name
+//            self.files[index] = file
+//            completion()
+//        }
+//    }
+//    
     // move
     func moveFolder(folderID: UUID, newParentID: UUID?, completion: @escaping () -> Void) {
         DispatchQueue.global().async { [weak self] in

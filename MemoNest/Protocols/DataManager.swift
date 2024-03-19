@@ -6,14 +6,17 @@
 //
 
 import Foundation
+import Combine
 
 protocol DataManager {   
     var files: [File] { get }
     var folders: [Folder] { get }
     
     // fetch
-    func fetchFolders(parentID: UUID?, completion: @escaping ([Folder]) -> Void)
-    func fetchFiles(parentID: UUID?, completion: @escaping ([File]) -> Void )
+//    func fetchFolders(parentID: UUID?, completion: @escaping ([Folder]) -> Void)
+//    func fetchFiles(parentID: UUID?, completion: @escaping ([File]) -> Void )
+    func fetchFiles(parentID: UUID?) -> AnyPublisher<[File], Never>
+    func fetchFolders(parentID: UUID?) -> AnyPublisher<[Folder], Never>
     
     // remove
     func removeFolder(folderID: UUID, completion: @escaping () -> Void)
@@ -22,8 +25,10 @@ protocol DataManager {
     func removeAll(ids: [UUID], completion: @escaping () -> Void)
     
     // rename
-    func renameFolder(folderID: UUID, name: String, completion: @escaping () -> Void)
-    func renameFile(fileID: UUID, name: String, completion: @escaping () -> Void)
+    func renameFolder(folderID: UUID, name: String) -> AnyPublisher<Void, Never>
+    func renameFile(fileID: UUID, name: String) -> AnyPublisher<Void, Never>
+//    func renameFolder(folderID: UUID, name: String, completion: @escaping () -> Void)
+//    func renameFile(fileID: UUID, name: String, completion: @escaping () -> Void)
     
     // move
     func moveFolder(folderID: UUID, newParentID: UUID?, completion: @escaping () -> Void)
