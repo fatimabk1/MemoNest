@@ -13,8 +13,8 @@ struct FolderListView: View {
     @ObservedObject var viewModel: FolderListViewModel
     @State var isPresentingAddEditor = false
     
-    init(currentFolder: Folder?) {
-        self.viewModel = FolderListViewModel(currentFolder: currentFolder)
+    init() {
+        self.viewModel = FolderListViewModel()
     }
     // cannot move a folder to inside itself -- have a check for this (circular folder reference)
     var body: some View {
@@ -77,8 +77,8 @@ struct FolderListView: View {
     func createListRow(item: Item) -> some View {
         ListRow(name: item.name,
                 icon: item.icon,
-                itemID: item.id,
-                onListRowTap: viewModel.loadItems) { action in
+                item: item,
+                onListRowTap: viewModel.setFolder) { action in
             switch action {
             case .rename:
                 print("Clicked rename")
@@ -106,5 +106,5 @@ struct EditModeButton: View {
 
 
 #Preview {
-    FolderListView(currentFolder: nil)
+    FolderListView()
 }

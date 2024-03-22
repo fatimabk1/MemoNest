@@ -14,6 +14,7 @@ protocol DataManager {
     var cancellables: Set<AnyCancellable> { get}
     
     // fetch
+    func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Folder?, Never>
     func fetchFiles(parentID: UUID?) -> AnyPublisher<[File], Never>
     func fetchFolders(parentID: UUID?) -> AnyPublisher<[Folder], Never>
     
@@ -22,10 +23,6 @@ protocol DataManager {
     func removeSingleFolder(folderID: UUID) -> AnyPublisher<Void, Never> 
     func removeFile(fileID: UUID) -> AnyPublisher<Void, Never>
     func removeAll(ids: [UUID]) -> AnyPublisher<Void, Never> 
-//    func removeFolder(folderID: UUID, completion: @escaping () -> Void)
-//    func listContentRecursive(folderID: UUID, completion: @escaping ([UUID]) -> Void)
-//    func removeFile(fileID: UUID, completion: @escaping () -> Void)
-//    func removeAll(ids: [UUID], completion: @escaping () -> Void)
     
     // rename
     func renameFolder(folderID: UUID, name: String) -> AnyPublisher<Void, Never>

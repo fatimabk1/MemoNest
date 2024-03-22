@@ -21,31 +21,37 @@ final class FolderListViewModel: ObservableObject {
     private let database: DataManager
     private let queue: DispatchQueue
     private var cancellables = Set<AnyCancellable>()
-    
+
         
-    // MARK: computed properties
-    var currentFolderID: UUID? {
-        return currentFolder?.id
-    }
-    var currentFolderTitle: String {
-        return currentFolder?.name ?? "Library"
-    }
+    var currentFolderID: UUID? = nil
+    var currentFolderTitle: String = "Library"
     
     // TODO: swap w/Realm
-    init(currentFolder: Folder?, database: DataManager = MockDataManager(), queue: DispatchQueue = .main) {
-        self.currentFolder = currentFolder
+    init(database: DataManager = MockDataManager(), queue: DispatchQueue = .main) {
         self.database = database
         self.queue = queue
     }
     
-    func setFolder(folder: Folder){
-        currentFolder = folder
-        loadItems(atFolderID: currentFolderID)
+    func setFolder(item: Item){
+        guard item is Folder else { return }
+        print("setting current Folder: \(item.name) [\(String(describing: item.id))]")
+        loadItems(atFolderID: item.id)
     }
     
-    func loadItems(atFolderID folderID: UUID?) {
+    private func loadItems(atFolderID folderID: UUID?) {
+        // TODO: How to update currentFolder at the same time / before. FlatMap? But multiple values
+        database.fetchFolderInfo(folderID: folderID)
+            .receive(on: queue)
+            .sink { [weak self] folder in
+                guard let self else { return }
+                self.currentFolder = folder
+                print("loading items for \(String(describing: folder)) [\(String(describing: folder?.id))]")
+            }
+            .store(in: &cancellables)
+        
         database.fetchFolders(parentID: folderID)
             .zip(database.fetchFiles(parentID: folderID))
+            .receive(on: queue)
             .sink { [weak self] folders, files in
                 self?.items = folders + files
             }
@@ -72,17 +78,13 @@ final class FolderListViewModel: ObservableObject {
         }
     }
     
-    
     func goBack() {
         guard let currentFolder else { return }
-        if currentFolder.parent != nil {
-            self.loadItems(atFolderID: currentFolder.parent)
-        } else {
-            self.loadItems(atFolderID: nil)
-        }
+        loadItems(atFolderID: currentFolder.parent)
     }
     
     func sort1() {}
+    
     func sort2() {}
     
     func removeItem(item: Item) {
@@ -100,7 +102,6 @@ final class FolderListViewModel: ObservableObject {
                 .store(in: &cancellables)
         }
     }
-    
     
     func moveItem(item: Item, destinationFolderID folderID: UUID) {
         if item is Folder {
@@ -128,6 +129,7 @@ final class FolderListViewModel: ObservableObject {
     }
     
     func addFolder(folderName: String = "New Folder") {
+        print("Adding folder \(folderName) into parent folder \(currentFolderTitle)")
         database.addFolder(folderName: folderName, parentID: currentFolderID)
             .sink { [weak self] in
                 self?.loadItems(atFolderID: self?.currentFolderID)
@@ -141,51 +143,5 @@ final class FolderListViewModel: ObservableObject {
             self.hasPlaybackFile = true
         }
     }
-    
-    
-    
-    
-//    func navigateToFolder(item: Item?) {
-//        if let folder = item as? Folder {
-//            currentFolder = folder
-//            self.fetchCurrentItems(fromID: currentFolderID)
-//        }
-//    }
-//    func navigateToParentFolder() {
-//        guard let currentFolder else { return }
-//        database.fetchSingleFolder(folderID: currentFolder.parent) { [weak self] parentFolder in
-//            guard let self else { return }
-//            queue.async {
-//                self.currentFolder = parentFolder
-//                self.fetchCurrentItems(fromID: self.currentFolderID)
-//            }
-//        }
-//    }
-//   
-    
-    // MARK: folder functions
-    
-//    func moveFolder(folder: Folder, destination: Folder) {
-//        database.moveFolder(folderID: folder.id, newParentID: destination.id) {
-//            self.fetchCurrentItems(fromID: self.currentFolderID)
-//        }
-//    }
-//    func renameFolder(folder: Folder, name: String) {
-//        database.renameFolder(folderID: folder.id, name: name) {
-//            self.fetchCurrentItems(fromID: self.currentFolderID)
-//        }
-//    }
-//    
-//    // MARK: file functions
-//    
-//    func moveFile(file: File, destination: Folder) {
-//        database.moveFile(fileID: file.id, newFolderID: destination.id) {
-//            self.fetchCurrentItems(fromID: self.currentFolderID)
-//        }
-//    }
-//    func renameFile(file: File, fileName: String) {
-//        database.renameFile(fileID: file.id, name: fileName) {
-//            self.fetchCurrentItems(fromID: self.currentFolderID)
-//        }
-//    }
+
 }

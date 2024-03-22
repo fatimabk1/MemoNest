@@ -24,6 +24,15 @@ final class MockDataManager: DataManager {
     }
     
     // MARK: fetch
+    func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Folder?, Never>  {
+        Future<Folder?, Never> { promise in
+            DispatchQueue.global().async { [weak self] in
+                guard let self else { return }
+                promise(.success(self.folders.first(where: {$0.id == folderID})))
+            }
+        }
+        .eraseToAnyPublisher()
+    }
     func fetchFiles(parentID: UUID?) -> AnyPublisher<[File], Never> {
         Future<[File], Never> { promise in
             DispatchQueue.global().async { [weak self] in
@@ -74,7 +83,6 @@ final class MockDataManager: DataManager {
         .eraseToAnyPublisher()
     }
     
-    
     // MARK: move
     func moveFolder(folderID: UUID, newParentID: UUID?) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
@@ -92,7 +100,6 @@ final class MockDataManager: DataManager {
         }
         .eraseToAnyPublisher()
     }
-    
     func moveFile(fileID: UUID, newParentID: UUID?) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
             DispatchQueue.global().async { [weak self] in
@@ -110,7 +117,7 @@ final class MockDataManager: DataManager {
         .eraseToAnyPublisher()
     }
     
-    // add
+    // MARK: add
     func addFolder(folderName: String, parentID: UUID?) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
             DispatchQueue.global().async { [weak self] in
@@ -131,20 +138,7 @@ final class MockDataManager: DataManager {
         .eraseToAnyPublisher()
     }
     
-    
     // MARK: remove
-    /*
-     func recursiveDelete(f)
-     fetchFolders(f)
-     .flatMap { childFolders in
-     childFolders.map { recursiveDelete($0.id) }
-     }
-     .flatMap {
-     
-     }
-     
-     */
-    
     func removeFolder(folderID: UUID) -> AnyPublisher<Void, Never>{
         self.fetchFolders(parentID: folderID)
         // handle child folders
@@ -173,7 +167,6 @@ final class MockDataManager: DataManager {
             }
         .eraseToAnyPublisher()
     }
-    
     func removeSingleFolder(folderID: UUID) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
             DispatchQueue.global().async { [weak self] in
@@ -205,47 +198,7 @@ final class MockDataManager: DataManager {
         .eraseToAnyPublisher()
     }
     
-//    func removeFolder(folderID: UUID, completion: @escaping () -> Void) {
-//        DispatchQueue.global().async { [weak self] in
-//            guard let self else {return}
-//            var foldersToDelete: [UUID] = [folderID]
-//            
-//            func processFolder() {
-//                guard !foldersToDelete.isEmpty else {
-//                    completion()
-//                    return
-//                }
-//                
-//                let folderID = foldersToDelete.removeFirst()
-//                
-//                // fetch folders, then append to delete list, then delete parent folder
-//                self.fetchFolders(parentID: folderID) { folders in
-//                    for folder in folders {
-//                        foldersToDelete.append(folder.id)
-//                    }
-//                    self.removeSingleFolder(folderID: folderID) {
-//                        // process next folder after removing current folder to ensure
-//                        // UI refreshes after folder is deleted
-//                        processFolder()
-//                    }
-//                   
-//                }
-//                // IN-PARALLEL: fetch files, then remove files
-//                self.fetchFiles(parentID: folderID) { files in
-//                    for file in files {
-//                        self.removeFile(fileID: file.id) {}
-//                    }
-//                }
-//            }
-//            
-//            processFolder()
-//        }
-//    }
 
-    
-    // TODO: separate function for just deleting the folder the user can see; faster feedback for user
-    // recursive remove folder w/in async blocks
-    
     private func printLibraryContents() {
         print("\nLIBRARY:")
         for folder in folders {
@@ -255,7 +208,4 @@ final class MockDataManager: DataManager {
             print(file.name)
         }
     }
-        
-    
-
 }

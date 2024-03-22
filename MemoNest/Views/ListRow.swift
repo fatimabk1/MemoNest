@@ -14,15 +14,15 @@ enum RowAction {
 struct ListRow: View {
     let name: String
     let icon: String
-    let itemID: UUID
-    let onListRowTap: (UUID) -> Void
+    let item: Item
+    let onListRowTap: (Item) -> Void
     let onActionSelected: (RowAction) -> Void
     
     var body: some View {
         
         HStack {
             Button {
-                onListRowTap(itemID)
+                onListRowTap(item)
             } label: {
                 HStack {
                     Image(systemName: icon)
@@ -47,5 +47,5 @@ struct ListRow: View {
 }
 
 #Preview {
-    ListRow(name: "Folder", icon: "Folder", itemID: UUID(), onListRowTap: {_ in }, onActionSelected: { _ in  })
+    ListRow(name: "Folder", icon: "Folder", item: Folder(name: "folderA"), onListRowTap: {_ in }, onActionSelected: { _ in  })
 }

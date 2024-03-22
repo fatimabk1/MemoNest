@@ -33,7 +33,7 @@ import Combine
 /*
 let queue = DispatchQueue.main
 let database = MockDataManager(folders: [folderA], files: [file1])
-let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+let viewModel = FolderListViewModel(database: database, queue: queue)
 
 // When
 var c = Set<AnyCancellable>()
@@ -59,7 +59,7 @@ final class FolderListViewModelTest: XCTestCase {
         let fileAA = File(name: "fileAA", parent: folderA.id)
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [folderA, folderAA], files: [fileAA])
-        let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+        let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
         var c = Set<AnyCancellable>()
@@ -73,7 +73,7 @@ final class FolderListViewModelTest: XCTestCase {
             }
             .store(in: &c)
         
-        viewModel.setFolder(folder: folderA)
+        viewModel.setFolder(item: folderA)
         wait(for: [expectation], timeout: 1)
         
         // Then
@@ -106,7 +106,7 @@ final class FolderListViewModelTest: XCTestCase {
         
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: folders, files: files)
-        let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+        let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
         var c = Set<AnyCancellable>()
@@ -157,7 +157,7 @@ final class FolderListViewModelTest: XCTestCase {
         
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: folders, files: files)
-        let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+        let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
         var c = Set<AnyCancellable>()
@@ -201,7 +201,7 @@ final class FolderListViewModelTest: XCTestCase {
         
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: folders, files: files)
-        let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+        let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
         var c = Set<AnyCancellable>()
@@ -248,7 +248,7 @@ final class FolderListViewModelTest: XCTestCase {
         
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: folders, files: files)
-        let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+        let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
         var c = Set<AnyCancellable>()
@@ -280,7 +280,7 @@ final class FolderListViewModelTest: XCTestCase {
         
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: folders, files: [])
-        let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+        let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
         var c = Set<AnyCancellable>()
@@ -307,7 +307,7 @@ final class FolderListViewModelTest: XCTestCase {
         let file1 = File(name: "File1")
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [folderA], files: [file1])
-        let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+        let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
         var c = Set<AnyCancellable>()
@@ -334,7 +334,7 @@ final class FolderListViewModelTest: XCTestCase {
         let file1 = File(name: "file1")
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [folderA], files: [file1])
-        let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+        let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
         var c = Set<AnyCancellable>()
@@ -360,7 +360,7 @@ final class FolderListViewModelTest: XCTestCase {
         let folderB = Folder(name: "folderB")
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [folderA, folderB], files: [])
-        let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+        let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When - move folderA into folderB
         var c = Set<AnyCancellable>()
@@ -384,7 +384,7 @@ final class FolderListViewModelTest: XCTestCase {
         // Given
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [], files: [])
-        let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+        let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When - move folderA into folderB
         var c = Set<AnyCancellable>()
@@ -408,7 +408,7 @@ final class FolderListViewModelTest: XCTestCase {
         // Given
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [], files: [])
-        let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+        let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When - move folderA into folderB
         var c = Set<AnyCancellable>()
@@ -434,7 +434,7 @@ final class FolderListViewModelTest: XCTestCase {
         let file1 = File(name: "file1")
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [folderA], files: [file1])
-        let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+        let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
         var c = Set<AnyCancellable>()
@@ -460,7 +460,7 @@ final class FolderListViewModelTest: XCTestCase {
         let file1 = File(name: "file1")
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [folderA], files: [file1])
-        let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+        let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
         var c = Set<AnyCancellable>()
@@ -492,7 +492,7 @@ final class FolderListViewModelTest: XCTestCase {
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [folderA, folderAA, folderAAA],
                                        files: [file1, fileA, fileAA, fileAAA])
-        let viewModel = FolderListViewModel(currentFolder: nil, database: database, queue: queue)
+        let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
         var c = Set<AnyCancellable>()
