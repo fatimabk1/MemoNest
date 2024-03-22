@@ -14,14 +14,23 @@ enum RowAction {
 struct ListRow: View {
     let name: String
     let icon: String
+    let itemID: UUID
+    let onListRowTap: (UUID) -> Void
     let onActionSelected: (RowAction) -> Void
     
     var body: some View {
         
         HStack {
-            Image(systemName: icon)
-            Text(name)
-            Spacer()
+            Button {
+                onListRowTap(itemID)
+            } label: {
+                HStack {
+                    Image(systemName: icon)
+                    Text(name)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
             Menu {
                 Button("Rename") { onActionSelected(.rename) }
                 Button {
@@ -34,11 +43,9 @@ struct ListRow: View {
             }
         }
         .padding()
-        .background(.pink.opacity(0.3))
     }
 }
 
 #Preview {
-    ListRow(name: "Folder",
-            icon: "Folder"){_ in }
+    ListRow(name: "Folder", icon: "Folder", itemID: UUID(), onListRowTap: {_ in }, onActionSelected: { _ in  })
 }

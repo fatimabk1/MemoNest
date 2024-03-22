@@ -11,42 +11,31 @@ import Combine
 protocol DataManager {   
     var files: [File] { get }
     var folders: [Folder] { get }
+    var cancellables: Set<AnyCancellable> { get}
     
     // fetch
-//    func fetchFolders(parentID: UUID?, completion: @escaping ([Folder]) -> Void)
-//    func fetchFiles(parentID: UUID?, completion: @escaping ([File]) -> Void )
     func fetchFiles(parentID: UUID?) -> AnyPublisher<[File], Never>
     func fetchFolders(parentID: UUID?) -> AnyPublisher<[Folder], Never>
     
     // remove
-    func removeFolder(folderID: UUID, completion: @escaping () -> Void)
-    func listContentRecursive(folderID: UUID, completion: @escaping ([UUID]) -> Void)
-    func removeFile(fileID: UUID, completion: @escaping () -> Void)
-    func removeAll(ids: [UUID], completion: @escaping () -> Void)
+    func removeFolder(folderID: UUID) -> AnyPublisher<Void, Never>
+    func removeSingleFolder(folderID: UUID) -> AnyPublisher<Void, Never> 
+    func removeFile(fileID: UUID) -> AnyPublisher<Void, Never>
+    func removeAll(ids: [UUID]) -> AnyPublisher<Void, Never> 
+//    func removeFolder(folderID: UUID, completion: @escaping () -> Void)
+//    func listContentRecursive(folderID: UUID, completion: @escaping ([UUID]) -> Void)
+//    func removeFile(fileID: UUID, completion: @escaping () -> Void)
+//    func removeAll(ids: [UUID], completion: @escaping () -> Void)
     
     // rename
     func renameFolder(folderID: UUID, name: String) -> AnyPublisher<Void, Never>
     func renameFile(fileID: UUID, name: String) -> AnyPublisher<Void, Never>
-//    func renameFolder(folderID: UUID, name: String, completion: @escaping () -> Void)
-//    func renameFile(fileID: UUID, name: String, completion: @escaping () -> Void)
     
     // move
-    func moveFolder(folderID: UUID, newParentID: UUID?, completion: @escaping () -> Void)
-    func moveFile(fileID: UUID, newFolderID: UUID?, completion: @escaping () -> Void)
+    func moveFolder(folderID: UUID, newParentID: UUID?) -> AnyPublisher<Void, Never>
+    func moveFile(fileID: UUID, newParentID: UUID?) -> AnyPublisher<Void, Never>
     
     // add
-    func addFolder(folderName: String, parent: UUID?, completion: @escaping () -> Void)
-    func addFile(fileName: String, folderID: UUID?, completion: @escaping () -> Void)
-    
-    
-//    func fetchSingleFolder(folderID: UUID?, completion: @escaping (Folder?) -> Void)
-//    
-//    
-//    // file functions
-//    // folder functions
-//    func removeSingleFolder(folderID: UUID, completion: @escaping () -> Void)
-//   
-    
-//    func removeFolder(folderID: UUID, completion: @escaping () -> Void)
-   
+    func addFolder(folderName: String, parentID: UUID?) -> AnyPublisher<Void, Never>
+    func addFile(fileName: String, parentID: UUID?) -> AnyPublisher<Void, Never>
 }

@@ -19,6 +19,7 @@ protocol Item {
     var id: UUID { get }
     var name: String { get }
     var icon: String { get }
+    var parent: UUID? { get }
 }
 
 /*

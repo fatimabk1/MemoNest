@@ -7,16 +7,16 @@
 
 import Foundation
 
-struct File: Item {
+struct File: Item {    
     let id = UUID()
     var name: String
-    var folder: UUID?
+    var parent: UUID?
     let icon = "headphones"
 }
 
 // Adapter pattern
 extension File {
     func asFileDB() -> FileDB {
-        return FileDB(name: self.name, folder: self.folder)
+        return FileDB(name: self.name, parent: self.parent)
     }
 }

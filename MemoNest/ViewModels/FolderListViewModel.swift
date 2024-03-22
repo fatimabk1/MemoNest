@@ -37,7 +37,11 @@ final class FolderListViewModel: ObservableObject {
         self.database = database
         self.queue = queue
     }
-
+    
+    func setFolder(folder: Folder){
+        currentFolder = folder
+        loadItems(atFolderID: currentFolderID)
+    }
     
     func loadItems(atFolderID folderID: UUID?) {
         database.fetchFolders(parentID: folderID)
@@ -68,19 +72,6 @@ final class FolderListViewModel: ObservableObject {
         }
     }
     
-//    func renameItem(item: Item, name: String) {
-//        if item is Folder {
-//            database.renameFolder(folderID: item.id, name: name) { [weak self] in
-//                guard let self else { return }
-//                self.loadItems(atFolderID: self.currentFolderID)
-//            }
-//        } else {
-//            database.renameFile(fileID: item.id, name: name) { [weak self] in
-//                guard let self else { return }
-//                self.loadItems(atFolderID: self.currentFolderID)
-//            }
-//        }
-//    }
     
     func goBack() {
         guard let currentFolder else { return }
@@ -96,44 +87,52 @@ final class FolderListViewModel: ObservableObject {
     
     func removeItem(item: Item) {
         if item is Folder {
-            self.database.removeFolder(folderID: item.id) { [weak self] in
-                self?.loadItems(atFolderID: self?.currentFolderID)
-            }
-//            self.database.listContentRecursive(folderID: item.id) { [weak self] fullDeleteList in
-//                guard let self else { return }
-//                self.database.removeAll(ids: fullDeleteList) {
-//                    self.loadItems(atFolderID: self.currentFolderID)
-//                }
-//            }
+            database.removeFolder(folderID: item.id)
+                .sink { [weak self] in
+                    self?.loadItems(atFolderID: self?.currentFolderID)
+                }
+                .store(in: &cancellables)
         } else {
-            self.database.removeFile(fileID: item.id) { [weak self] in
-                self?.loadItems(atFolderID: self?.currentFolderID)
-            }
+            database.removeFile(fileID: item.id)
+                .sink { [weak self] in
+                    self?.loadItems(atFolderID: self?.currentFolderID)
+                }
+                .store(in: &cancellables)
         }
     }
     
+    
     func moveItem(item: Item, destinationFolderID folderID: UUID) {
         if item is Folder {
-            database.moveFolder(folderID: item.id, newParentID: folderID) { [weak self] in
-                self?.loadItems(atFolderID: self?.currentFolderID)
-            }
+            database.moveFolder(folderID: item.id, newParentID: folderID) 
+                .sink { [weak self] in
+                    self?.loadItems(atFolderID: self?.currentFolderID)
+                }
+                .store(in: &cancellables)
+        
         } else {
-            database.moveFile(fileID: item.id, newFolderID: folderID) { [weak self] in
-                self?.loadItems(atFolderID: self?.currentFolderID)
-            }
+            database.moveFile(fileID: item.id, newParentID: folderID)
+                .sink { [weak self] in
+                    self?.loadItems(atFolderID: self?.currentFolderID)
+                }
+                .store(in: &cancellables)
         }
     }
     
     func addFile(fileName: String = "New File") {
-        database.addFile(fileName: fileName, folderID: self.currentFolderID) { [weak self] in
-            self?.loadItems(atFolderID: self?.currentFolderID)
-        }
+        database.addFile(fileName: fileName, parentID: self.currentFolderID)
+            .sink { [weak self] in
+                self?.loadItems(atFolderID: self?.currentFolderID)
+            }
+            .store(in: &cancellables)
     }
     
     func addFolder(folderName: String = "New Folder") {
-        database.addFolder(folderName: folderName, parent: currentFolderID) { [weak self] in
-            self?.loadItems(atFolderID: self?.currentFolderID)
-        }
+        database.addFolder(folderName: folderName, parentID: currentFolderID)
+            .sink { [weak self] in
+                self?.loadItems(atFolderID: self?.currentFolderID)
+            }
+            .store(in: &cancellables)
     }
     
     func setPlaybackFile(item: Item) {

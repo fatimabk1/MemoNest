@@ -20,5 +20,5 @@ struct PlayBackView: View {
 }
 
 #Preview {
-    PlayBackView(file: File(name: "File A", folder: nil))
+    PlayBackView(file: File(name: "File A", parent: nil))
 }

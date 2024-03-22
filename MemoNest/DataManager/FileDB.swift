@@ -10,12 +10,12 @@ import Foundation
 struct FileDB {
     let id = UUID()
     var name: String
-    var folder: UUID?
+    var parent: UUID?
     let icon = "headphones"
 }
 
 extension FileDB {
     func asFile() -> File {
-        return File(name: self.name, folder: self.folder)
+        return File(name: self.name, parent: self.parent)
     }
 }

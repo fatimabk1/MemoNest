@@ -26,10 +26,10 @@ final class RealmDataManager {
         let file1 = File(name: "File1 in Library")
         let file2 = File(name: "File2 in Library")
         let file3 = File(name: "File3 in Library")
-        let fileA1 = File(name: "File in Folder A", folder: folderA.id)
-        let fileAA1 = File(name: "File in Folder AA1", folder: folderAA1.id)
-        let fileAA2 = File(name: "File in Folder AA2", folder: folderAA2.id)
-        let fileAAA1 = File(name: "File in Folder AAA1", folder: folderAAA1.id)
+        let fileA1 = File(name: "File in Folder A", parent: folderA.id)
+        let fileAA1 = File(name: "File in Folder AA1", parent: folderAA1.id)
+        let fileAA2 = File(name: "File in Folder AA2", parent: folderAA2.id)
+        let fileAAA1 = File(name: "File in Folder AAA1", parent: folderAAA1.id)
         self.files = [file1, file2, file3, fileA1, fileAA1, fileAA2, fileAAA1]
     }
     
@@ -180,11 +180,11 @@ final class RealmDataManager {
     
     // MARK: file functions
     func fetchFiles(parentID: UUID?, completion: @escaping ([File]) -> Void ) {
-        completion(files.filter({$0.folder == parentID}))
+        completion(files.filter({$0.parent == parentID}))
     }
     func addFile(fileName: String, folderID: UUID?, completion: @escaping () -> Void) {
         DispatchQueue.global().async { [weak self] in
-            let file = File(name: fileName, folder: folderID)
+            let file = File(name: fileName, parent: folderID)
             self?.files.append(file)
             completion()
         }
@@ -204,7 +204,7 @@ final class RealmDataManager {
             guard let index else { return }
             
             var file = self.files[index]
-            file.folder = newFolderID
+            file.parent = newFolderID
             self.files[index] = file
             completion()
         }

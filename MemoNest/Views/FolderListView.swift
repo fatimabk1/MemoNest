@@ -23,21 +23,13 @@ struct FolderListView: View {
                 ForEach(viewModel.items, id: \.id) { item in
                     Group {
                         if item is Folder {
-//                            Button {
-////                                print("folder clicked")
-////                                viewModel.loadItems(atFolderID: item.id)
-//                                
-//                            } label: {
-//                               
-//                            }
                             createListRow(item: item)
-                                .onTapGesture(perform: { viewModel.loadItems(atFolderID: item.id) })
                         } else {
-                            NavigationLink {
-                                PlayBackView(file: item as! File)
-                            } label: {
-                                createListRow(item: item)
-                            }
+                            createListRow(item: item)
+                                .background(
+                                    NavigationLink("", destination: PlayBackView(file: item as! File))
+                                        .opacity(0)
+                                    )
                         }
                     }
                 }
@@ -83,7 +75,10 @@ struct FolderListView: View {
     }
     
     func createListRow(item: Item) -> some View {
-        ListRow(name: item.name, icon: item.icon) { action in
+        ListRow(name: item.name,
+                icon: item.icon,
+                itemID: item.id,
+                onListRowTap: viewModel.loadItems) { action in
             switch action {
             case .rename:
                 print("Clicked rename")
@@ -95,19 +90,6 @@ struct FolderListView: View {
             }
         }
     }
-    
-//    func handleRowAction(action: RowAction, item: Item) {
-//        switch action {
-//        case .rename:
-//            print("Clicked rename")
-////            RenameItemPopup { newName in
-////                viewModel.renameItem(item: item, name: newName)
-////            }
-//        case .delete:
-//            viewModel.removeItem(item: item)
-//        }
-//    }
-    
 }
 
 
