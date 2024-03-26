@@ -8,10 +8,6 @@
 import Foundation
 import Combine
 
-// conforms to protocol, concrete implementation
-// TODO: add Realm implementation with real data
-// TODO: 
-
 
 final class MockDataManager: DataManager {
     var files = [File]()

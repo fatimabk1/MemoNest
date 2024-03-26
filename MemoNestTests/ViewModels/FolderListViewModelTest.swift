@@ -53,7 +53,7 @@ wait(for: [expectation], timeout: 1)
 
 final class FolderListViewModelTest: XCTestCase {
     
-    func test_setFolder_setsCurrentFolder_givenFolder() throws {
+    func test_setFolder_setsCurrentFolder_givenFolder()  {
         let folderA = Folder(name: "folderA")
         let folderAA = Folder(name: "folderAA", parent: folderA.id)
         let fileAA = File(name: "fileAA", parent: folderA.id)
@@ -62,19 +62,18 @@ final class FolderListViewModelTest: XCTestCase {
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
-        var c = Set<AnyCancellable>()
         let expectation = XCTestExpectation(description: "async function did not return")
         var result = 0
-        viewModel.$items
+        let cancellable = viewModel.$items
             .dropFirst()
             .sink { items in
                 result = items.count
                 expectation.fulfill()
             }
-            .store(in: &c)
         
         viewModel.setFolder(item: folderA)
         wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
         
         // Then
         let expected = 2
@@ -87,7 +86,7 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertTrue(isSorted)
     }
     
-    func test_loadItems_loadItemsFoldersFirst_givenRootFolder() throws {
+    func test_loadItems_loadItemsFoldersFirst_givenRootFolder()  {
         // Given
         let folderA = Folder(name: "Folder A")
         let folderB = Folder(name: "Folder B")
@@ -109,20 +108,19 @@ final class FolderListViewModelTest: XCTestCase {
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
-        var c = Set<AnyCancellable>()
         let expectation = XCTestExpectation(description: "async function did not return")
         var result = 0
-        viewModel.$items
+        let cancellable = viewModel.$items
             .dropFirst()
             .sink { items in
                 result = items.count
                 expectation.fulfill()
             }
-            .store(in: &c)
         
         let loadFolderID: UUID? = nil
         viewModel.loadItems(atFolderID: loadFolderID)
         wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
         
         // Then
         let expected = 11
@@ -135,7 +133,7 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertTrue(isSorted)
     }
     
-    func test_loadItems_loadItemsFoldersFirst_givenNestedFolder() throws {
+    func test_loadItems_loadItemsFoldersFirst_givenNestedFolder()  {
         // Given
         let folderA = Folder(name: "Folder A")
         let folderB = Folder(name: "Folder B")
@@ -160,19 +158,18 @@ final class FolderListViewModelTest: XCTestCase {
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
-        var c = Set<AnyCancellable>()
         let expectation = XCTestExpectation(description: "async function did not return")
         var result = 0
-        viewModel.$items
+        let cancellable = viewModel.$items
             .dropFirst()
             .sink { items in
                 result = items.count
                 expectation.fulfill()
             }
-            .store(in: &c)
         let loadFolder = folderA
         viewModel.loadItems(atFolderID: loadFolder.id)
         wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
         
         // Then
         let expected = 3
@@ -185,7 +182,7 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertTrue(isSorted)
     }
     
-    func test_loadItems_loadItemsFoldersFirst_givenEmptyFolder() throws {
+    func test_loadItems_loadItemsFoldersFirst_givenEmptyFolder()  {
         // Given
         let folderA = Folder(name: "Folder A")
         let folderB = Folder(name: "Folder B")
@@ -204,19 +201,18 @@ final class FolderListViewModelTest: XCTestCase {
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
-        var c = Set<AnyCancellable>()
         let expectation = XCTestExpectation(description: "async function did not return")
         var result = 0
-        viewModel.$items
+        let cancellable = viewModel.$items
             .dropFirst()
             .sink { items in
                 result = items.count
                 expectation.fulfill()
             }
-            .store(in: &c)
         let loadFolder = folderB
         viewModel.loadItems(atFolderID: loadFolder.id)
         wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
         
         // Then
         let expected = 0
@@ -229,7 +225,7 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertTrue(isSorted)
     }
     
-    func test_handleOnAppear_loadRootFolder() throws {
+    func test_handleOnAppear_loadRootFolder()  {
         // Given
         let folderA = Folder(name: "Folder A")
         let folderB = Folder(name: "Folder B")
@@ -251,18 +247,17 @@ final class FolderListViewModelTest: XCTestCase {
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
-        var c = Set<AnyCancellable>()
         let expectation = XCTestExpectation(description: "async function did not return")
         var result = 0
-        viewModel.$items
+        let cancellable = viewModel.$items
             .dropFirst()
             .sink { items in
                 result = items.count
                 expectation.fulfill()
             }
-            .store(in: &c)
         viewModel.handleOnAppear()
         wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
         
         // Then
         let expected = 11
@@ -273,7 +268,7 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertTrue(isSorted)
     }
     
-    func test_renameFolder_updateFolderName_givenFolder() throws {
+    func test_renameFolder_updateFolderName_givenFolder()  {
         // Given
         let folderA = Folder(name: "Folder A")
         let folders = [folderA]
@@ -283,25 +278,24 @@ final class FolderListViewModelTest: XCTestCase {
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
-        var c = Set<AnyCancellable>()
         let expectation = XCTestExpectation(description: "async function did not return")
         var result = ""
-        viewModel.$items
+        let cancellable = viewModel.$items
             .dropFirst()
             .sink { items in
                 result = items.first?.name ?? "NO ITEMS"
                 expectation.fulfill()
             }
-            .store(in: &c)
         let expected = "MyFolder"
         viewModel.renameItem(item: folderA, name: expected)
         wait(for: [expectation], timeout: 1)
-
+        cancellable.cancel()
+        
         // Then
         XCTAssertEqual(result, expected)
     }
     
-    func test_renameFile_updateFileName_givenFile() throws {
+    func test_renameFile_updateFileName_givenFile()  {
         // Given
         let folderA = Folder(name: "Folder A")
         let file1 = File(name: "File1")
@@ -310,25 +304,24 @@ final class FolderListViewModelTest: XCTestCase {
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
-        var c = Set<AnyCancellable>()
         let expectation = XCTestExpectation(description: "async function did not return")
         var result = ""
-        viewModel.$items
+        let cancellable = viewModel.$items
             .dropFirst()
             .sink { items in
                 result = items.first(where: {$0.id == file1.id})?.name ?? "NO ITEMS"
                 expectation.fulfill()
             }
-            .store(in: &c)
         let expected = "MyFile"
         viewModel.renameItem(item: file1, name: expected)
         wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
         
         // Then
         XCTAssertEqual(result, expected)
     }
     
-    func test_moveFile_updatesFolderID_givenFileIDAndNewFolderID() throws {
+    func test_moveFile_updatesFolderID_givenFileIDAndNewFolderID()  {
         // Given
         let folderA = Folder(name: "folderA")
         let file1 = File(name: "file1")
@@ -337,16 +330,15 @@ final class FolderListViewModelTest: XCTestCase {
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
-        var c = Set<AnyCancellable>()
         let expectation = XCTestExpectation(description: "async function did not return")
-        viewModel.$items
+        let cancellable = viewModel.$items
             .dropFirst()
             .sink { _ in
                 expectation.fulfill()
             }
-            .store(in: &c)
         viewModel.moveItem(item: file1, destinationFolderID: folderA.id)
         wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
         
         // Then
         let expected = 1
@@ -354,7 +346,7 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertEqual(result, expected)
     }
     
-    func test_moveFolder_updateParentFolderId_givenFolderIDAndParentFolderID() throws {
+    func test_moveFolder_updateParentFolderId_givenFolderIDAndParentFolderID()  {
         // Given
         let folderA = Folder(name: "folderA")
         let folderB = Folder(name: "folderB")
@@ -363,16 +355,15 @@ final class FolderListViewModelTest: XCTestCase {
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When - move folderA into folderB
-        var c = Set<AnyCancellable>()
         let expectation = XCTestExpectation(description: "async function did not return")
-        viewModel.$items
+        let cancellable = viewModel.$items
             .dropFirst()
             .sink { _ in
                 expectation.fulfill()
             }
-            .store(in: &c)
         viewModel.moveItem(item: folderA, destinationFolderID: folderB.id)
         wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
         
         // Then
         let expected = 1
@@ -380,23 +371,22 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertEqual(result, expected)
     }
     
-    func test_addFolder_updatesFolders_givenFolderNameAndParentFolderID() throws {
+    func test_addFolder_updatesFolders_givenFolderNameAndParentFolderID()  {
         // Given
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [], files: [])
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When - move folderA into folderB
-        var c = Set<AnyCancellable>()
         let expectation = XCTestExpectation(description: "async function did not return")
-        viewModel.$items
+        let cancellable = viewModel.$items
             .dropFirst()
             .sink { _ in
                 expectation.fulfill()
             }
-            .store(in: &c)
         viewModel.addFolder(folderName: "NewFolder")
         wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
         
         // Then
         let expected = 1
@@ -404,23 +394,22 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertEqual(result, expected)
     }
     
-    func test_addFile_updatesFiles_givenFileNameAndParentFolderID() throws {
+    func test_addFile_updatesFiles_givenFileNameAndParentFolderID()  {
         // Given
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [], files: [])
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When - move folderA into folderB
-        var c = Set<AnyCancellable>()
         let expectation = XCTestExpectation(description: "async function did not return")
-        viewModel.$items
+        let cancellable = viewModel.$items
             .dropFirst()
             .sink { _ in
                 expectation.fulfill()
             }
-            .store(in: &c)
         viewModel.addFile(fileName: "NewFile")
         wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
         
         // Then
         let expected = 1
@@ -428,7 +417,7 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertEqual(result, expected)
     }
     
-    func test_removeItem_removesFile_givenFileID() throws {
+    func test_removeItem_removesFile_givenFileID()  {
         // Given
         let folderA = Folder(name: "folderA")
         let file1 = File(name: "file1")
@@ -437,16 +426,15 @@ final class FolderListViewModelTest: XCTestCase {
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
-        var c = Set<AnyCancellable>()
         let expectation = XCTestExpectation(description: "async function did not return")
-        viewModel.$items
+        let cancellable = viewModel.$items
             .dropFirst()
             .sink { _ in
                 expectation.fulfill()
             }
-            .store(in: &c)
         viewModel.removeItem(item: file1)
         wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
         
         // Then
         let expected = 1
@@ -454,7 +442,7 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertEqual(result, expected)
     }
     
-    func test_removeItem_removesEmptyFolder_givenFolderID() throws {
+    func test_removeItem_removesEmptyFolder_givenFolderID()  {
         // Given
         let folderA = Folder(name: "folderA")
         let file1 = File(name: "file1")
@@ -463,16 +451,15 @@ final class FolderListViewModelTest: XCTestCase {
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
-        var c = Set<AnyCancellable>()
         let expectation = XCTestExpectation(description: "async function did not return")
-        viewModel.$items
+        let cancellable = viewModel.$items
             .dropFirst()
             .sink { _ in
                 expectation.fulfill()
             }
-            .store(in: &c)
         viewModel.removeItem(item: folderA)
         wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
         
         // Then
         let expected = 1
@@ -481,6 +468,9 @@ final class FolderListViewModelTest: XCTestCase {
     }
     
     func test_removeItem_removesFolderWithNestedContent_givenFolderID() throws {
+        var str: String? = ""
+        let unwrapped = try XCTUnwrap(str)
+        
         // Given
         let folderA = Folder(name: "folderA")
         let folderAA = Folder(name: "folderAA", parent: folderA.id)
@@ -495,17 +485,16 @@ final class FolderListViewModelTest: XCTestCase {
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
         // When
-        var c = Set<AnyCancellable>()
-        let expectation1 = XCTestExpectation(description: "async function did not return")
-        viewModel.$items
+        let expectation = XCTestExpectation(description: "async function did not return")
+        let cancellable = viewModel.$items // make a disposable cancellable for testing
             .dropFirst()
             .sink { _ in
-                expectation1.fulfill()
+                expectation.fulfill()
             }
-            .store(in: &c)
+
         viewModel.removeItem(item: folderA)
-        wait(for: [expectation1], timeout: 1)
-        
+        wait(for: [expectation], timeout: 1)
+        cancellable.cancel() // removes from combine's dispose bag
         
         // Then
         // PASS CONDITION 1: root has one less item
@@ -515,17 +504,25 @@ final class FolderListViewModelTest: XCTestCase {
         
         // PASS CONDITION 2: no items with folder A as parent
         expected = 0
-        result = database.files.filter({ $0.parent == folderA.id}).count + database.folders.filter({ $0.parent == folderA.id}).count
+        result = database.files.filterByParent(folderA.id).count + database.folders.filterByParent(folderA.id).count
         XCTAssertEqual(result, expected)
         
         // PASS CONDITION 3: no items with folder AA as parent
         expected = 0
-        result = database.files.filter({ $0.parent == folderAA.id}).count + database.folders.filter({ $0.parent == folderAA.id}).count
+        result = database.files.filterByParent(folderAA.id).count + database.folders.filterByParent(folderAA.id).count
         XCTAssertEqual(result, expected)
         
         // PASS CONDITION 4: no items with folder AAA as parent
         expected = 0
-        result = database.files.filter({ $0.parent == folderAAA.id}).count + database.folders.filter({ $0.parent == folderAAA.id}).count
+        result = database.files.filterByParent(folderAAA.id).count + database.folders.filterByParent(folderAAA.id).count
         XCTAssertEqual(result, expected)
     }
 }
+
+// TODO: Item struct for all, nil struct for recording metadata
+extension Array where Element: Item {
+    func filterByParent(_ folderID: UUID?) -> [Element] {
+        return self.filter({ $0.parent == folderID})
+    }
+}
+

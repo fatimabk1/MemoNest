@@ -8,23 +8,19 @@
 import Foundation
 import Combine
 
-// TODO: make it so functions accept an Item
-// check for file/folder HERE not in view or view model for better
-// separation between view -> view model -> database manager -> model
 
 final class FolderListViewModel: ObservableObject {
-    @Published var currentFolder: Folder?
     @Published var items = [Item]()
     @Published var playbackFile: File?
     @Published var hasPlaybackFile = false
     
+    private var currentFolder: Folder?
     private let database: DataManager
     private let queue: DispatchQueue
     private var cancellables = Set<AnyCancellable>()
 
-        
-    var currentFolderID: UUID? = nil
-    var currentFolderTitle: String = "Library"
+    var currentFolderTitle: String { currentFolder?.name ?? "Library" }
+    var hasParent: Bool { currentFolder != nil }
     
     // TODO: swap w/Realm
     init(database: DataManager = MockDataManager(), queue: DispatchQueue = .main) {
@@ -38,14 +34,12 @@ final class FolderListViewModel: ObservableObject {
         loadItems(atFolderID: item.id)
     }
     
-    private func loadItems(atFolderID folderID: UUID?) {
-        // TODO: How to update currentFolder at the same time / before. FlatMap? But multiple values
+    func loadItems(atFolderID folderID: UUID?) {
         database.fetchFolderInfo(folderID: folderID)
             .receive(on: queue)
             .sink { [weak self] folder in
                 guard let self else { return }
                 self.currentFolder = folder
-                print("loading items for \(String(describing: folder)) [\(String(describing: folder?.id))]")
             }
             .store(in: &cancellables)
         
@@ -59,20 +53,20 @@ final class FolderListViewModel: ObservableObject {
     }
     
     func handleOnAppear() {
-        self.loadItems(atFolderID: currentFolderID)
+        self.loadItems(atFolderID: currentFolder?.id)
     }
     
     func renameItem(item: Item, name: String) {
         if item is Folder {
             database.renameFolder(folderID: item.id, name: name)
                 .sink { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolderID)
+                    self?.loadItems(atFolderID: self?.currentFolder?.id)
                 }
                 .store(in: &cancellables)
         } else {
             database.renameFile(fileID: item.id, name: name)
                 .sink { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolderID)
+                    self?.loadItems(atFolderID: self?.currentFolder?.id)
                 }
                 .store(in: &cancellables)
         }
@@ -91,13 +85,13 @@ final class FolderListViewModel: ObservableObject {
         if item is Folder {
             database.removeFolder(folderID: item.id)
                 .sink { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolderID)
+                    self?.loadItems(atFolderID: self?.currentFolder?.id)
                 }
                 .store(in: &cancellables)
         } else {
             database.removeFile(fileID: item.id)
                 .sink { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolderID)
+                    self?.loadItems(atFolderID: self?.currentFolder?.id)
                 }
                 .store(in: &cancellables)
         }
@@ -107,32 +101,31 @@ final class FolderListViewModel: ObservableObject {
         if item is Folder {
             database.moveFolder(folderID: item.id, newParentID: folderID) 
                 .sink { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolderID)
+                    self?.loadItems(atFolderID: self?.currentFolder?.id)
                 }
                 .store(in: &cancellables)
         
         } else {
             database.moveFile(fileID: item.id, newParentID: folderID)
                 .sink { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolderID)
+                    self?.loadItems(atFolderID: self?.currentFolder?.id)
                 }
                 .store(in: &cancellables)
         }
     }
     
     func addFile(fileName: String = "New File") {
-        database.addFile(fileName: fileName, parentID: self.currentFolderID)
+        database.addFile(fileName: fileName, parentID: self.currentFolder?.id)
             .sink { [weak self] in
-                self?.loadItems(atFolderID: self?.currentFolderID)
+                self?.loadItems(atFolderID: self?.currentFolder?.id)
             }
             .store(in: &cancellables)
     }
     
     func addFolder(folderName: String = "New Folder") {
-        print("Adding folder \(folderName) into parent folder \(currentFolderTitle)")
-        database.addFolder(folderName: folderName, parentID: currentFolderID)
+        database.addFolder(folderName: folderName, parentID: currentFolder?.id)
             .sink { [weak self] in
-                self?.loadItems(atFolderID: self?.currentFolderID)
+                self?.loadItems(atFolderID: self?.currentFolder?.id)
             }
             .store(in: &cancellables)
     }
