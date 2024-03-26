@@ -13,6 +13,7 @@ struct FolderListView: View {
     @ObservedObject var viewModel: FolderListViewModel
     @State var isPresentingAddEditor = false
     @State var editingItem: Item? = nil
+    @State var isMovingItem = false
     
     init() {
         self.viewModel = FolderListViewModel()
@@ -64,6 +65,9 @@ struct FolderListView: View {
                 }
                 .presentationDetents([.medium])
             }
+            if isMovingItem {
+                MoveItemView(isMovingItem: $isMovingItem)
+            }
         }
         .onAppear {
             viewModel.handleOnAppear()
@@ -71,7 +75,7 @@ struct FolderListView: View {
     }
     
     func createListRow(item: Item) -> some View {
-        ListRow(name: item.name,
+        TappableListRowWithMenu(name: item.name,
                 icon: item.icon,
                 item: item,
                 onListRowTap: viewModel.setFolder) { action in
@@ -81,6 +85,8 @@ struct FolderListView: View {
                 isPresentingAddEditor = true
             case .delete:
                 viewModel.removeItem(item: item)
+            case .move:
+                isMovingItem = true
             }
         }
     }

@@ -23,7 +23,10 @@ final class FolderListViewModel: ObservableObject {
     var hasParent: Bool { currentFolder != nil }
     
     // TODO: swap w/Realm
-    init(database: DataManager = MockDataManager(), queue: DispatchQueue = .main) {
+    
+    // TODO: REMOVE - TEMP FILES/FOLDERS for development
+    
+    init(database: DataManager = MockDataManager(folders: MockDataManager.sampleFolders, files: MockDataManager.sampleFiles), queue: DispatchQueue = .main) {
         self.database = database
         self.queue = queue
     }
