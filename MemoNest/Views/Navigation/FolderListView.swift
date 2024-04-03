@@ -21,7 +21,8 @@ struct FolderListView: View {
     var body: some View {
         ZStack {
             NavigationStack {
-                Button(viewModel.sortButtonTitle) { viewModel.updateSort() }
+                sortPicker
+                    .buttonStyle(.borderedProminent)
                 folderList
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle(viewModel.currentFolderTitle)
@@ -58,6 +59,17 @@ struct FolderListView: View {
         .onAppear {
             viewModel.handleOnAppear()
         }
+    }
+    
+    private var sortPicker: some View {
+        Picker("Sort", selection: $viewModel.sortType) {
+            ForEach(SortType.allCases, id: \.self) {
+                Text($0.toString())
+            }
+        }
+        .pickerStyle(.menu)
+        .frame(maxWidth: .infinity, alignment: .trailing)
+        .padding(.horizontal)
     }
     
     private var folderList: some View {

@@ -18,7 +18,7 @@ enum SortType: CaseIterable {
         case .dateDesc:
             "Date ↓"
         case .name:
-            "Name"
+            "Name  "
         }
     }
     
@@ -33,7 +33,7 @@ enum SortType: CaseIterable {
 final class FolderListViewModel: ObservableObject {
     @Published var items = [Item]()
     @Published var sortType = SortType.dateAsc {
-        willSet {
+        didSet {
             let folders = items.filter({$0 is Folder})
             let files = items.filter({$0 is File})
             self.items = self.sortItems(folders) + self.sortItems(files)
