@@ -44,7 +44,7 @@ struct FolderListView: View {
             }
             .navigationDestination(isPresented: $viewModel.moveViewIsPresented) {
                 if let item = viewModel.editingItem, viewModel.itemAction == .move {
-                    MoveItemView(editingItem: item,
+                    MoveItemView(moveItem: item,
                                  database: viewModel.database, 
                                  isPresenting: $viewModel.moveViewIsPresented) { destinationFolderID in
                         viewModel.moveItem(item: item, destination: destinationFolderID)

@@ -11,20 +11,26 @@ import Combine
 
 final class MoveItemViewModel: ObservableObject {
     @Published var items = [Item]()
-    
     @Published var currentFolder: Folder?
     private let database: DataManager
     private let queue: DispatchQueue
     private var cancellables = Set<AnyCancellable>()
+    
+    let moveItem: Item
 
     var currentFolderTitle: String { currentFolder?.name ?? "Library" }
     var hasParent: Bool { currentFolder != nil }
     
     // TODO: swap w/Realm
     // TODO: REMOVE - TEMP FILES/FOLDERS for development
-    init(database: DataManager, queue: DispatchQueue = .main) {
+    init(moveItem: Item, database: DataManager, queue: DispatchQueue = .main) {
+        self.moveItem = moveItem
         self.database = database
         self.queue = queue
+    }
+    
+    func itemIsMoveItem(item: Item) -> Bool {
+        item.id == moveItem.id
     }
     
     func setFolder(item: Item){
