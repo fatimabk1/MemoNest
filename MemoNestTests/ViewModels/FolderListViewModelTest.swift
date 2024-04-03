@@ -76,6 +76,8 @@ final class FolderListViewModelTest: XCTestCase {
         cancellable.cancel()
         
         // Then
+        XCTAssertEqual(viewModel.currentFolderTitle, "folderA")
+        
         let expected = 2
         let firstNonFolderIndex = viewModel.items.firstIndex(where: { !($0 is Folder) })
         let isSorted = (firstNonFolderIndex == nil) || !viewModel.items[firstNonFolderIndex!...].contains(where: {$0 is Folder})
@@ -318,56 +320,6 @@ final class FolderListViewModelTest: XCTestCase {
         cancellable.cancel()
         
         // Then
-        XCTAssertEqual(result, expected)
-    }
-    
-    func test_moveFile_updatesFolderID_givenFileIDAndNewFolderID()  {
-        // Given
-        let folderA = Folder(name: "folderA")
-        let file1 = File(name: "file1")
-        let queue = DispatchQueue.main
-        let database = MockDataManager(folders: [folderA], files: [file1])
-        let viewModel = FolderListViewModel(database: database, queue: queue)
-        
-        // When
-        let expectation = XCTestExpectation(description: "async function did not return")
-        let cancellable = viewModel.$items
-            .dropFirst()
-            .sink { _ in
-                expectation.fulfill()
-            }
-        viewModel.moveItem(item: file1, destinationFolderID: folderA.id)
-        wait(for: [expectation], timeout: 1)
-        cancellable.cancel()
-        
-        // Then
-        let expected = 1
-        let result = viewModel.items.count
-        XCTAssertEqual(result, expected)
-    }
-    
-    func test_moveFolder_updateParentFolderId_givenFolderIDAndParentFolderID()  {
-        // Given
-        let folderA = Folder(name: "folderA")
-        let folderB = Folder(name: "folderB")
-        let queue = DispatchQueue.main
-        let database = MockDataManager(folders: [folderA, folderB], files: [])
-        let viewModel = FolderListViewModel(database: database, queue: queue)
-        
-        // When - move folderA into folderB
-        let expectation = XCTestExpectation(description: "async function did not return")
-        let cancellable = viewModel.$items
-            .dropFirst()
-            .sink { _ in
-                expectation.fulfill()
-            }
-        viewModel.moveItem(item: folderA, destinationFolderID: folderB.id)
-        wait(for: [expectation], timeout: 1)
-        cancellable.cancel()
-        
-        // Then
-        let expected = 1
-        let result = viewModel.items.count
         XCTAssertEqual(result, expected)
     }
     

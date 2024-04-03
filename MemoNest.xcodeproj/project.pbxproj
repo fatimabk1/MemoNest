@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		083972E42BB36BA900C4B134 /* MoveItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E32BB36BA900C4B134 /* MoveItemView.swift */; };
+		083972E62BB496B300C4B134 /* MoveItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E52BB496B300C4B134 /* MoveItemViewModel.swift */; };
 		085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743122B7D245E00E546A1 /* MemoNestApp.swift */; };
 		085743152B7D245E00E546A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743142B7D245E00E546A1 /* ContentView.swift */; };
 		085743172B7D245F00E546A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 085743162B7D245F00E546A1 /* Assets.xcassets */; };
@@ -21,7 +22,6 @@
 		085743472B7D257C00E546A1 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743462B7D257C00E546A1 /* Item.swift */; };
 		085743492B7D262100E546A1 /* FolderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743482B7D262100E546A1 /* FolderListViewModel.swift */; };
 		0857434C2B7D265300E546A1 /* MockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434B2B7D265300E546A1 /* MockDataManager.swift */; };
-		0857434E2B7D3E1000E546A1 /* PlayBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434D2B7D3E0F00E546A1 /* PlayBackView.swift */; };
 		085743502B7D408100E546A1 /* ListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434F2B7D408100E546A1 /* ListRow.swift */; };
 		086ED08C2B98C81E00A30EBC /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED08B2B98C81E00A30EBC /* DataManager.swift */; };
 		086ED08E2B98C9C200A30EBC /* RealmDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED08D2B98C9C200A30EBC /* RealmDataManager.swift */; };
@@ -30,7 +30,17 @@
 		086ED09A2B9B54F400A30EBC /* FolderListViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED0992B9B54F400A30EBC /* FolderListViewModelTest.swift */; };
 		086ED09C2B9B595B00A30EBC /* MockDataManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED09B2B9B595B00A30EBC /* MockDataManagerTest.swift */; };
 		086ED09E2B9B630D00A30EBC /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED09D2B9B630D00A30EBC /* BackButton.swift */; };
-		086ED0A02B9B642000A30EBC /* RenameItemPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED09F2B9B642000A30EBC /* RenameItemPopup.swift */; };
+		086ED0A02B9B642000A30EBC /* InputPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED09F2B9B642000A30EBC /* InputPopup.swift */; };
+		08866EB42BB628080042318B /* MoveItemViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866EB32BB628080042318B /* MoveItemViewModelTest.swift */; };
+		08866F762BBB5BC60042318B /* RecordingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F752BBB5BC60042318B /* RecordingView.swift */; };
+		08866F782BBB5BD20042318B /* PlaybackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F772BBB5BD20042318B /* PlaybackView.swift */; };
+		08866F7A2BBB5C490042318B /* RecordingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F792BBB5C490042318B /* RecordingViewModel.swift */; };
+		08866F7C2BBB5C520042318B /* PlaybackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F7B2BBB5C520042318B /* PlaybackViewModel.swift */; };
+		08866F7E2BBC88430042318B /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F7D2BBC88430042318B /* RecordingManager.swift */; };
+		08866F822BBC8A110042318B /* PlaybackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F812BBC8A110042318B /* PlaybackManager.swift */; };
+		08866F842BBC8ABC0042318B /* AudioRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F832BBC8ABC0042318B /* AudioRecording.swift */; };
+		08866F862BBC98C70042318B /* PlaybackViewPlaceHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F852BBC98C60042318B /* PlaybackViewPlaceHolder.swift */; };
+		08866F8C2BBCB4180042318B /* PopupInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F8B2BBCB4170042318B /* PopupInput.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +62,7 @@
 
 /* Begin PBXFileReference section */
 		083972E32BB36BA900C4B134 /* MoveItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemView.swift; sourceTree = "<group>"; };
+		083972E52BB496B300C4B134 /* MoveItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemViewModel.swift; sourceTree = "<group>"; };
 		0857430F2B7D245E00E546A1 /* MemoNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		085743122B7D245E00E546A1 /* MemoNestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestApp.swift; sourceTree = "<group>"; };
 		085743142B7D245E00E546A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -68,7 +79,6 @@
 		085743462B7D257C00E546A1 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		085743482B7D262100E546A1 /* FolderListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListViewModel.swift; sourceTree = "<group>"; };
 		0857434B2B7D265300E546A1 /* MockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataManager.swift; sourceTree = "<group>"; };
-		0857434D2B7D3E0F00E546A1 /* PlayBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayBackView.swift; sourceTree = "<group>"; };
 		0857434F2B7D408100E546A1 /* ListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRow.swift; sourceTree = "<group>"; };
 		086ED08B2B98C81E00A30EBC /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		086ED08D2B98C9C200A30EBC /* RealmDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDataManager.swift; sourceTree = "<group>"; };
@@ -77,7 +87,17 @@
 		086ED0992B9B54F400A30EBC /* FolderListViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListViewModelTest.swift; sourceTree = "<group>"; };
 		086ED09B2B9B595B00A30EBC /* MockDataManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataManagerTest.swift; sourceTree = "<group>"; };
 		086ED09D2B9B630D00A30EBC /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
-		086ED09F2B9B642000A30EBC /* RenameItemPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenameItemPopup.swift; sourceTree = "<group>"; };
+		086ED09F2B9B642000A30EBC /* InputPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPopup.swift; sourceTree = "<group>"; };
+		08866EB32BB628080042318B /* MoveItemViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemViewModelTest.swift; sourceTree = "<group>"; };
+		08866F752BBB5BC60042318B /* RecordingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingView.swift; sourceTree = "<group>"; };
+		08866F772BBB5BD20042318B /* PlaybackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlaybackView.swift; path = ../ViewModels/PlaybackView.swift; sourceTree = "<group>"; };
+		08866F792BBB5C490042318B /* RecordingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingViewModel.swift; sourceTree = "<group>"; };
+		08866F7B2BBB5C520042318B /* PlaybackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewModel.swift; sourceTree = "<group>"; };
+		08866F7D2BBC88430042318B /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
+		08866F812BBC8A110042318B /* PlaybackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackManager.swift; sourceTree = "<group>"; };
+		08866F832BBC8ABC0042318B /* AudioRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecording.swift; sourceTree = "<group>"; };
+		08866F852BBC98C60042318B /* PlaybackViewPlaceHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewPlaceHolder.swift; sourceTree = "<group>"; };
+		08866F8B2BBCB4170042318B /* PopupInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupInput.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +195,10 @@
 			children = (
 				0857433F2B7D24E100E546A1 /* File.swift */,
 				085743412B7D24E800E546A1 /* Folder.swift */,
+				08866F7D2BBC88430042318B /* RecordingManager.swift */,
+				08866F812BBC8A110042318B /* PlaybackManager.swift */,
+				08866F832BBC8ABC0042318B /* AudioRecording.swift */,
+				08866F8B2BBCB4170042318B /* PopupInput.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -182,13 +206,10 @@
 		0857433D2B7D24C000E546A1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				085743142B7D245E00E546A1 /* ContentView.swift */,
-				085743432B7D251E00E546A1 /* FolderListView.swift */,
-				0857434D2B7D3E0F00E546A1 /* PlayBackView.swift */,
-				0857434F2B7D408100E546A1 /* ListRow.swift */,
-				086ED09D2B9B630D00A30EBC /* BackButton.swift */,
-				086ED09F2B9B642000A30EBC /* RenameItemPopup.swift */,
-				083972E32BB36BA900C4B134 /* MoveItemView.swift */,
+				08866F7F2BBC89A20042318B /* Navigation */,
+				08866F752BBB5BC60042318B /* RecordingView.swift */,
+				08866F772BBB5BD20042318B /* PlaybackView.swift */,
+				08866F852BBC98C60042318B /* PlaybackViewPlaceHolder.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -196,7 +217,9 @@
 		0857433E2B7D24C400E546A1 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				085743482B7D262100E546A1 /* FolderListViewModel.swift */,
+				08866F802BBC89D20042318B /* Navigation */,
+				08866F792BBB5C490042318B /* RecordingViewModel.swift */,
+				08866F7B2BBB5C520042318B /* PlaybackViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -232,6 +255,7 @@
 			isa = PBXGroup;
 			children = (
 				086ED0992B9B54F400A30EBC /* FolderListViewModelTest.swift */,
+				08866EB32BB628080042318B /* MoveItemViewModelTest.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -256,6 +280,28 @@
 			children = (
 			);
 			path = RealmDatabase;
+			sourceTree = "<group>";
+		};
+		08866F7F2BBC89A20042318B /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				085743142B7D245E00E546A1 /* ContentView.swift */,
+				085743432B7D251E00E546A1 /* FolderListView.swift */,
+				0857434F2B7D408100E546A1 /* ListRow.swift */,
+				086ED09D2B9B630D00A30EBC /* BackButton.swift */,
+				086ED09F2B9B642000A30EBC /* InputPopup.swift */,
+				083972E32BB36BA900C4B134 /* MoveItemView.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		08866F802BBC89D20042318B /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				085743482B7D262100E546A1 /* FolderListViewModel.swift */,
+				083972E52BB496B300C4B134 /* MoveItemViewModel.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -388,22 +434,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08866F822BBC8A110042318B /* PlaybackManager.swift in Sources */,
 				085743152B7D245E00E546A1 /* ContentView.swift in Sources */,
 				0857434C2B7D265300E546A1 /* MockDataManager.swift in Sources */,
+				083972E62BB496B300C4B134 /* MoveItemViewModel.swift in Sources */,
+				08866F782BBB5BD20042318B /* PlaybackView.swift in Sources */,
+				08866F7E2BBC88430042318B /* RecordingManager.swift in Sources */,
+				08866F8C2BBCB4180042318B /* PopupInput.swift in Sources */,
+				08866F842BBC8ABC0042318B /* AudioRecording.swift in Sources */,
 				085743442B7D251E00E546A1 /* FolderListView.swift in Sources */,
+				08866F762BBB5BC60042318B /* RecordingView.swift in Sources */,
 				083972E42BB36BA900C4B134 /* MoveItemView.swift in Sources */,
 				085743492B7D262100E546A1 /* FolderListViewModel.swift in Sources */,
 				085743502B7D408100E546A1 /* ListRow.swift in Sources */,
+				08866F7C2BBB5C520042318B /* PlaybackViewModel.swift in Sources */,
 				085743402B7D24E100E546A1 /* File.swift in Sources */,
 				085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */,
 				086ED0932B98CA2C00A30EBC /* FolderDB.swift in Sources */,
 				086ED0912B98CA2400A30EBC /* FileDB.swift in Sources */,
 				085743422B7D24E800E546A1 /* Folder.swift in Sources */,
 				086ED08C2B98C81E00A30EBC /* DataManager.swift in Sources */,
-				0857434E2B7D3E1000E546A1 /* PlayBackView.swift in Sources */,
+				08866F7A2BBB5C490042318B /* RecordingViewModel.swift in Sources */,
 				085743472B7D257C00E546A1 /* Item.swift in Sources */,
 				086ED08E2B98C9C200A30EBC /* RealmDataManager.swift in Sources */,
-				086ED0A02B9B642000A30EBC /* RenameItemPopup.swift in Sources */,
+				08866F862BBC98C70042318B /* PlaybackViewPlaceHolder.swift in Sources */,
+				086ED0A02B9B642000A30EBC /* InputPopup.swift in Sources */,
 				086ED09E2B9B630D00A30EBC /* BackButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -412,6 +467,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08866EB42BB628080042318B /* MoveItemViewModelTest.swift in Sources */,
 				086ED09C2B9B595B00A30EBC /* MockDataManagerTest.swift in Sources */,
 				086ED09A2B9B54F400A30EBC /* FolderListViewModelTest.swift in Sources */,
 				085743242B7D245F00E546A1 /* MemoNestTests.swift in Sources */,

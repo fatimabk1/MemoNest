@@ -8,23 +8,6 @@
 import Foundation
 import Combine
 
-extension MockDataManager {
-    static let folderA = Folder(name: "Folder A")
-    static let folderB = Folder(name: "Folder B")
-    static let folderC = Folder(name: "Folder C")
-    static let folderAA1 = Folder(name: "Folder AA1", parent: folderA.id)
-    static let folderAA2 = Folder(name: "Folder AA2", parent: folderA.id)
-    static let folderAAA1 = Folder(name: "Folder AAA1", parent: folderAA1.id)
-    static let sampleFolders = [folderA, folderB, folderC, folderAA1, folderAA2, folderAAA1]
-    static let file1 = File(name: "File1 in Library")
-    static let file2 = File(name: "File2 in Library")
-    static let file3 = File(name: "File3 in Library")
-    static let fileA1 = File(name: "File in Folder A", parent: folderA.id)
-    static let fileAA1 = File(name: "File in Folder AA1", parent: folderAA1.id)
-    static let fileAA2 = File(name: "File in Folder AA2", parent: folderAA2.id)
-    static let fileAAA1 = File(name: "File in Folder AAA1", parent: folderAAA1.id)
-    static let sampleFiles = [file1, file2, file3, fileA1, fileAA1, fileAA2, fileAAA1]
-}
 
 final class MockDataManager: DataManager {
     var files = [File]()
@@ -221,4 +204,22 @@ final class MockDataManager: DataManager {
             print(file.name)
         }
     }
+}
+
+extension MockDataManager {
+    static let folderA = Folder(name: "Folder A")
+    static let folderB = Folder(name: "Folder B")
+    static let folderC = Folder(name: "Folder C")
+    static let folderAA1 = Folder(name: "Folder AA1", parent: folderA.id)
+    static let folderAA2 = Folder(name: "Folder AA2", parent: folderA.id)
+    static let folderAAA1 = Folder(name: "Folder AAA1", parent: folderAA1.id)
+    static let sampleFolders = [folderA, folderB, folderC, folderAA1, folderAA2, folderAAA1]
+    static let file1 = File(name: "File1 in Library")
+    static let file2 = File(name: "File2 in Library")
+    static let file3 = File(name: "File3 in Library")
+    static let fileA1 = File(name: "File in Folder A", parent: folderA.id)
+    static let fileAA1 = File(name: "File in Folder AA1", parent: folderAA1.id)
+    static let fileAA2 = File(name: "File in Folder AA2", parent: folderAA2.id)
+    static let fileAAA1 = File(name: "File in Folder AAA1", parent: folderAAA1.id)
+    static let sampleFiles = [file1, file2, file3, fileA1, fileAA1, fileAA2, fileAAA1]
 }

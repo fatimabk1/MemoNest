@@ -14,8 +14,19 @@ final class FolderListViewModel: ObservableObject {
     @Published var playbackFile: File?
     @Published var hasPlaybackFile = false
     
+    @Published var popup = PopupInput()
+    @Published var itemAction: ItemAction? = nil
+    @Published var editingItem: Item? = nil
+    @Published var moveViewIsPresented = false {
+        willSet {
+            if newValue == false {
+                self.setAction(action: .none, item: nil)
+            }
+        }
+    }
+    
+    let database: DataManager
     private var currentFolder: Folder?
-    private let database: DataManager
     private let queue: DispatchQueue
     private var cancellables = Set<AnyCancellable>()
 
@@ -23,17 +34,35 @@ final class FolderListViewModel: ObservableObject {
     var hasParent: Bool { currentFolder != nil }
     
     // TODO: swap w/Realm
-    
     // TODO: REMOVE - TEMP FILES/FOLDERS for development
-    
     init(database: DataManager = MockDataManager(folders: MockDataManager.sampleFolders, files: MockDataManager.sampleFiles), queue: DispatchQueue = .main) {
         self.database = database
         self.queue = queue
     }
     
+    func setAction(action: ItemAction, item: Item?) {
+        editingItem = item
+        itemAction = action
+        
+        if itemAction == .rename {
+            self.popup = PopupInput(popupTitle: "Rename",
+                                    prompt: "Enter folder name",
+                                    placeholder: editingItem?.name ?? "")
+            return
+        }
+        
+        if itemAction == ItemAction.add {
+            self.popup = PopupInput(popupTitle: "Add Folder",
+                                    prompt: "Enter folder name",
+                                    placeholder: "New Folder")
+            return
+        }
+    }
+    
+    
+    // MARK: main logic
     func setFolder(item: Item){
         guard item is Folder else { return }
-        print("setting current Folder: \(item.name) [\(String(describing: item.id))]")
         loadItems(atFolderID: item.id)
     }
     
@@ -100,18 +129,17 @@ final class FolderListViewModel: ObservableObject {
         }
     }
     
-    func moveItem(item: Item, destinationFolderID folderID: UUID) {
+    // move item into current folder
+    func moveItem(item: Item, destination: UUID?) {
         if item is Folder {
-            database.moveFolder(folderID: item.id, newParentID: folderID) 
-                .sink { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolder?.id)
+            database.moveFolder(folderID: item.id, newParentID: destination)
+                .sink { _ in
                 }
                 .store(in: &cancellables)
         
         } else {
-            database.moveFile(fileID: item.id, newParentID: folderID)
-                .sink { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolder?.id)
+            database.moveFile(fileID: item.id, newParentID: destination)
+                .sink { _ in
                 }
                 .store(in: &cancellables)
         }
