@@ -11,13 +11,43 @@ import Combine
 
 final class MoveItemViewModelTest: XCTestCase {
     
+    func test_itemIsMoveItem_returnsTrue_givenMoveItem() {
+        // given
+        let folderA = Folder(name: "folderA")
+        let folderAA = Folder(name: "folderAA", parent: folderA.id)
+        let queue = DispatchQueue.main
+        let database = MockDataManager(folders: [folderA, folderAA], files: [])
+        let viewModel = MoveItemViewModel(moveItem: folderA, database: database, queue: queue)
+        
+        // when
+        let isMoveItem = viewModel.itemIsMoveItem(item: folderA)
+        
+        // then
+        XCTAssertTrue(isMoveItem)
+    }
+    
+    func test_itemIsMoveItem_returnsTrue_givenOtherItem() {
+        // given
+        let folderA = Folder(name: "folderA")
+        let folderAA = Folder(name: "folderAA", parent: folderA.id)
+        let queue = DispatchQueue.main
+        let database = MockDataManager(folders: [folderA, folderAA], files: [])
+        let viewModel = MoveItemViewModel(moveItem: folderA, database: database, queue: queue)
+        
+        // when
+        let isMoveItem = viewModel.itemIsMoveItem(item: folderAA)
+        
+        // then
+        XCTAssertFalse(isMoveItem)
+    }
+    
     func test_setFolder_setsCurrentFolder_givenFolder()  {
         let folderA = Folder(name: "folderA")
         let folderAA = Folder(name: "folderAA", parent: folderA.id)
         let fileAA = File(name: "fileAA", parent: folderA.id)
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [folderA, folderAA], files: [fileAA])
-        let viewModel = MoveItemViewModel(database: database, queue: queue)
+        let viewModel = MoveItemViewModel(moveItem: folderA, database: database, queue: queue)
         
         // When
         let expectation = XCTestExpectation(description: "async function did not return")
@@ -39,13 +69,9 @@ final class MoveItemViewModelTest: XCTestCase {
         // Then
         XCTAssertEqual(viewModel.currentFolderTitle, "folderA")
         let expected = 1
-        let firstNonFolderIndex = viewModel.items.firstIndex(where: { !($0 is Folder) })
-        let isSorted = (firstNonFolderIndex == nil) || !viewModel.items[firstNonFolderIndex!...].contains(where: {$0 is Folder})
  
         // verify correct number of items
         XCTAssertEqual(result, expected)
-        // verify sorted file first
-        
     }
     
     func test_loadFolders_loadFolders_givenRootFolder()  {
@@ -67,7 +93,7 @@ final class MoveItemViewModelTest: XCTestCase {
         
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: folders, files: files)
-        let viewModel = MoveItemViewModel(database: database, queue: queue)
+        let viewModel = MoveItemViewModel(moveItem: folderA, database: database, queue: queue)
         
         // When
         let expectation = XCTestExpectation(description: "async function did not return")
@@ -115,7 +141,7 @@ final class MoveItemViewModelTest: XCTestCase {
         
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: folders, files: files)
-        let viewModel = MoveItemViewModel(database: database, queue: queue)
+        let viewModel = MoveItemViewModel(moveItem: folderA, database: database, queue: queue)
         
         // When
         let expectation = XCTestExpectation(description: "async function did not return")
@@ -156,7 +182,7 @@ final class MoveItemViewModelTest: XCTestCase {
         
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: folders, files: files)
-        let viewModel = MoveItemViewModel(database: database, queue: queue)
+        let viewModel = MoveItemViewModel(moveItem: folderA, database: database, queue: queue)
         
         // When
         let expectation = XCTestExpectation(description: "async function did not return")
@@ -200,7 +226,7 @@ final class MoveItemViewModelTest: XCTestCase {
         
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: folders, files: files)
-        let viewModel = MoveItemViewModel(database: database, queue: queue)
+        let viewModel = MoveItemViewModel(moveItem: folderA, database: database, queue: queue)
         
         // When
         let expectation = XCTestExpectation(description: "async function did not return")
@@ -217,94 +243,8 @@ final class MoveItemViewModelTest: XCTestCase {
         
         // Then
         let expected = 3
-        let firstNonFolderIndex = viewModel.items.firstIndex(where: { !($0 is Folder) })
-        let isSorted = (firstNonFolderIndex == nil) || !viewModel.items[firstNonFolderIndex!...].contains(where: {$0 is Folder})
-
-        XCTAssertEqual(result, expected)
-        
-    }
-    
-    func test_moveFile_updatesFolderID_givenFileIDAndNewFolderID()  {
-        // Given
-        let folderA = Folder(name: "folderA")
-        let file1 = File(name: "file1")
-        let queue = DispatchQueue.main
-        let database = MockDataManager(folders: [folderA], files: [file1])
-        let viewModel = MoveItemViewModel(database: database, queue: queue)
-        
-        // When
-        // TEST: move file1 into folder A
-        // setFolder to folder A
-        // call moveItem(item: FolderA)
-        
-        // ----------------------------------------------------------------------------------
-        // Set currentFolder to Folder A
-        let setFolderExpectation = XCTestExpectation(description: "async function did not return")
-        let setFolderCancellable = viewModel.$currentFolder
-            .sink { _ in
-                setFolderExpectation.fulfill()
-            }
-        viewModel.setFolder(item: folderA)
-        wait(for: [setFolderExpectation], timeout: 1)
-        setFolderCancellable.cancel()
-        XCTAssertEqual(viewModel.currentFolderTitle, "folderA")
-        
-        // Move Folder B into Folder A
-        let expectation = XCTestExpectation(description: "async function did not return")
-        let cancellable = viewModel.$items
-            .dropFirst()
-            .sink { _ in
-                expectation.fulfill()
-            }
-        viewModel.moveItem(item: file1)
-        wait(for: [expectation], timeout: 1)
-        cancellable.cancel()
-        
-        // Then
-        let expected = 1
-        let result = viewModel.items.count
         XCTAssertEqual(result, expected)
     }
     
-    func test_moveFolder_updateParentFolderId_givenFolderIDAndParentFolderID()  {
-        // Given
-        let folderA = Folder(name: "folderA")
-        let folderB = Folder(name: "folderB")
-        let queue = DispatchQueue.main
-        let database = MockDataManager(folders: [folderA, folderB], files: [])
-        let viewModel = MoveItemViewModel(database: database, queue: queue)
-        
-        // When - move folderA into folderB
-        // TEST: move folderA into folderB
-        // setFolder to folder B
-        // call moveItem(item: FolderA)
-        
-        // ----------------------------------------------------------------------------------
-        // Set currentFolder to Folder A
-        let setFolderExpectation = XCTestExpectation(description: "async function did not return")
-        let setFolderCancellable = viewModel.$currentFolder
-            .sink { _ in
-                setFolderExpectation.fulfill()
-            }
-        viewModel.setFolder(item: folderB)
-        wait(for: [setFolderExpectation], timeout: 1)
-        XCTAssertEqual(viewModel.currentFolderTitle, "folderB")
-        setFolderCancellable.cancel()
-        
-        
-        let expectation = XCTestExpectation(description: "async function did not return")
-        let cancellable = viewModel.$items
-            .dropFirst()
-            .sink { _ in
-                expectation.fulfill()
-            }
-        viewModel.moveItem(item: folderA)
-        wait(for: [expectation], timeout: 1)
-        cancellable.cancel()
-        
-        // Then
-        let expected = 1
-        let result = viewModel.items.count
-        XCTAssertEqual(result, expected)
-    }
+    // TODO: goBack
 }

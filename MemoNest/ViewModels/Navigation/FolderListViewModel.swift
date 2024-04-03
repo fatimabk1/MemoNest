@@ -8,9 +8,37 @@
 import Foundation
 import Combine
 
+enum SortType: CaseIterable {
+    case dateAsc, dateDesc, name
+    
+    func toString() -> String {
+        switch(self){
+        case .dateAsc:
+            "Date ↑"
+        case .dateDesc:
+            "Date ↓"
+        case .name:
+            "Name"
+        }
+    }
+    
+    func next() -> SortType {
+        let cases = SortType.allCases
+        let currentIndex = cases.firstIndex(of: self)!
+        let nextIndex = (currentIndex + 1) % cases.count // wrap around
+        return cases[nextIndex]
+    }
+}
 
 final class FolderListViewModel: ObservableObject {
     @Published var items = [Item]()
+    @Published var sortType = SortType.dateAsc {
+        willSet {
+            let folders = items.filter({$0 is Folder})
+            let files = items.filter({$0 is File})
+            self.items = self.sortItems(folders) + self.sortItems(files)
+        }
+    }
     @Published var playbackFile: File?
     @Published var hasPlaybackFile = false
     
@@ -29,15 +57,47 @@ final class FolderListViewModel: ObservableObject {
     private var currentFolder: Folder?
     private let queue: DispatchQueue
     private var cancellables = Set<AnyCancellable>()
-
+    
     var currentFolderTitle: String { currentFolder?.name ?? "Library" }
     var hasParent: Bool { currentFolder != nil }
+    var sortButtonTitle: String { sortType.toString() }
     
     // TODO: swap w/Realm
     // TODO: REMOVE - TEMP FILES/FOLDERS for development
     init(database: DataManager = MockDataManager(folders: MockDataManager.sampleFolders, files: MockDataManager.sampleFiles), queue: DispatchQueue = .main) {
         self.database = database
         self.queue = queue
+    }
+    
+    private func sortByName(_ items: [Item]) -> [Item]{
+        return items.sorted(by: { a, b in
+            a.name < b.name
+        })
+    }
+    private func sortByDateAsc(_ items: [Item]) -> [Item]{
+        return items.sorted(by: { a, b in
+            a.date > b.date
+        })
+    }
+    private func sortByDateDesc(_ items: [Item]) -> [Item]{
+        return items.sorted(by: { a, b in
+            a.date < b.date
+        })
+    }
+    
+    func sortItems(_ items: [Item]) -> [Item] {
+        switch(self.sortType){
+        case .dateAsc:
+            return sortByDateAsc(items)
+        case .dateDesc:
+            return sortByDateDesc(items)
+        case .name:
+            return sortByName(items)
+        }
+    }
+    
+    func updateSort() {
+        self.sortType = sortType.next()
     }
     
     func setAction(action: ItemAction, item: Item?) {
@@ -79,13 +139,21 @@ final class FolderListViewModel: ObservableObject {
             .zip(database.fetchFiles(parentID: folderID))
             .receive(on: queue)
             .sink { [weak self] folders, files in
-                self?.items = folders + files
+                guard let self else { return }
+                let sortedFolders = self.sortItems(folders)
+                let sortedFiles = self.sortItems(files)
+                self.items = sortedFolders + sortedFiles
             }
             .store(in: &cancellables)
     }
     
     func handleOnAppear() {
         self.loadItems(atFolderID: currentFolder?.id)
+    }
+    
+    func goBack() {
+        guard let currentFolder else { return }
+        loadItems(atFolderID: currentFolder.parent)
     }
     
     func renameItem(item: Item, name: String) {
@@ -104,15 +172,6 @@ final class FolderListViewModel: ObservableObject {
         }
     }
     
-    func goBack() {
-        guard let currentFolder else { return }
-        loadItems(atFolderID: currentFolder.parent)
-    }
-    
-    func sort1() {}
-    
-    func sort2() {}
-    
     func removeItem(item: Item) {
         if item is Folder {
             database.removeFolder(folderID: item.id)
@@ -129,14 +188,13 @@ final class FolderListViewModel: ObservableObject {
         }
     }
     
-    // move item into current folder
     func moveItem(item: Item, destination: UUID?) {
         if item is Folder {
             database.moveFolder(folderID: item.id, newParentID: destination)
                 .sink { _ in
                 }
                 .store(in: &cancellables)
-        
+            
         } else {
             database.moveFile(fileID: item.id, newParentID: destination)
                 .sink { _ in
@@ -167,5 +225,4 @@ final class FolderListViewModel: ObservableObject {
             self.hasPlaybackFile = true
         }
     }
-
 }

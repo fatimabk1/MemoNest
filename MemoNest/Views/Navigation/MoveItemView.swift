@@ -43,9 +43,7 @@ struct MoveItemView: View {
         List {
             ForEach(viewModel.items, id: \.id) { item in
                 let isMoveItem = viewModel.itemIsMoveItem(item: item)
-                TappableListRow(name: item.name,
-                                icon: item.icon,
-                                item: item,
+                TappableListRow(item: item,
                                 onListRowTap: viewModel.setFolder)
                 .disabled(isMoveItem ? true : false)
                 .foregroundStyle(isMoveItem ? .gray : .primary)
@@ -55,7 +53,6 @@ struct MoveItemView: View {
         .scrollContentBackground(.hidden)
     }
     
-    // TODO: can't move a folder to inside itself
     var moveButton: some View {
         Button {
             moveAction(viewModel.currentFolder?.id ?? nil)

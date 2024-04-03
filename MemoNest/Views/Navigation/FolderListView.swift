@@ -21,6 +21,7 @@ struct FolderListView: View {
     var body: some View {
         ZStack {
             NavigationStack {
+                Button(viewModel.sortButtonTitle) { viewModel.updateSort() }
                 folderList
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle(viewModel.currentFolderTitle)
@@ -98,10 +99,7 @@ struct FolderListView: View {
     }
     
     private func createListRow(item: Item) -> some View {
-        TappableListRowWithMenu(name: item.name,
-                icon: item.icon,
-                item: item,
-                onListRowTap: viewModel.setFolder) { action in
+        TappableListRowWithMenu(item: item,onListRowTap: viewModel.setFolder) { action in
             
             if action == .delete {
                 viewModel.removeItem(item: item)

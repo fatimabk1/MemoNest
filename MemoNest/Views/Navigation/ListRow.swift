@@ -9,16 +9,15 @@ import SwiftUI
 
 
 struct TappableListRowWithMenu: View {
-    let name: String
-    let icon: String
     let item: Item
     let onListRowTap: (Item) -> Void
     let onActionSelected: (ItemAction) -> Void
     
     var body: some View {
-        ZStack {
-            TappableListRow(name: name, icon: icon, item: item,
+        HStack {
+            TappableListRow(item: item,
                             onListRowTap: onListRowTap)
+                .frame(maxWidth: .infinity, alignment: .trailing)
     
             Menu {
                 Button("Rename") { onActionSelected(.rename) }
@@ -27,14 +26,12 @@ struct TappableListRowWithMenu: View {
             } label: {
                 Image(systemName: "ellipsis.circle")
             }
-            .frame(maxWidth: .infinity, alignment: .trailing)
+            
         }
     }
 }
 
 struct TappableListRow: View {
-    let name: String
-    let icon: String
     let item: Item
     let onListRowTap: (Item) -> Void
     
@@ -42,20 +39,26 @@ struct TappableListRow: View {
         Button {
             onListRowTap(item)
         } label: {
-            ListRow(name: name, icon: icon, item: item)
+            ListRow(item: item)
         }
     }
 }
 
 struct ListRow: View {
-    let name: String
-    let icon: String
     let item: Item
+    
+    var formattedDate: String {
+        let dateFormatter = Date.FormatStyle().day().month().year()
+        return item.date.formatted(dateFormatter)
+    }
     
     var body: some View {
         HStack {
-            Image(systemName: icon)
-            Text(name)
+            Image(systemName: item.icon)
+            Text(item.name)
+            Spacer()
+            Text(formattedDate)
+                .font(.callout)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -64,8 +67,8 @@ struct ListRow: View {
 
 #Preview {
     return Group {
-        ListRow(name: "Folder", icon: "Folder", item: Folder(name: "folderA"))
-        TappableListRow(name: "Folder", icon: "Folder", item:  Folder(name: "folderA"), onListRowTap: {_ in })
-        TappableListRowWithMenu(name: "Folder", icon: "Folder", item: Folder(name: "folderA"), onListRowTap: {_ in }, onActionSelected: { _ in  })
+        ListRow(item: Folder(name: "folderA"))
+        TappableListRow( item:  Folder(name: "folderA"), onListRowTap: {_ in })
+        TappableListRowWithMenu( item: Folder(name: "folderA"), onListRowTap: {_ in }, onActionSelected: { _ in  })
     }
 }

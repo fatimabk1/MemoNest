@@ -11,6 +11,7 @@ struct File: Item {
     let id = UUID()
     var name: String
     var parent: UUID?
+    var date: Date = Date()
     let icon = "headphones"
 }
 
