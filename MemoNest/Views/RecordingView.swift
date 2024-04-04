@@ -8,17 +8,59 @@
 import SwiftUI
 
 struct RecordingView: View {
-    @ObservedObject var viewModel: RecordingViewModel
+//    @ObservedObject var viewModel: RecordingViewModel
+    @State var recordingManager = RecordingManager()
+    @State var playbackManager: PlaybackManager?
     
-    init(database: DataManager) {
-        self.viewModel = RecordingViewModel(database: database)
-    }
+    // TODO: START HERE
+    /*
+     - create audio session in main app
+     - on recordButton, pass db, audioSession to recording manager & navigate to new screen
+        - on stop record, save to DB
+     - on file click, pass db, audio session to plaback manager & navigate to new screen
+     */
+    
+//    init(database: DataManager) {
+//        self.viewModel = RecordingViewModel(database: database)
+//    }
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("Recording: \(recordingManager.isRecording ? "true" : "false")")
+            Button("Start Recording") {
+                recordingManager.startRecording()
+            }
+            Button("Stop Recording") {
+                recordingManager.stopRecording()
+            }
+            
+            Text("Playback")
+            Button("start playback") {
+                if let fileURL = recordingManager.filePath {
+                    playbackManager = PlaybackManager(fileURL: fileURL)
+                    playbackManager?.play()
+                }
+            }
+            Button("stop playback") {
+                if let playbackManager {
+                    playbackManager.stop()
+                }
+            }
+        }
+        .onAppear {
+            recordingManager.requestPermission { granted in
+                if granted {
+                    recordingManager.setupAudioSession()
+                } else {
+                    print("No permission - view")
+                }
+                
+            }
+        }
     }
 }
 
 #Preview {
-    RecordingView(database: MockDataManager())
+    RecordingView()
+//    RecordingView(database: MockDataManager())
 }

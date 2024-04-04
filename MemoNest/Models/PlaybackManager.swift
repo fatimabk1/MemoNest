@@ -11,14 +11,32 @@ import AVFoundation
 
 final class PlaybackManager {
     @Published var isPlaying = false
-    let audioPlayer = AVAudioPlayer()
+    let audioSession: AVAudioSession
+    var audioPlayer: AVAudioPlayer?
     let fileURL: URL
     
-    init(fileURL: URL) {
+    init(audioSession: AVAudioSession, fileURL: URL) {
+        self.audioSession = audioSession
         self.fileURL = fileURL
     }
     
-    func setupAudioSession() {}
-    func setupPlayer() {}
-    func playOrPause() {}
+    func play() {
+        do {
+            try audioSession.setCategory(.playback, mode: .default)
+            try audioSession.setActive(true)
+            audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
+            audioPlayer?.play()
+        } catch {
+            print("Error: cannot play/pause audio")
+        }
+    }
+    
+    func stop() {
+        audioPlayer?.stop()
+        do {
+            try audioSession.setActive(false)
+        } catch {
+            print("Error: unable to deactivate audio sesion  from Playback")
+        }
+    }
 }

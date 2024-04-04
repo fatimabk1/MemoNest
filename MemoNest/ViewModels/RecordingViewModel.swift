@@ -9,6 +9,7 @@ import Foundation
 
 
 final class RecordingViewModel: ObservableObject {
+    @Published var isRecording = false
     var recordingManager = RecordingManager()
     let database: DataManager
     

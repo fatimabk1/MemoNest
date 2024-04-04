@@ -21,28 +21,25 @@ struct FolderListView: View {
     var body: some View {
         ZStack {
             NavigationStack {
-                sortPicker
-                    .buttonStyle(.borderedProminent)
-                folderList
-                    .navigationBarTitleDisplayMode(.inline)
-                    .navigationTitle(viewModel.currentFolderTitle)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .topBarLeading) {
-                            BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()}
-                        }
-                        ToolbarItemGroup(placement: .bottomBar) {
-                            Spacer()
-                            Button {
-                                viewModel.setAction(action: .add, item: nil)
-                            } label: {
-                                Image(systemName: "folder.fill.badge.plus")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 30, height: 30)
-                            }
-                            .opacity(viewModel.itemAction == .move ? 0 : 1)
-                        }
+                VStack {
+                    sortPicker
+                        .buttonStyle(.borderedProminent)
+                    folderList
+                }
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle(viewModel.currentFolderTitle)
+                .toolbar {
+                    ToolbarItemGroup(placement: .topBarLeading) {
+                        BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()}
                     }
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        homeButton
+                        Spacer()
+                        recordButton
+                        Spacer()
+                        addFolderButton
+                    }
+                }
             }
             .navigationDestination(isPresented: $viewModel.moveViewIsPresented) {
                 if let item = viewModel.editingItem, viewModel.itemAction == .move {
@@ -81,6 +78,7 @@ struct FolderListView: View {
                     } else {
                         createListRow(item: item)
                             .background(
+                                // PlaybackViewPlaceHolder(fileURL: item.url)
                                 NavigationLink("", destination: PlaybackViewPlaceHolder())
                                     .opacity(0)
                             )
@@ -108,6 +106,38 @@ struct FolderListView: View {
                 viewModel.setAction(action: .none, item: nil)
             }
         }
+    }
+    
+    
+    private var homeButton: some View {
+        Button {
+            viewModel.loadItems(atFolderID: nil)
+        } label: {
+            Image(systemName: "house")
+                .resizable()
+                .frame(width: 30, height: 30)
+        }
+    }
+    
+    private var recordButton: some View {
+    Button {
+        } label: {
+            Image(systemName: "waveform.circle")
+                .resizable()
+                .frame(width: 75, height: 75)
+        }
+    }
+    
+    private var addFolderButton: some View {
+        Button {
+            viewModel.setAction(action: .add, item: nil)
+        } label: {
+            Image(systemName: "folder.fill.badge.plus")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 30, height: 30)
+        }
+        .opacity(viewModel.itemAction == .move ? 0 : 1)
     }
     
     private func createListRow(item: Item) -> some View {
