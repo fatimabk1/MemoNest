@@ -53,7 +53,7 @@ wait(for: [expectation], timeout: 1)
 
 final class FolderListViewModelTest: XCTestCase {
     
-    // TODO: setAction
+    // MARK: setAction
     func test_setAction_setRenamePopup_givenItemAndAction(){
         // given
         let folderA = Folder(name: "folderA")
@@ -86,6 +86,7 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertEqual(viewModel.popup.placeholder, "New Folder")
     }
     
+    // MARK: set folder
     func test_setFolder_setsCurrentFolder_givenFolder()  {
         let folderA = Folder(name: "folderA")
         let folderAA = Folder(name: "folderAA", parent: folderA.id)
@@ -121,6 +122,7 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertTrue(isSorted)
     }
     
+    // MARK: load
     func test_loadItems_loadItemsFoldersFirst_givenRootFolder()  {
         // Given
         let folderA = Folder(name: "Folder A")
@@ -260,6 +262,7 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertTrue(isSorted)
     }
     
+    // MARK: on appear
     func test_handleOnAppear_loadRootFolder()  {
         // Given
         let folderA = Folder(name: "Folder A")
@@ -303,9 +306,124 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertTrue(isSorted)
     }
         
-    // TODO: sort1()
+    // MARK: sort
+    func test_sortItems_givenItemsAndSortByName() {
+        let AfolderEarliestDate = Folder(name: "AfolderEarliestDate", date: Date())
+        let BfolderMiddleDate = Folder(name: "BfolderMiddleDate", date: Date() + 1)
+        let CfolderLatestDate = Folder(name: "CfolderLatestDate", date: Date() + 2)
+        
+        let ALatestDateFile = File(name: "ALatestDateFile", date: Date() + 2)
+        let BMiddleDateFile = File(name: "BMiddleDateFile", date: Date() + 1)
+        let CEarliestDateFile = File(name: "CEarliestDateFile", date: Date())
+        
+        let queue = DispatchQueue.main
+        let database = MockDataManager(folders: [AfolderEarliestDate, BfolderMiddleDate, CfolderLatestDate],
+                                       files: [ALatestDateFile, BMiddleDateFile, CEarliestDateFile])
+        let viewModel = FolderListViewModel(database: database, queue: queue)
+
+        // when
+        let expectation = XCTestExpectation(description: "async function did not return")
+        let cancellable = viewModel.$items
+            .dropFirst()
+            .sink { items in
+                expectation.fulfill()
+            }
+        let loadFolderID: UUID? = nil
+        viewModel.loadItems(atFolderID: loadFolderID)
+        wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
+
+        viewModel.sortType = .name
+        
+        // then
+        for item in viewModel.items {
+            print(item.name)
+        }
+        XCTAssertEqual(viewModel.items[0].name, AfolderEarliestDate.name)
+        XCTAssertEqual(viewModel.items[1].name, BfolderMiddleDate.name)
+        XCTAssertEqual(viewModel.items[2].name, CfolderLatestDate.name)
+        XCTAssertEqual(viewModel.items[3].name, ALatestDateFile.name)
+        XCTAssertEqual(viewModel.items[4].name, BMiddleDateFile.name)
+        XCTAssertEqual(viewModel.items[5].name, CEarliestDateFile.name)
+    }
     
-    // TODO: sort2()
+    func test_sortItems_givenItemsAndSortByDateAsc() {
+        let AfolderEarliestDate = Folder(name: "AfolderEarliestDate", date: Date())
+        let BfolderMiddleDate = Folder(name: "BfolderMiddleDate", date: Date() + 1)
+        let CfolderLatestDate = Folder(name: "CfolderLatestDate", date: Date() + 2)
+        
+        let ALatestDateFile = File(name: "ALatestDateFile", date: Date() + 2)
+        let BMiddleDateFile = File(name: "BMiddleDateFile", date: Date() + 1)
+        let CEarliestDateFile = File(name: "CEarliestDateFile", date: Date())
+        
+        let queue = DispatchQueue.main
+        let database = MockDataManager(folders: [AfolderEarliestDate, BfolderMiddleDate, CfolderLatestDate],
+                                       files: [ALatestDateFile, BMiddleDateFile, CEarliestDateFile])
+        let viewModel = FolderListViewModel(database: database, queue: queue)
+
+        // when
+        let expectation = XCTestExpectation(description: "async function did not return")
+        let cancellable = viewModel.$items
+            .dropFirst()
+            .sink { items in
+                expectation.fulfill()
+            }
+        let loadFolderID: UUID? = nil
+        viewModel.loadItems(atFolderID: loadFolderID)
+        wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
+        viewModel.sortType = .dateAsc
+        
+        //then
+        for item in viewModel.items {
+            print(item.name)
+        }
+        XCTAssertEqual(viewModel.items[0].name, AfolderEarliestDate.name)
+        XCTAssertEqual(viewModel.items[1].name, BfolderMiddleDate.name)
+        XCTAssertEqual(viewModel.items[2].name, CfolderLatestDate.name)
+        XCTAssertEqual(viewModel.items[3].name, CEarliestDateFile.name)
+        XCTAssertEqual(viewModel.items[4].name, BMiddleDateFile.name)
+        XCTAssertEqual(viewModel.items[5].name, ALatestDateFile.name)
+    }
+    
+    func test_sortItems_givenItemsAndSortByDateDesc() {
+        let AfolderEarliestDate = Folder(name: "AfolderEarliestDate", date: Date())
+        let BfolderMiddleDate = Folder(name: "BfolderMiddleDate", date: Date() + 1)
+        let CfolderLatestDate = Folder(name: "CfolderLatestDate", date: Date() + 2)
+        
+        let ALatestDateFile = File(name: "ALatestDateFile", date: Date() + 2)
+        let BMiddleDateFile = File(name: "BMiddleDateFile", date: Date() + 1)
+        let CEarliestDateFile = File(name: "CEarliestDateFile", date: Date())
+        
+        let queue = DispatchQueue.main
+        let database = MockDataManager(folders: [AfolderEarliestDate, BfolderMiddleDate, CfolderLatestDate],
+                                       files: [ALatestDateFile, BMiddleDateFile, CEarliestDateFile])
+        let viewModel = FolderListViewModel(database: database, queue: queue)
+
+        // when
+        let expectation = XCTestExpectation(description: "async function did not return")
+        let cancellable = viewModel.$items
+            .dropFirst()
+            .sink { items in
+                expectation.fulfill()
+            }
+        let loadFolderID: UUID? = nil
+        viewModel.loadItems(atFolderID: loadFolderID)
+        wait(for: [expectation], timeout: 1)
+        cancellable.cancel()
+        viewModel.sortType = .dateDesc
+        
+        //then
+        for item in viewModel.items {
+            print(item.name)
+        }
+        XCTAssertEqual(viewModel.items[0].name, CfolderLatestDate.name)
+        XCTAssertEqual(viewModel.items[1].name, BfolderMiddleDate.name)
+        XCTAssertEqual(viewModel.items[2].name, AfolderEarliestDate.name)
+        XCTAssertEqual(viewModel.items[3].name, ALatestDateFile.name)
+        XCTAssertEqual(viewModel.items[4].name, BMiddleDateFile.name)
+        XCTAssertEqual(viewModel.items[5].name, CEarliestDateFile.name)
+    }
     
     // MARK: rename
     func test_renameItem_updateFolderName_givenFolder()  {

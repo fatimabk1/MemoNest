@@ -21,13 +21,6 @@ enum SortType: CaseIterable {
             "Name  "
         }
     }
-    
-    func next() -> SortType {
-        let cases = SortType.allCases
-        let currentIndex = cases.firstIndex(of: self)!
-        let nextIndex = (currentIndex + 1) % cases.count // wrap around
-        return cases[nextIndex]
-    }
 }
 
 final class FolderListViewModel: ObservableObject {
@@ -76,12 +69,12 @@ final class FolderListViewModel: ObservableObject {
     }
     private func sortByDateAsc(_ items: [Item]) -> [Item]{
         return items.sorted(by: { a, b in
-            a.date > b.date
+            a.date < b.date
         })
     }
     private func sortByDateDesc(_ items: [Item]) -> [Item]{
         return items.sorted(by: { a, b in
-            a.date < b.date
+            a.date > b.date
         })
     }
     
@@ -95,11 +88,7 @@ final class FolderListViewModel: ObservableObject {
             return sortByName(items)
         }
     }
-    
-    func updateSort() {
-        self.sortType = sortType.next()
-    }
-    
+        
     func setAction(action: ItemAction, item: Item?) {
         editingItem = item
         itemAction = action
