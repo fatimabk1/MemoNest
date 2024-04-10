@@ -134,6 +134,7 @@ final class FolderListViewModel: ObservableObject {
                 self.items = sortedFolders + sortedFiles
             }
             .store(in: &cancellables)
+        
     }
     
     func handleOnAppear() {

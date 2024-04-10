@@ -48,17 +48,23 @@ struct ListRow: View {
     let item: Item
     
     var formattedDate: String {
-        let dateFormatter = Date.FormatStyle().day().month().year()
-        return item.date.formatted(dateFormatter)
+        FormatterService.formatDate(date: item.date)
     }
     
     var body: some View {
         HStack {
             Image(systemName: item.icon)
-            Text(item.name)
+            VStack {
+                Text(item.name)
+                    .lineLimit(0)
+                if let duration = item.audioInfo?.duration {
+                    Text("\(duration)")
+                }
+            }
             Spacer()
             Text(formattedDate)
                 .font(.callout)
+                .padding(.trailing)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -67,8 +73,11 @@ struct ListRow: View {
 
 #Preview {
     return Group {
-        ListRow(item: Folder(name: "folderA"))
+        ListRow(item: Folder(name: "A really really really long row item name, lets see if it spills over and wraps!"))
         TappableListRow( item:  Folder(name: "folderA"), onListRowTap: {_ in })
         TappableListRowWithMenu( item: Folder(name: "folderA"), onListRowTap: {_ in }, onActionSelected: { _ in  })
+        ListRow(item: AudioRecording.sample)
+        TappableListRow( item:  AudioRecording.sample, onListRowTap: {_ in })
+        TappableListRowWithMenu( item: AudioRecording.sample, onListRowTap: {_ in }, onActionSelected: { _ in  })
     }
 }

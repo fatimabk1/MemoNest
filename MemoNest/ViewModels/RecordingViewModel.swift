@@ -14,7 +14,6 @@ final class RecordingViewModel: ObservableObject {
     @Published var isRecording = false
     @Published var hasError = false
     @Published var error: RecordingError?
-    @Published var fileArray = [URL]()
     @Published var filePath: URL?
     
     var recordingManager: RecordingManager
@@ -29,7 +28,7 @@ final class RecordingViewModel: ObservableObject {
     var recordingDuration: TimeInterval = 0
     var recordingURL: URL = URL(string: "www.sample.com")!
     
-
+    
     init(database: DataManager) {
         self.database = database
         self.recordingManager = RecordingManager()
@@ -43,6 +42,10 @@ final class RecordingViewModel: ObservableObject {
     }
     
     func handleOnAppear() {
+        reset()
+    }
+    
+    private func reset() {
         DispatchQueue.global().async { [weak self] in
             guard let self else { return }
             let result = self.recordingManager.setupRecorder()
@@ -73,8 +76,7 @@ final class RecordingViewModel: ObservableObject {
         } else {
             let result = recordingManager.setupRecorder()
             switch(result){
-            case .success(let fileURL):
-                self.fileArray.append(fileURL)
+            case .success(_):
                 recordingManager.startRecording()
                 isRecording = true
             case .failure(let err):
@@ -110,13 +112,14 @@ final class RecordingViewModel: ObservableObject {
             hasError = true
             error = err
         }
+        reset()
     }
     
     func addFile(currentFolder: UUID?) {
         database.addFile(fileName: recordingName, date: recordingDate,
                          parentID: recordingParent, duration: recordingDuration, recordingURL: recordingURL)
-            .sink {}
-            .store(in: &cancellables)
+        .sink {}
+        .store(in: &cancellables)
     }
     
     func rename() {}

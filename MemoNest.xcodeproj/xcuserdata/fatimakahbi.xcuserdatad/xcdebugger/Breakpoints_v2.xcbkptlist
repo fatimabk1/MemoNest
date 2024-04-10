@@ -285,8 +285,8 @@
             filePath = "MemoNest/Views/Navigation/FolderListView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "112"
-            endingLineNumber = "112"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
             landmarkName = "addRenameInputView"
             landmarkType = "24">
             <Locations>
@@ -488,8 +488,8 @@
             filePath = "MemoNest/Views/Navigation/FolderListView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
             landmarkName = "recordButton"
             landmarkType = "24">
             <Locations>
@@ -551,8 +551,8 @@
             filePath = "MemoNest/ViewModels/RecordingViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
             landmarkName = "checkPermissions()"
             landmarkType = "7">
             <Locations>
@@ -587,22 +587,6 @@
                   offsetFromSymbolStart = "32">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "1F66D15D-C55A-4618-A2D6-E37DA639E249"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MemoNest/ViewModels/Navigation/FolderListViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
-            landmarkName = "renameItem(item:name:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

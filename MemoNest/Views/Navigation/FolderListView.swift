@@ -15,7 +15,7 @@ enum ItemAction {
 /*
  - slow launch w/ audio session & recording set up
  - Error with rename text input:
-    [RTIInputSystemClient remoteTextInputSessionWithID:performInputOperation:]  perform input operation requires a valid sessionID. inputModality = Keyboard, inputOperation = <null selector>, customInfoType = UIEmojiSearchOperations
+ [RTIInputSystemClient remoteTextInputSessionWithID:performInputOperation:]  perform input operation requires a valid sessionID. inputModality = Keyboard, inputOperation = <null selector>, customInfoType = UIEmojiSearchOperations
  - Rename is broken for AudioRecordings. Screen not updating, although correct in the rename popup
  - Chunky playback because of connected seek/duration display
  */
@@ -24,12 +24,12 @@ enum ItemAction {
 struct FolderListView: View {
     @ObservedObject var viewModel: FolderListViewModel
     @ObservedObject var recordingViewModel: RecordingViewModel
-
+    
     init(database: DataManager) {
         self.viewModel = FolderListViewModel(database: database)
         self.recordingViewModel = RecordingViewModel(database: database)
     }
-
+    
     var body: some View {
         ZStack {
             NavigationStack {
@@ -56,11 +56,11 @@ struct FolderListView: View {
             .navigationDestination(isPresented: $viewModel.moveViewIsPresented) {
                 if let item = viewModel.editingItem, viewModel.itemAction == .move {
                     MoveItemView(moveItem: item,
-                                 database: viewModel.database, 
+                                 database: viewModel.database,
                                  isPresenting: $viewModel.moveViewIsPresented) { destinationFolderID in
                         viewModel.moveItem(item: item, destination: destinationFolderID)
                     }
-                    .navigationBarBackButtonHidden()
+                                 .navigationBarBackButtonHidden()
                 }
             }
             addRenameInputView
@@ -96,8 +96,8 @@ struct FolderListView: View {
                             .background(
                                 NavigationLink {
                                     PlaybackView(recording: item as! AudioRecording)
-                                } label: {}
-                                .disabled(recordingViewModel.isRecording)
+                                } label: {}.opacity(0)
+                                    .disabled(recordingViewModel.isRecording)
                             )
                     }
                 }
@@ -105,14 +105,16 @@ struct FolderListView: View {
         }
         .listStyle(.inset)
         .scrollContentBackground(.hidden)
-    }
         
+    }
+    
     @ViewBuilder
     private var addRenameInputView: some View {
         if viewModel.itemAction == .rename || viewModel.itemAction == .add {
             InputPopup(popup: viewModel.popup) { newName in
                 if let newName {
                     if let item = viewModel.editingItem, viewModel.itemAction == .rename {
+                        print("In item popup rename item")
                         viewModel.renameItem(item: item, name: newName)
                     }
                     
@@ -124,7 +126,6 @@ struct FolderListView: View {
             }
         }
     }
-    
     
     private var homeButton: some View {
         Button {
@@ -148,7 +149,7 @@ struct FolderListView: View {
             Image(systemName: "waveform.circle")
                 .resizable()
                 .foregroundStyle(recordingViewModel.isRecording ? .red : .blue)
-                .frame(width: 75, height: 75)
+                .frame(width: 50, height: 50)
         }
     }
     
@@ -175,9 +176,11 @@ struct FolderListView: View {
                 viewModel.moveViewIsPresented = true
             }
         }
+        
     }
 }
 
 #Preview {
-    FolderListView(database: MockDataManager(folders: MockDataManager.sampleFolders, files: MockDataManager.sampleFiles))
+    let f = AudioRecording(name: "A really long name for a recording, let see how far it spills over!", date: Date(), duration: 123, recordingURL: URL(string: "www.sample.com")!)
+    return FolderListView(database: MockDataManager(folders: MockDataManager.sampleFolders, files: [f]))
 }

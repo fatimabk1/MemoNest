@@ -13,7 +13,7 @@ struct audioMetaData {
 }
 
 
-final class AudioRecording: Item {
+struct AudioRecording: Item {
     let id = UUID()
     var name: String
     let icon = "headphones"

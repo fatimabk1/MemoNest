@@ -104,7 +104,7 @@ final class MockDataManager: DataManager {
                 let index = self.files.firstIndex(where: {$0.id == fileID})
                 guard let index else { return }
                 
-                let file = self.files[index]
+                var file = self.files[index]
                 file.parent = newParentID
                 self.files[index] = file
                 promise(.success(()))

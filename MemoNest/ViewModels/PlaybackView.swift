@@ -10,6 +10,7 @@ import AVFoundation
 
 struct PlaybackView: View {
     @ObservedObject var viewModel: PlaybackViewModel
+    @State private var debouncedTime: TimeInterval = 0
     
     init(recording: AudioRecording) {
         self.viewModel = PlaybackViewModel(recording: recording)
@@ -26,14 +27,16 @@ struct PlaybackView: View {
                     .font(.title)
             }
             Spacer()
-            Slider(value: $viewModel.currentTime, in: 0...viewModel.duration)
-                .onChange(of: viewModel.currentTime, {
-                    viewModel.seek(to: viewModel.currentTime)
-                })
-                .padding()
+            Slider(value: $viewModel.currentTime,
+                   in: 0...viewModel.duration,
+                   onEditingChanged: { editing in
+                       if !editing {
+                           viewModel.seek(to: viewModel.currentTime)
+                       }
+                    })
+                    .padding()
             HStack {
-                // TODO: FRAME text to 1/3 of screen so it will wrap (don't push play button as time grows longer) OR ZStack & place on top
-                Text("\(viewModel.formatTimeInterval(seconds: 12/*viewModel.currentTime*/))")
+                Text("\(viewModel.currentTime)")
                 Spacer()
                 Button {
                     if !viewModel.isPlaying {

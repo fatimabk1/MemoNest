@@ -10,6 +10,7 @@
 		083972E42BB36BA900C4B134 /* MoveItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E32BB36BA900C4B134 /* MoveItemView.swift */; };
 		083972E62BB496B300C4B134 /* MoveItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E52BB496B300C4B134 /* MoveItemViewModel.swift */; };
 		0844548F2BBF5B8C007CDC57 /* RecordingPlaybackTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0844548E2BBF5B8C007CDC57 /* RecordingPlaybackTestView.swift */; };
+		084454932BC71049007CDC57 /* FormatterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084454922BC71049007CDC57 /* FormatterService.swift */; };
 		085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743122B7D245E00E546A1 /* MemoNestApp.swift */; };
 		085743152B7D245E00E546A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743142B7D245E00E546A1 /* ContentView.swift */; };
 		085743172B7D245F00E546A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 085743162B7D245F00E546A1 /* Assets.xcassets */; };
@@ -66,6 +67,7 @@
 		083972E52BB496B300C4B134 /* MoveItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemViewModel.swift; sourceTree = "<group>"; };
 		0844548E2BBF5B8C007CDC57 /* RecordingPlaybackTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingPlaybackTestView.swift; sourceTree = "<group>"; };
 		084454902BC5B6F2007CDC57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		084454922BC71049007CDC57 /* FormatterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterService.swift; sourceTree = "<group>"; };
 		0857430F2B7D245E00E546A1 /* MemoNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		085743122B7D245E00E546A1 /* MemoNestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestApp.swift; sourceTree = "<group>"; };
 		085743142B7D245E00E546A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -128,6 +130,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		084454912BC71038007CDC57 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				084454922BC71049007CDC57 /* FormatterService.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		085743062B7D245E00E546A1 = {
 			isa = PBXGroup;
 			children = (
@@ -151,6 +161,7 @@
 		085743112B7D245E00E546A1 /* MemoNest */ = {
 			isa = PBXGroup;
 			children = (
+				084454912BC71038007CDC57 /* Helpers */,
 				084454902BC5B6F2007CDC57 /* Info.plist */,
 				085743122B7D245E00E546A1 /* MemoNestApp.swift */,
 				085743452B7D255A00E546A1 /* Protocols */,
@@ -461,6 +472,7 @@
 				086ED08C2B98C81E00A30EBC /* DataManager.swift in Sources */,
 				08866F7A2BBB5C490042318B /* RecordingViewModel.swift in Sources */,
 				085743472B7D257C00E546A1 /* Item.swift in Sources */,
+				084454932BC71049007CDC57 /* FormatterService.swift in Sources */,
 				086ED08E2B98C9C200A30EBC /* RealmDataManager.swift in Sources */,
 				0844548F2BBF5B8C007CDC57 /* RecordingPlaybackTestView.swift in Sources */,
 				08866F862BBC98C70042318B /* PlaybackViewPlaceHolder.swift in Sources */,

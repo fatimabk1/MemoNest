@@ -27,7 +27,7 @@ struct InputPopup: View {
                 .opacity(0.3)
                 .ignoresSafeArea()
             ZStack {
-                Color.white
+                Color("PopupBackground")
                 VStack {
                     Text(popup.popupTitle)
                         .padding()
