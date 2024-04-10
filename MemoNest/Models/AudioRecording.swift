@@ -7,24 +7,29 @@
 
 import Foundation
 
-final class AudioRecording {
+struct audioMetaData {
+    let duration: TimeInterval
+    let recordingURL:URL
+}
+
+
+final class AudioRecording: Item {
     let id = UUID()
     var name: String
-    var parent: UUID?
-    var date: Date = Date() // skip time, because date type includes date and time
     let icon = "headphones"
-    let length: TimeInterval
-    let recordingURL: URL
+    var date: Date = Date() // skip time, because date type includes date and time
+    var parent: UUID?
+    var type: ItemType = .recording
+    var audioInfo: audioMetaData?
     
-    init(name: String="\(Date().formatted()) Recording", parent: UUID?, date: Date, length: TimeInterval, recordingURL: URL) {
+    init(name: String, date: Date, parent: UUID? = nil, duration: TimeInterval, recordingURL: URL) {
         self.name = name
-        self.parent = parent
         self.date = date
-        self.length = length
-        self.recordingURL = recordingURL
+        self.parent = parent
+        self.audioInfo = audioMetaData(duration: duration, recordingURL: recordingURL)
     }
 }
 
 extension AudioRecording {
-    static let sample = AudioRecording(name: "Recording #1", parent: nil, date: Date(), length: TimeInterval(25), recordingURL: URL(string: "https://www.sampleURL.com")!)
+    static let sample = AudioRecording(name: "Recording #1", date: Date(), parent: nil, duration: TimeInterval(25), recordingURL: URL(string: "https://www.sampleURL.com")!)
 }

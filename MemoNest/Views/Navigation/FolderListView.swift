@@ -13,9 +13,11 @@ enum ItemAction {
 
 struct FolderListView: View {
     @ObservedObject var viewModel: FolderListViewModel
-    
+    @ObservedObject var recordingViewModel: RecordingViewModel
+
     init(database: DataManager) {
         self.viewModel = FolderListViewModel(database: database)
+        self.recordingViewModel = RecordingViewModel(database: database)
     }
 
     var body: some View {
@@ -55,6 +57,7 @@ struct FolderListView: View {
         }
         .onAppear {
             viewModel.handleOnAppear()
+            recordingViewModel.handleOnAppear()
         }
     }
     
@@ -74,13 +77,16 @@ struct FolderListView: View {
             ForEach(viewModel.items, id: \.id) { item in
                 Group {
                     if item is Folder {
-                        createListRow(item: item)
+//                        createListRow(item: item)
                     } else {
                         createListRow(item: item)
                             .background(
-                                // PlaybackViewPlaceHolder(fileURL: item.url)
-                                NavigationLink("", destination: PlaybackViewPlaceHolder())
-                                    .opacity(0)
+                                NavigationLink {
+                                    PlaybackView(recording: item)
+                                } label: {
+                                    Text("\(item.name)")
+                                }
+                                .disabled(recordingViewModel.isRecording)
                             )
                     }
                 }
@@ -120,10 +126,16 @@ struct FolderListView: View {
     }
     
     private var recordButton: some View {
-    Button {
+        Button {
+            if recordingViewModel.isRecording {
+                recordingViewModel.stopRecording()
+            } else {
+                recordingViewModel.startRecording()
+            }
         } label: {
             Image(systemName: "waveform.circle")
                 .resizable()
+                .foregroundStyle(recordingViewModel.isRecording ? .red : .blue)
                 .frame(width: 75, height: 75)
         }
     }
@@ -141,8 +153,7 @@ struct FolderListView: View {
     }
     
     private func createListRow(item: Item) -> some View {
-        TappableListRowWithMenu(item: item,onListRowTap: viewModel.setFolder) { action in
-            
+        TappableListRowWithMenu(item: item, onListRowTap: viewModel.setFolder) { action in
             if action == .delete {
                 viewModel.removeItem(item: item)
             } else if action == .rename {

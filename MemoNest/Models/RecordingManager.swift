@@ -7,21 +7,31 @@
 
 import Foundation
 import AVFoundation
-import Photos
+import Combine
 
 
 enum RecordingError: Error {
-    case noAudio, unableToOutput, noPermission, selfIsNil, unableToRecord, noSessionQueue
+    case unableToSetupRecorder, unableToDeactivateAudioSession, noPermission
+    
+    var title: String {
+        switch(self){
+            
+        case .unableToSetupRecorder:
+            "Error: Unable to record"
+        case .unableToDeactivateAudioSession:
+            "Error: Unable to record"
+        case .noPermission:
+            "Please visit Settings to enable recording permission."
+        }
+    }
 }
 
 final class RecordingManager: NSObject, AVAudioRecorderDelegate {
-    @Published var isRecording = false
     var audioRecorder: AVAudioRecorder?
-    let audioSession: AVAudioSession
-    var hasRecordPermission = false
-    var audioSessionIsSetup = false
-    var filePath: URL?
     
+    private var filePath: URL?
+    private var cancellables = Set<AnyCancellable>()
+    private var isRecording = false
     private var recordingCount = 0
     private let audioSettings =  [
         AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -30,31 +40,42 @@ final class RecordingManager: NSObject, AVAudioRecorderDelegate {
         AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
     ]
     
-    init(audioSession: AVAudioSession) {
-        self.audioSession = audioSession
+    init(audioRecorder: AVAudioRecorder? = nil, filePath: URL? = nil, cancellables: Set<AnyCancellable> = Set<AnyCancellable>(), recordingCount: Int = 0) {
+        super.init()
+        self.audioRecorder = audioRecorder
+        self.filePath = filePath
+        self.cancellables = cancellables
+        self.recordingCount = recordingCount
+        self.handleInterruptions()
+    }
+    
+    private func handleInterruptions() {
+        NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)
+            .sink { notification in
+                guard let reason = notification.userInfo?[AVAudioSession.interruptionNotification] as? UInt else {
+                    return
+                }
+                
+                switch AVAudioSession.InterruptionType(rawValue: reason){
+                case .began:
+                    if self.isRecording {
+                        _ = self.stopRecording() // TODO: bubble up errors?
+                    }
+                default:
+                    break
+                }
+            }
+            .store(in: &cancellables)
     }
     
     func requestPermission(completion: @escaping(Bool) -> Void) {
         print("Requesting permission")
-        AVAudioApplication.requestRecordPermission() { [weak self] permission in
-            if permission {
-                self?.hasRecordPermission = true
-            }
+        AVAudioApplication.requestRecordPermission() { permission in
             completion(permission)
         }
     }
     
-    func setupAudioSession() {
-        print("Setting up audio session")
-        do {
-            try audioSession.setCategory(.playAndRecord, mode: .default)
-            try audioSession.setActive(true)
-        } catch {
-            print("Error: cannot setup Audio Session")
-        }
-    }
-    
-    func getNewFileName() -> URL {
+    private func getNewFileName() -> URL {
         print("Generating audio file name")
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         recordingCount += 1
@@ -63,35 +84,38 @@ final class RecordingManager: NSObject, AVAudioRecorderDelegate {
         return fileName
     }
     
-    private func setupRecorder() {
+    func setupRecorder() -> Result<URL, RecordingError> {
         print("Setting up recorder")
         do {
-            audioRecorder = try AVAudioRecorder(url: getNewFileName(), settings: audioSettings)
+            let fileURL = getNewFileName()
+            audioRecorder = try AVAudioRecorder(url: fileURL, settings: audioSettings)
+            audioRecorder?.prepareToRecord()
             audioRecorder?.delegate = self
+            return .success(fileURL)
         } catch {
-            print("Error: cannot setup recorder")
+            return .failure(RecordingError.unableToSetupRecorder)
         }
     }
     
     func startRecording() {
-        if hasRecordPermission {
-            setupRecorder()
-            audioRecorder?.record()
-            isRecording = true
-            print("Now recording...")
-        }
+        audioRecorder?.record()
+        self.isRecording = true
+        print("Now recording...")
     }
     
-    func stopRecording() {
-        if isRecording {
-            audioRecorder?.stop()
-            print("Ending recording")
-            audioRecorder = nil
-            do {
-                try AVAudioSession.sharedInstance().setActive(false)
-            } catch {
-                print("Error: unable to deactivate audio sesion from recording")
-            }
+    func stopRecording() -> Result<Void, RecordingError> {
+        print("called stopRecording()")
+        audioRecorder?.stop()
+        self.isRecording = false
+        print("Ending recording")
+        audioRecorder = nil
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+            print("deactivated AVAudioSession")
+            return .success(())
+        } catch {
+            print("Error: unable to deactivate audio sesion from recording")
+            return .failure(RecordingError.unableToDeactivateAudioSession)
         }
     }
     

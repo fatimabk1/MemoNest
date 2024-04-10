@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		083972E42BB36BA900C4B134 /* MoveItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E32BB36BA900C4B134 /* MoveItemView.swift */; };
 		083972E62BB496B300C4B134 /* MoveItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E52BB496B300C4B134 /* MoveItemViewModel.swift */; };
+		0844548F2BBF5B8C007CDC57 /* RecordingPlaybackTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0844548E2BBF5B8C007CDC57 /* RecordingPlaybackTestView.swift */; };
 		085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743122B7D245E00E546A1 /* MemoNestApp.swift */; };
 		085743152B7D245E00E546A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743142B7D245E00E546A1 /* ContentView.swift */; };
 		085743172B7D245F00E546A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 085743162B7D245F00E546A1 /* Assets.xcassets */; };
@@ -63,6 +64,8 @@
 /* Begin PBXFileReference section */
 		083972E32BB36BA900C4B134 /* MoveItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemView.swift; sourceTree = "<group>"; };
 		083972E52BB496B300C4B134 /* MoveItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemViewModel.swift; sourceTree = "<group>"; };
+		0844548E2BBF5B8C007CDC57 /* RecordingPlaybackTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingPlaybackTestView.swift; sourceTree = "<group>"; };
+		084454902BC5B6F2007CDC57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0857430F2B7D245E00E546A1 /* MemoNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		085743122B7D245E00E546A1 /* MemoNestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestApp.swift; sourceTree = "<group>"; };
 		085743142B7D245E00E546A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -148,6 +151,7 @@
 		085743112B7D245E00E546A1 /* MemoNest */ = {
 			isa = PBXGroup;
 			children = (
+				084454902BC5B6F2007CDC57 /* Info.plist */,
 				085743122B7D245E00E546A1 /* MemoNestApp.swift */,
 				085743452B7D255A00E546A1 /* Protocols */,
 				0857433E2B7D24C400E546A1 /* ViewModels */,
@@ -208,8 +212,10 @@
 			children = (
 				08866F7F2BBC89A20042318B /* Navigation */,
 				08866F752BBB5BC60042318B /* RecordingView.swift */,
+				085743142B7D245E00E546A1 /* ContentView.swift */,
 				08866F772BBB5BD20042318B /* PlaybackView.swift */,
 				08866F852BBC98C60042318B /* PlaybackViewPlaceHolder.swift */,
+				0844548E2BBF5B8C007CDC57 /* RecordingPlaybackTestView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -285,7 +291,6 @@
 		08866F7F2BBC89A20042318B /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				085743142B7D245E00E546A1 /* ContentView.swift */,
 				085743432B7D251E00E546A1 /* FolderListView.swift */,
 				0857434F2B7D408100E546A1 /* ListRow.swift */,
 				086ED09D2B9B630D00A30EBC /* BackButton.swift */,
@@ -457,6 +462,7 @@
 				08866F7A2BBB5C490042318B /* RecordingViewModel.swift in Sources */,
 				085743472B7D257C00E546A1 /* Item.swift in Sources */,
 				086ED08E2B98C9C200A30EBC /* RealmDataManager.swift in Sources */,
+				0844548F2BBF5B8C007CDC57 /* RecordingPlaybackTestView.swift in Sources */,
 				08866F862BBC98C70042318B /* PlaybackViewPlaceHolder.swift in Sources */,
 				086ED0A02B9B642000A30EBC /* InputPopup.swift in Sources */,
 				086ED09E2B9B630D00A30EBC /* BackButton.swift in Sources */,
@@ -629,6 +635,7 @@
 				DEVELOPMENT_TEAM = N483G6TVAZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MemoNest/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app uses the microphone to record audio.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -662,6 +669,7 @@
 				DEVELOPMENT_TEAM = N483G6TVAZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MemoNest/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app uses the microphone to record audio.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

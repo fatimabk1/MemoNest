@@ -9,13 +9,13 @@ import Foundation
 import Combine
 
 protocol DataManager {   
-    var files: [File] { get }
+    var files: [AudioRecording] { get }
     var folders: [Folder] { get }
     var cancellables: Set<AnyCancellable> { get}
     
     // fetch
     func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Folder?, Never>
-    func fetchFiles(parentID: UUID?) -> AnyPublisher<[File], Never>
+    func fetchFiles(parentID: UUID?) -> AnyPublisher<[AudioRecording], Never>
     func fetchFolders(parentID: UUID?) -> AnyPublisher<[Folder], Never>
     
     // remove
@@ -34,5 +34,5 @@ protocol DataManager {
     
     // add
     func addFolder(folderName: String, parentID: UUID?) -> AnyPublisher<Void, Never>
-    func addFile(fileName: String, parentID: UUID?) -> AnyPublisher<Void, Never>
+    func addFile(fileName: String, date: Date, parentID: UUID?, duration: TimeInterval, recordingURL: URL) -> AnyPublisher<Void, Never>
 }

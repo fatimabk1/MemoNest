@@ -15,13 +15,27 @@ import Foundation
 // So here, maybe struct Folder: Item or Folder: Listable
 
 // Rename to Item
+
+enum ItemType {
+    case folder, recording
+}
+ 
+// TODO: Item protocol contains everything
+// File struct has the rest nil, stored in separate file table
+// Recording struct has the rest filled, stored in separate recordings table
+// still store files/folders in separate tables
 protocol Item {
     var id: UUID { get }
     var name: String { get }
     var icon: String { get }
     var date: Date { get }
     var parent: UUID? { get }
+    var type: ItemType {get}
+    var audioInfo: audioMetaData? {get}
 }
+
+
+
 
 /*
  Folder has metadata of its children to keep the order

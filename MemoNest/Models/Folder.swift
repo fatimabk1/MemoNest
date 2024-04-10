@@ -13,6 +13,8 @@ struct Folder: Item {
     var parent: UUID?
     var date: Date = Date()
     let icon = "folder"
+    var type: ItemType = .folder
+    var audioInfo: audioMetaData? = nil
 }
 
 extension Folder {

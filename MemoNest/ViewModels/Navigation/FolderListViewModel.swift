@@ -28,11 +28,11 @@ final class FolderListViewModel: ObservableObject {
     @Published var sortType = SortType.dateAsc {
         didSet {
             let folders = items.filter({$0 is Folder})
-            let files = items.filter({$0 is File})
+            let files = items.filter({$0 is AudioRecording})
             self.items = self.sortItems(folders) + self.sortItems(files)
         }
     }
-    @Published var playbackFile: File?
+    @Published var playbackFile: AudioRecording?
     @Published var hasPlaybackFile = false
     
     @Published var popup = PopupInput()
@@ -192,8 +192,9 @@ final class FolderListViewModel: ObservableObject {
         }
     }
     
-    func addFile(fileName: String = "New File") {
-        database.addFile(fileName: fileName, parentID: self.currentFolder?.id)
+    func addFile(fileName: String = "New File", duration: TimeInterval, fileURL: URL) {
+        database.addFile(fileName: fileName, date: Date(), parentID: self.currentFolder?.id,
+                         duration: duration, recordingURL: fileURL)
             .sink { [weak self] in
                 self?.loadItems(atFolderID: self?.currentFolder?.id)
             }
@@ -209,8 +210,8 @@ final class FolderListViewModel: ObservableObject {
     }
     
     func setPlaybackFile(item: Item) {
-        if item is File {
-            self.playbackFile = (item as! File)
+        if item is AudioRecording {
+            self.playbackFile = (item as! AudioRecording)
             self.hasPlaybackFile = true
         }
     }

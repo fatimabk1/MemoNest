@@ -10,11 +10,11 @@ import Combine
 
 
 final class MockDataManager: DataManager {
-    var files = [File]()
+    var files = [AudioRecording]()
     var folders = [Folder]()
     var cancellables = Set<AnyCancellable>()
     
-    init(folders: [Folder] = [], files: [File] = []) {
+    init(folders: [Folder] = [], files: [AudioRecording] = []) {
         self.folders = folders
         self.files = files
     }
@@ -29,8 +29,8 @@ final class MockDataManager: DataManager {
         }
         .eraseToAnyPublisher()
     }
-    func fetchFiles(parentID: UUID?) -> AnyPublisher<[File], Never> {
-        Future<[File], Never> { promise in
+    func fetchFiles(parentID: UUID?) -> AnyPublisher<[AudioRecording], Never> {
+        Future<[AudioRecording], Never> { promise in
             DispatchQueue.global().async { [weak self] in
                 promise(.success(self?.files.filter({$0.parent == parentID}) ?? []))
             }
@@ -104,7 +104,7 @@ final class MockDataManager: DataManager {
                 let index = self.files.firstIndex(where: {$0.id == fileID})
                 guard let index else { return }
                 
-                var file = self.files[index]
+                let file = self.files[index]
                 file.parent = newParentID
                 self.files[index] = file
                 promise(.success(()))
@@ -123,10 +123,11 @@ final class MockDataManager: DataManager {
         }
         .eraseToAnyPublisher()
     }
-    func addFile(fileName: String, parentID: UUID?) -> AnyPublisher<Void, Never> {
+    func addFile(fileName: String, date: Date, parentID: UUID?, duration: TimeInterval, recordingURL: URL) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
             DispatchQueue.global().async { [weak self] in
-                let file = File(name: fileName, parent: parentID)
+                let file = AudioRecording(name: fileName, date: date, parent: parentID,
+                                          duration: duration, recordingURL: recordingURL)
                 self?.files.append(file)
                 promise(.success(()))
             }
@@ -147,7 +148,7 @@ final class MockDataManager: DataManager {
                     .eraseToAnyPublisher()
             }
         // fetch files
-            .flatMap { [weak self] _ -> AnyPublisher<[File], Never> in
+            .flatMap { [weak self] _ -> AnyPublisher<[AudioRecording], Never> in
                 guard let self else { return Empty().eraseToAnyPublisher() }
                 return self.fetchFiles(parentID: folderID)
             }
@@ -214,12 +215,20 @@ extension MockDataManager {
     static let folderAA2 = Folder(name: "Folder AA2", parent: folderA.id)
     static let folderAAA1 = Folder(name: "Folder AAA1", parent: folderAA1.id)
     static let sampleFolders = [folderA, folderB, folderC, folderAA1, folderAA2, folderAAA1]
-    static let file1 = File(name: "File1 in Library")
-    static let file2 = File(name: "File2 in Library")
-    static let file3 = File(name: "File3 in Library")
-    static let fileA1 = File(name: "File in Folder A", parent: folderA.id)
-    static let fileAA1 = File(name: "File in Folder AA1", parent: folderAA1.id)
-    static let fileAA2 = File(name: "File in Folder AA2", parent: folderAA2.id)
-    static let fileAAA1 = File(name: "File in Folder AAA1", parent: folderAAA1.id)
-    static let sampleFiles = [file1, file2, file3, fileA1, fileAA1, fileAA2, fileAAA1]
+    
+    static let audio1 = AudioRecording(name: "File1 in Library",
+                                       date: Date(), duration: 0, recordingURL: URL(string: "www.sample.com")!)
+    static let audio2 = AudioRecording(name: "File2 in Library", 
+                                       date: Date(), duration: 0, recordingURL: URL(string: "www.sample.com")!)
+    static let audio3 = AudioRecording(name: "File3 in Library", 
+                                       date: Date(), duration: 0, recordingURL: URL(string: "www.sample.com")!)
+    static let audioA1 = AudioRecording(name: "File in Folder A", 
+                                        date: Date(), parent: folderA.id, duration: 0, recordingURL: URL(string: "www.sample.com")!)
+    static let audioAA1 = AudioRecording(name: "File in Folder AA1", 
+                                         date: Date(), parent: folderAA1.id, duration: 0, recordingURL: URL(string: "www.sample.com")!)
+    static let audioAA2 = AudioRecording(name: "File in Folder AA2", 
+                                         date: Date(), parent: folderAA2.id, duration: 0, recordingURL: URL(string: "www.sample.com")!)
+    static let audioAAA1 = AudioRecording(name: "File in Folder AAA1", 
+                                          date: Date(), parent: folderAAA1.id, duration: 0, recordingURL: URL(string: "www.sample.com")!)
+    static let sampleFiles = [audio1, audio2, audio3, audioA1, audioAA1, audioAA2, audioAAA1]
 }

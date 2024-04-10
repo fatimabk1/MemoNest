@@ -8,6 +8,7 @@
 import Foundation
 import AVFoundation
 
+// TODO: switch to using AVPlayer
 
 final class PlaybackManager {
     @Published var isPlaying = false
