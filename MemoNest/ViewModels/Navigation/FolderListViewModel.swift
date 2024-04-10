@@ -47,7 +47,7 @@ final class FolderListViewModel: ObservableObject {
     }
     
     let database: DataManager
-    private var currentFolder: Folder?
+    @Published var currentFolder: Folder?
     private let queue: DispatchQueue
     private var cancellables = Set<AnyCancellable>()
     
@@ -192,14 +192,14 @@ final class FolderListViewModel: ObservableObject {
         }
     }
     
-    func addFile(fileName: String = "New File", duration: TimeInterval, fileURL: URL) {
-        database.addFile(fileName: fileName, date: Date(), parentID: self.currentFolder?.id,
-                         duration: duration, recordingURL: fileURL)
-            .sink { [weak self] in
-                self?.loadItems(atFolderID: self?.currentFolder?.id)
-            }
-            .store(in: &cancellables)
-    }
+//    func addFile(fileName: String = "New File", duration: TimeInterval, fileURL: URL) {
+//        database.addFile(fileName: fileName, date: Date(), parentID: self.currentFolder?.id,
+//                         duration: duration, recordingURL: fileURL)
+//            .sink { [weak self] in
+//                self?.loadItems(atFolderID: self?.currentFolder?.id)
+//            }
+//            .store(in: &cancellables)
+//    }
     
     func addFolder(folderName: String = "New Folder") {
         database.addFolder(folderName: folderName, parentID: currentFolder?.id)

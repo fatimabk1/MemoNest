@@ -11,6 +11,16 @@ enum ItemAction {
     case move, delete, rename, add, none
 }
 
+// TO DO LIST:
+/*
+ - slow launch w/ audio session & recording set up
+ - Error with rename text input:
+    [RTIInputSystemClient remoteTextInputSessionWithID:performInputOperation:]  perform input operation requires a valid sessionID. inputModality = Keyboard, inputOperation = <null selector>, customInfoType = UIEmojiSearchOperations
+ - Rename is broken for AudioRecordings. Screen not updating, although correct in the rename popup
+ - Chunky playback because of connected seek/duration display
+ */
+
+
 struct FolderListView: View {
     @ObservedObject var viewModel: FolderListViewModel
     @ObservedObject var recordingViewModel: RecordingViewModel
@@ -59,6 +69,9 @@ struct FolderListView: View {
             viewModel.handleOnAppear()
             recordingViewModel.handleOnAppear()
         }
+        .alert(isPresented: $recordingViewModel.hasError) {
+            Alert(title: Text("\(recordingViewModel.error?.title ?? "")"))
+        }
     }
     
     private var sortPicker: some View {
@@ -77,15 +90,13 @@ struct FolderListView: View {
             ForEach(viewModel.items, id: \.id) { item in
                 Group {
                     if item is Folder {
-//                        createListRow(item: item)
+                        createListRow(item: item)
                     } else {
                         createListRow(item: item)
                             .background(
                                 NavigationLink {
-                                    PlaybackView(recording: item)
-                                } label: {
-                                    Text("\(item.name)")
-                                }
+                                    PlaybackView(recording: item as! AudioRecording)
+                                } label: {}
                                 .disabled(recordingViewModel.isRecording)
                             )
                     }
@@ -128,9 +139,10 @@ struct FolderListView: View {
     private var recordButton: some View {
         Button {
             if recordingViewModel.isRecording {
-                recordingViewModel.stopRecording()
+                recordingViewModel.stopRecording(currentFolder: viewModel.currentFolder?.id)
+                viewModel.loadItems(atFolderID: viewModel.currentFolder?.id)
             } else {
-                recordingViewModel.startRecording()
+                recordingViewModel.startRecording(parentID: viewModel.currentFolder?.id)
             }
         } label: {
             Image(systemName: "waveform.circle")
