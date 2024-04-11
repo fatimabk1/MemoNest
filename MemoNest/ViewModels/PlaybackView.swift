@@ -23,6 +23,7 @@ struct PlaybackView: View {
                     .resizable()
                     .frame(width: 30, height: 30)
                     .font(.title)
+//                TextField(viewModel.title, text: $viewModel.title)
                 Text(viewModel.title)
                     .font(.title)
             }
@@ -36,7 +37,7 @@ struct PlaybackView: View {
                     })
                     .padding()
             HStack {
-                Text("\(viewModel.currentTime)")
+                Text("\(viewModel.formattedDuration)")
                 Spacer()
                 Button {
                     if !viewModel.isPlaying {

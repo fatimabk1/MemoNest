@@ -22,11 +22,18 @@ final class RecordingViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     // Variables to hold audio recording data before creation
-    var recordingName: String = "New Recording \(Date())"
+    @Published var recordingName: String = "New Recording \(Date())"
+    @Published var recordingParentTitle: String = "Library"
+    private var recordingDuration: TimeInterval = 0
     var recordingDate: Date = Date()
     var recordingParent: UUID? = nil
-    var recordingDuration: TimeInterval = 0
-    var recordingURL: URL = URL(string: "www.sample.com")!
+    var recordingURL: URL!
+    var formattedDuration: String { FormatterService.formatTimeInterval(seconds: recordingDuration) }
+    
+    // duration of recording while in progress
+    private var timerSubscription: AnyCancellable?
+    @Published var currentDuration: TimeInterval = 0
+    var formattedcurrentDuration: String { FormatterService.formatTimeInterval(seconds: currentDuration) }
     
     
     init(database: DataManager) {
@@ -42,10 +49,17 @@ final class RecordingViewModel: ObservableObject {
     }
     
     func handleOnAppear() {
+        prepareToRecord()
         reset()
     }
     
-    private func reset() {
+    func updateParentFolder(parentID: UUID?, folderTitle: String) {
+        print("updating parent folder to \(folderTitle)")
+        recordingParent = parentID
+        recordingParentTitle = folderTitle
+    }
+    
+    private func prepareToRecord() {
         DispatchQueue.global().async { [weak self] in
             guard let self else { return }
             let result = self.recordingManager.setupRecorder()
@@ -61,7 +75,16 @@ final class RecordingViewModel: ObservableObject {
         }
     }
     
-    func startRecording(parentID: UUID?) {
+    private func reset() {
+        recordingName = "New Recording \(Date().formatted())"
+        recordingParentTitle = "Library"
+        recordingDate = Date()
+        recordingParent = nil
+        recordingDuration = 0
+        currentDuration = 0
+    }
+    
+    func startRecording(parentID: UUID?, folderTitle: String) {
         checkPermissions()
         if !hasRecordPermission {
             hasError = true
@@ -72,6 +95,14 @@ final class RecordingViewModel: ObservableObject {
         
         if filePath != nil {
             recordingManager.startRecording()
+            timerSubscription = Timer.publish(every: 1, on: .main, in: .common)
+                .autoconnect()
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] date in
+                    if let startTime = self?.recordingDate {
+                        self?.currentDuration = startTime.distance(to: date)
+                    }
+                }
             isRecording = true
         } else {
             let result = recordingManager.setupRecorder()
@@ -86,36 +117,34 @@ final class RecordingViewModel: ObservableObject {
             }
         }
         
-        recordingParent = parentID
+        updateParentFolder(parentID: parentID, folderTitle: folderTitle)
         recordingDate = Date()
         recordingURL = filePath!
     }
     
-    // TODO:
-    /*
-     - need to take file name as input or have default name recording #x
-     */
-    
-    func stopRecording(currentFolder: UUID?) {
+    func stopRecording() {
         if !isRecording { return }
         let result = recordingManager.stopRecording()
         recordingDuration = recordingDate.distance(to: Date())
+        timerSubscription?.cancel()
+        timerSubscription = nil
         
         switch(result){
         case .success:
             isRecording = false
             if filePath != nil{
-                addFile(currentFolder: currentFolder)
+                addFile()
             }
             self.filePath = nil
         case .failure(let err):
             hasError = true
             error = err
         }
+        prepareToRecord()
         reset()
     }
     
-    func addFile(currentFolder: UUID?) {
+    func addFile() {
         database.addFile(fileName: recordingName, date: recordingDate,
                          parentID: recordingParent, duration: recordingDuration, recordingURL: recordingURL)
         .sink {}

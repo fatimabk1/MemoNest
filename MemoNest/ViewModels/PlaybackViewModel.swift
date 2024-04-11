@@ -29,6 +29,7 @@ final class PlaybackViewModel: ObservableObject {
     @Published var duration: TimeInterval = 0
     @Published var hasError = false
     @Published var error: PlaybackError?
+    @Published var title: String
     
     let recording: AudioRecording
     private var audioPlayer: AVAudioPlayer?
@@ -36,7 +37,7 @@ final class PlaybackViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     // Data formatted for display
-    var title: String { recording.name }
+//    var title: String { recording.name }
     var icon: String { recording.icon }
     var formattedDuration: String {
         FormatterService.formatTimeInterval(seconds: duration)
@@ -44,9 +45,18 @@ final class PlaybackViewModel: ObservableObject {
     
     init(recording: AudioRecording) {
         self.recording = recording
+        self.title = recording.name
         self.handleAudioRouteChanges()
         self.handleInterruptions()
+//        self.renameRecordingWhenUpdated()
     }
+    
+//    private func renameRecordingWhenUpdated() {
+//        $title
+//            .sink { [weak self] newName in
+//
+//            }
+//    }
     
     private func handleAudioRouteChanges() {
         NotificationCenter.default.publisher(for: AVAudioSession.routeChangeNotification)

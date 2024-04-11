@@ -13,7 +13,6 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             FolderListView(database: database)
-//            RecordingPlaybackTestView(database: database)
         }
     }
 }

@@ -16,8 +16,6 @@ enum ItemAction {
  - slow launch w/ audio session & recording set up
  - Error with rename text input:
  [RTIInputSystemClient remoteTextInputSessionWithID:performInputOperation:]  perform input operation requires a valid sessionID. inputModality = Keyboard, inputOperation = <null selector>, customInfoType = UIEmojiSearchOperations
- - Rename is broken for AudioRecordings. Screen not updating, although correct in the rename popup
- - Chunky playback because of connected seek/duration display
  */
 
 
@@ -31,47 +29,86 @@ struct FolderListView: View {
     }
     
     var body: some View {
-        ZStack {
-            NavigationStack {
-                VStack {
-                    sortPicker
-                        .buttonStyle(.borderedProminent)
-                    folderList
+        GeometryReader { geo in
+            ZStack {
+                NavigationStack {
+                    VStack {
+                        sortPicker
+                            .buttonStyle(.borderedProminent)
+                        folderList
+                    }
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationTitle(viewModel.currentFolderTitle)
                 }
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationTitle(viewModel.currentFolderTitle)
+                .navigationDestination(isPresented: $viewModel.moveViewIsPresented) {
+                    if let item = viewModel.editingItem, viewModel.itemAction == .move {
+                        MoveItemView(moveItem: item,
+                                     database: viewModel.database,
+                                     isPresenting: $viewModel.moveViewIsPresented) { destinationFolderID in
+                            viewModel.moveItem(item: item, destination: destinationFolderID)
+                        }
+                                     .navigationBarBackButtonHidden()
+                    }
+                }
+                .onAppear {
+                    viewModel.handleOnAppear()
+                    recordingViewModel.handleOnAppear()
+                }
+                .alert(isPresented: $recordingViewModel.hasError) {
+                    Alert(title: Text("\(recordingViewModel.error?.title ?? "")"))
+                }
                 .toolbar {
                     ToolbarItemGroup(placement: .topBarLeading) {
                         BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()}
                     }
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        homeButton
+                }
+                bottomToolbar
+                addRenameInputView
+            }
+        }
+    }
+    
+    private var bottomToolbar: some View {
+        VStack(spacing: 0) {
+            if recordingViewModel.isRecording {
+                recordingView
+                    .transition(.move(edge: .bottom))
+            }
+            HStack {
+                homeButton
+                Spacer()
+                recordButton
+                Spacer()
+                addFolderButton
+            }
+            .padding()
+            .background(Color("PopupBackground"))
+        }
+        .padding()
+        .frame(maxHeight: .infinity, alignment: .bottom)
+        .ignoresSafeArea()
+    }
+    
+    private var recordingView: some View {
+        VStack {
+            VStack(alignment: .leading) {
+                TextField("Recording Name", text: $recordingViewModel.recordingName)
+                    .fontWeight(.semibold)
+                VStack {
+                    HStack {
+                        Text(recordingViewModel.recordingParentTitle)
                         Spacer()
-                        recordButton
-                        Spacer()
-                        addFolderButton
+                        Button("Set Location") {
+                            recordingViewModel.updateParentFolder(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
+                        }
                     }
+                    Text("\(recordingViewModel.formattedcurrentDuration)")
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            .navigationDestination(isPresented: $viewModel.moveViewIsPresented) {
-                if let item = viewModel.editingItem, viewModel.itemAction == .move {
-                    MoveItemView(moveItem: item,
-                                 database: viewModel.database,
-                                 isPresenting: $viewModel.moveViewIsPresented) { destinationFolderID in
-                        viewModel.moveItem(item: item, destination: destinationFolderID)
-                    }
-                                 .navigationBarBackButtonHidden()
-                }
-            }
-            addRenameInputView
+            .padding()
         }
-        .onAppear {
-            viewModel.handleOnAppear()
-            recordingViewModel.handleOnAppear()
-        }
-        .alert(isPresented: $recordingViewModel.hasError) {
-            Alert(title: Text("\(recordingViewModel.error?.title ?? "")"))
-        }
+        .background(Color("PopupBackground"))
     }
     
     private var sortPicker: some View {
@@ -137,13 +174,21 @@ struct FolderListView: View {
         }
     }
     
+    // TODO: REMOVE - TESTING ONLY
+    private func testRecord() {
+        recordingViewModel.isRecording.toggle()
+    }
+    
     private var recordButton: some View {
         Button {
-            if recordingViewModel.isRecording {
-                recordingViewModel.stopRecording(currentFolder: viewModel.currentFolder?.id)
-                viewModel.loadItems(atFolderID: viewModel.currentFolder?.id)
-            } else {
-                recordingViewModel.startRecording(parentID: viewModel.currentFolder?.id)
+            withAnimation {
+                testRecord() // TODO: REMOVE - TESTING ONLY
+                if recordingViewModel.isRecording {
+                    recordingViewModel.stopRecording()
+                    viewModel.loadItems(atFolderID: viewModel.currentFolder?.id)
+                } else {
+                    recordingViewModel.startRecording(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
+                }
             }
         } label: {
             Image(systemName: "waveform.circle")
@@ -151,6 +196,7 @@ struct FolderListView: View {
                 .foregroundStyle(recordingViewModel.isRecording ? .red : .blue)
                 .frame(width: 50, height: 50)
         }
+        .symbolEffect(.variableColor.iterative, options: .repeating.speed(0.5), isActive: recordingViewModel.isRecording)
     }
     
     private var addFolderButton: some View {

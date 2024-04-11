@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		083972E42BB36BA900C4B134 /* MoveItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E32BB36BA900C4B134 /* MoveItemView.swift */; };
 		083972E62BB496B300C4B134 /* MoveItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E52BB496B300C4B134 /* MoveItemViewModel.swift */; };
-		0844548F2BBF5B8C007CDC57 /* RecordingPlaybackTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0844548E2BBF5B8C007CDC57 /* RecordingPlaybackTestView.swift */; };
 		084454932BC71049007CDC57 /* FormatterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084454922BC71049007CDC57 /* FormatterService.swift */; };
+		084454972BC85703007CDC57 /* PlaygroundTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084454962BC85703007CDC57 /* PlaygroundTesting.swift */; };
 		085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743122B7D245E00E546A1 /* MemoNestApp.swift */; };
 		085743152B7D245E00E546A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743142B7D245E00E546A1 /* ContentView.swift */; };
 		085743172B7D245F00E546A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 085743162B7D245F00E546A1 /* Assets.xcassets */; };
@@ -41,7 +41,6 @@
 		08866F7E2BBC88430042318B /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F7D2BBC88430042318B /* RecordingManager.swift */; };
 		08866F822BBC8A110042318B /* PlaybackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F812BBC8A110042318B /* PlaybackManager.swift */; };
 		08866F842BBC8ABC0042318B /* AudioRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F832BBC8ABC0042318B /* AudioRecording.swift */; };
-		08866F862BBC98C70042318B /* PlaybackViewPlaceHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F852BBC98C60042318B /* PlaybackViewPlaceHolder.swift */; };
 		08866F8C2BBCB4180042318B /* PopupInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F8B2BBCB4170042318B /* PopupInput.swift */; };
 /* End PBXBuildFile section */
 
@@ -65,9 +64,9 @@
 /* Begin PBXFileReference section */
 		083972E32BB36BA900C4B134 /* MoveItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemView.swift; sourceTree = "<group>"; };
 		083972E52BB496B300C4B134 /* MoveItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemViewModel.swift; sourceTree = "<group>"; };
-		0844548E2BBF5B8C007CDC57 /* RecordingPlaybackTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingPlaybackTestView.swift; sourceTree = "<group>"; };
 		084454902BC5B6F2007CDC57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		084454922BC71049007CDC57 /* FormatterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterService.swift; sourceTree = "<group>"; };
+		084454962BC85703007CDC57 /* PlaygroundTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaygroundTesting.swift; sourceTree = "<group>"; };
 		0857430F2B7D245E00E546A1 /* MemoNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		085743122B7D245E00E546A1 /* MemoNestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestApp.swift; sourceTree = "<group>"; };
 		085743142B7D245E00E546A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -101,7 +100,6 @@
 		08866F7D2BBC88430042318B /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
 		08866F812BBC8A110042318B /* PlaybackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackManager.swift; sourceTree = "<group>"; };
 		08866F832BBC8ABC0042318B /* AudioRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecording.swift; sourceTree = "<group>"; };
-		08866F852BBC98C60042318B /* PlaybackViewPlaceHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewPlaceHolder.swift; sourceTree = "<group>"; };
 		08866F8B2BBCB4170042318B /* PopupInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupInput.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -225,8 +223,7 @@
 				08866F752BBB5BC60042318B /* RecordingView.swift */,
 				085743142B7D245E00E546A1 /* ContentView.swift */,
 				08866F772BBB5BD20042318B /* PlaybackView.swift */,
-				08866F852BBC98C60042318B /* PlaybackViewPlaceHolder.swift */,
-				0844548E2BBF5B8C007CDC57 /* RecordingPlaybackTestView.swift */,
+				084454962BC85703007CDC57 /* PlaygroundTesting.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -452,6 +449,7 @@
 			files = (
 				08866F822BBC8A110042318B /* PlaybackManager.swift in Sources */,
 				085743152B7D245E00E546A1 /* ContentView.swift in Sources */,
+				084454972BC85703007CDC57 /* PlaygroundTesting.swift in Sources */,
 				0857434C2B7D265300E546A1 /* MockDataManager.swift in Sources */,
 				083972E62BB496B300C4B134 /* MoveItemViewModel.swift in Sources */,
 				08866F782BBB5BD20042318B /* PlaybackView.swift in Sources */,
@@ -474,8 +472,6 @@
 				085743472B7D257C00E546A1 /* Item.swift in Sources */,
 				084454932BC71049007CDC57 /* FormatterService.swift in Sources */,
 				086ED08E2B98C9C200A30EBC /* RealmDataManager.swift in Sources */,
-				0844548F2BBF5B8C007CDC57 /* RecordingPlaybackTestView.swift in Sources */,
-				08866F862BBC98C70042318B /* PlaybackViewPlaceHolder.swift in Sources */,
 				086ED0A02B9B642000A30EBC /* InputPopup.swift in Sources */,
 				086ED09E2B9B630D00A30EBC /* BackButton.swift in Sources */,
 			);

@@ -17,8 +17,8 @@ struct TappableListRowWithMenu: View {
         HStack {
             TappableListRow(item: item,
                             onListRowTap: onListRowTap)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-    
+            .frame(maxWidth: .infinity, alignment: .trailing)
+            
             Menu {
                 Button("Rename") { onActionSelected(.rename) }
                 Button("Delete") { onActionSelected(.delete) }
@@ -51,19 +51,30 @@ struct ListRow: View {
         FormatterService.formatDate(date: item.date)
     }
     
+    var formattedDuration: String {
+        if let duration = item.audioInfo?.duration {
+            FormatterService.formatTimeInterval(seconds: duration)
+        } else {
+            ""
+        }
+    }
+    
     var body: some View {
-        HStack {
+        HStack(alignment: .top) {
             Image(systemName: item.icon)
-            VStack {
+            VStack(alignment: .leading) {
                 Text(item.name)
                     .lineLimit(0)
                 if let duration = item.audioInfo?.duration {
-                    Text("\(duration)")
+                    Text("\(formattedDuration)")
+                        .foregroundStyle(.secondary)
+                        .font(.callout)
                 }
             }
             Spacer()
             Text(formattedDate)
                 .font(.callout)
+                .foregroundStyle(.secondary)
                 .padding(.trailing)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
