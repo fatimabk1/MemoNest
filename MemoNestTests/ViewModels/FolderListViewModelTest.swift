@@ -625,9 +625,6 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertEqual(result, expected)
     }
     
-    // TODO: setPlaybackFile
-//    func test_setPlaybackFile_setFileAndFlag_givenItem() {}
-
 }
 
 // TODO: Item struct for all, nil struct for recording metadata

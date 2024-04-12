@@ -193,27 +193,11 @@ final class FolderListViewModel: ObservableObject {
         }
     }
     
-//    func addFile(fileName: String = "New File", duration: TimeInterval, fileURL: URL) {
-//        database.addFile(fileName: fileName, date: Date(), parentID: self.currentFolder?.id,
-//                         duration: duration, recordingURL: fileURL)
-//            .sink { [weak self] in
-//                self?.loadItems(atFolderID: self?.currentFolder?.id)
-//            }
-//            .store(in: &cancellables)
-//    }
-    
     func addFolder(folderName: String = "New Folder") {
         database.addFolder(folderName: folderName, parentID: currentFolder?.id)
             .sink { [weak self] in
                 self?.loadItems(atFolderID: self?.currentFolder?.id)
             }
             .store(in: &cancellables)
-    }
-    
-    func setPlaybackFile(item: Item) {
-        if item is AudioRecording {
-            self.playbackFile = (item as! AudioRecording)
-            self.hasPlaybackFile = true
-        }
     }
 }

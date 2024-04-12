@@ -21,14 +21,34 @@ final class PlaygroundTestingViewModel: ObservableObject {
 
 struct PlaygroundTesting: View {
     @ObservedObject var viewModel: PlaygroundTestingViewModel
+    @State var showing = false
     
     init() {
         self.viewModel = PlaygroundTestingViewModel()
     }
     
     var body: some View {
-        Text(viewModel.myTitle)
-        Button("Change title") {viewModel.updateTitle("A New Title") }
+        List {
+            ForEach(0..<10) { num in
+                VStack {
+                    HStack {
+                        Text("hi")
+                        Button("Button") {
+//                            withAnimation {
+                                showing.toggle()
+//                            }
+                        }
+                    }
+                    if showing {
+                        Text("here")
+                        Text("here")
+                        Text("here")
+                        Text("here")
+//                            .transition(.move(edge: .top)).transition(.move(edge: .bottom))
+                    }
+                }
+            }
+        }
     }
 }
 

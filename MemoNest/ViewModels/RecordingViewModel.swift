@@ -145,10 +145,12 @@ final class RecordingViewModel: ObservableObject {
     }
     
     func addFile() {
-        database.addFile(fileName: recordingName, date: recordingDate,
-                         parentID: recordingParent, duration: recordingDuration, recordingURL: recordingURL)
-        .sink {}
-        .store(in: &cancellables)
+        if let recordingURL {
+            database.addFile(fileName: recordingName, date: recordingDate,
+                             parentID: recordingParent, duration: recordingDuration, recordingURL: recordingURL)
+            .sink {}
+            .store(in: &cancellables)
+        }
     }
     
     func rename() {}

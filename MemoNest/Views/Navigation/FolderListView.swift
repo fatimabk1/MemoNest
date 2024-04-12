@@ -35,19 +35,24 @@ struct FolderListView: View {
                     VStack {
                         sortPicker
                             .buttonStyle(.borderedProminent)
-                        folderList
+                        List {
+                            ForEach(viewModel.items, id: \.id) { item in
+                                createListRow(item: item)
+                            }
+                        }
+                        .listStyle(.inset)
+                        .scrollContentBackground(.hidden)
                     }
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle(viewModel.currentFolderTitle)
                 }
                 .navigationDestination(isPresented: $viewModel.moveViewIsPresented) {
                     if let item = viewModel.editingItem, viewModel.itemAction == .move {
-                        MoveItemView(moveItem: item,
-                                     database: viewModel.database,
+                        MoveItemView(moveItem: item, database: viewModel.database,
                                      isPresenting: $viewModel.moveViewIsPresented) { destinationFolderID in
                             viewModel.moveItem(item: item, destination: destinationFolderID)
                         }
-                                     .navigationBarBackButtonHidden()
+                        .navigationBarBackButtonHidden()
                     }
                 }
                 .onAppear {
@@ -122,29 +127,6 @@ struct FolderListView: View {
         .padding(.horizontal)
     }
     
-    private var folderList: some View {
-        List {
-            ForEach(viewModel.items, id: \.id) { item in
-                Group {
-                    if item is Folder {
-                        createListRow(item: item)
-                    } else {
-                        createListRow(item: item)
-                            .background(
-                                NavigationLink {
-                                    PlaybackView(recording: item as! AudioRecording)
-                                } label: {}.opacity(0)
-                                    .disabled(recordingViewModel.isRecording)
-                            )
-                    }
-                }
-            }
-        }
-        .listStyle(.inset)
-        .scrollContentBackground(.hidden)
-        
-    }
-    
     @ViewBuilder
     private var addRenameInputView: some View {
         if viewModel.itemAction == .rename || viewModel.itemAction == .add {
@@ -182,7 +164,7 @@ struct FolderListView: View {
     private var recordButton: some View {
         Button {
             withAnimation {
-                testRecord() // TODO: REMOVE - TESTING ONLY
+//                testRecord() // TODO: REMOVE - TESTING ONLY
                 if recordingViewModel.isRecording {
                     recordingViewModel.stopRecording()
                     viewModel.loadItems(atFolderID: viewModel.currentFolder?.id)
@@ -212,7 +194,8 @@ struct FolderListView: View {
     }
     
     private func createListRow(item: Item) -> some View {
-        TappableListRowWithMenu(item: item, onListRowTap: viewModel.setFolder) { action in
+//        TappableListRowWithMenu(item: item, onListRowTap: viewModel.setFolder) { action in
+        TestRow(item: item, onListRowTap: viewModel.setFolder) { action in
             if action == .delete {
                 viewModel.removeItem(item: item)
             } else if action == .rename {
@@ -227,6 +210,7 @@ struct FolderListView: View {
 }
 
 #Preview {
-    let f = AudioRecording(name: "A really long name for a recording, let see how far it spills over!", date: Date(), duration: 123, recordingURL: URL(string: "www.sample.com")!)
-    return FolderListView(database: MockDataManager(folders: MockDataManager.sampleFolders, files: [f]))
+    let audio1 = AudioRecording(name: "A really long name for a recording, let see how far it spills over!", date: Date(), duration: 123, recordingURL: URL(string: "www.sample.com")!)
+    let audio2 = AudioRecording(name: "Recording #4", date: Date(), duration: 123, recordingURL: URL(string: "www.sample.com")!)
+    return FolderListView(database: MockDataManager(folders: MockDataManager.sampleFolders, files: [audio1, audio2]))
 }

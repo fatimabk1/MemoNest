@@ -17,52 +17,82 @@ struct PlaybackView: View {
     }
     
     var body: some View {
-        VStack {
-            HStack {
-                Image(systemName: viewModel.icon)
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .font(.title)
-//                TextField(viewModel.title, text: $viewModel.title)
-                Text(viewModel.title)
-                    .font(.title)
-            }
-            Spacer()
+        VStack(spacing: 0) {
+            Text(viewModel.isPlaying ? "Playing" : "Paused")
+            Text("\(viewModel.formattedDuration)")
+                .frame(maxWidth: 100)
+                .frame(maxWidth: .infinity, alignment: .trailing)
             Slider(value: $viewModel.currentTime,
                    in: 0...viewModel.duration,
                    onEditingChanged: { editing in
-                       if !editing {
-                           viewModel.seek(to: viewModel.currentTime)
-                       }
-                    })
-                    .padding()
-            HStack {
-                Text("\(viewModel.formattedDuration)")
-                Spacer()
-                Button {
-                    if !viewModel.isPlaying {
-                        viewModel.play()
-                    } else {
-                        viewModel.pause()
-                    }
-                } label: {
-                    Image(systemName: viewModel.isPlaying ? "pause.circle" : "play.circle")
-                        .resizable()
-                        .frame(width: 50, height: 50)
+                if !editing {
+                    viewModel.seek(to: viewModel.currentTime)
                 }
+            })
+            
+            HStack(spacing: 50) {
+                Spacer()
+                seekForwardButton
+                    .border(.red)
+                playPauseButton
+                    .border(.red)
+                seekBackwardButton
+                    .border(.red)
                 Spacer()
             }
-            .padding()
+            .padding(.top)
         }
+        .padding()
         .alert(isPresented: $viewModel.hasError) {
             Alert(title: Text("\(viewModel.error?.title ?? "")"))
         }
         .onAppear {
             viewModel.handleOnAppear()
         }
+        
+    }
+    
+    private var playPauseButton: some View {
+        Button {
+            if !viewModel.isPlaying {
+                viewModel.play()
+            } else {
+                viewModel.pause()
+            }
+        } label: {
+            Image(systemName: viewModel.isPlaying ? "pause.circle" : "play.circle")
+                .resizable()
+                .frame(width: 25, height: 25)
+        }
+    }
+    
+    private var seekForwardButton: some View {
+        Button {
+            if viewModel.isPlaying {
+                viewModel.seekForward()
+            }
+        } label: {
+            Image(systemName: "backward.circle")
+                .resizable()
+                .frame(width: 25, height: 25)
+        }
+    }
+    
+    private var seekBackwardButton: some View {
+        Button {
+            if viewModel.isPlaying {
+                viewModel.seekBackward()
+            }
+        } label: {
+            Image(systemName: "forward.circle")
+                .resizable()
+                .frame(width: 25, height: 25)
+        }
     }
 }
 
 #Preview {
-    PlaybackView(recording: AudioRecording.sample)
+    GeometryReader { geo in
+        PlaybackView(recording: AudioRecording.sample)
+    }
 }

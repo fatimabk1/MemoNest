@@ -20,8 +20,8 @@ enum PlaybackError: Error {
 final class PlaybackViewModel: ObservableObject {
     @Published var isPlaying = false
     @Published var currentTime: TimeInterval = 0 {
-        willSet { newValue
-            if newValue == duration && duration != 0 {
+        willSet {
+            if newValue >= duration && duration != 0 {
                 isPlaying = false
             }
         }
@@ -36,8 +36,6 @@ final class PlaybackViewModel: ObservableObject {
     private var audioWasInterrupted = false
     private var cancellables = Set<AnyCancellable>()
     
-    // Data formatted for display
-//    var title: String { recording.name }
     var icon: String { recording.icon }
     var formattedDuration: String {
         FormatterService.formatTimeInterval(seconds: duration)
@@ -48,15 +46,7 @@ final class PlaybackViewModel: ObservableObject {
         self.title = recording.name
         self.handleAudioRouteChanges()
         self.handleInterruptions()
-//        self.renameRecordingWhenUpdated()
     }
-    
-//    private func renameRecordingWhenUpdated() {
-//        $title
-//            .sink { [weak self] newName in
-//
-//            }
-//    }
     
     private func handleAudioRouteChanges() {
         NotificationCenter.default.publisher(for: AVAudioSession.routeChangeNotification)
@@ -145,9 +135,19 @@ final class PlaybackViewModel: ObservableObject {
     
     func seek(to time: TimeInterval) {
         if hasError { return }
-        audioPlayer?.currentTime = time
+            audioPlayer?.currentTime = time
     }
     
-    func rename() {}
+    func seekForward() {
+        if let currentTime = audioPlayer?.currentTime {
+            seek(to: currentTime + 15)
+        }
+    }
     
+    func seekBackward() {
+        if let currentTime = audioPlayer?.currentTime {
+            seek(to: currentTime - 15)
+        }
+    }
+        
 }
