@@ -7,9 +7,7 @@
 
 import SwiftUI
 
-// TODO; START HERE LIST ROW SIZE
-
-struct TestRow: View {
+struct TappableListRowWithMenu: View {
     let item: Item
     let onListRowTap: (Item) -> Void
     let onActionSelected: (ItemAction) -> Void
@@ -22,11 +20,16 @@ struct TestRow: View {
                     if item is Folder {
                         onListRowTap(item)
                     } else {
-                        showPlaybackView.toggle()
+                        withAnimation {
+                            showPlaybackView.toggle()
+                        }
                     }
                 } label: {
                     ListRow(item: item)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .buttonStyle(.plain)
+
                 Menu {
                     Button("Rename") { onActionSelected(.rename) }
                     Button("Delete") { onActionSelected(.delete) }
@@ -36,10 +39,15 @@ struct TestRow: View {
                         .padding()
                 }
             }
-            if /*showPlaybackView,*/ let item = item as? AudioRecording {
+            .background(Color("PopupBackground"))
+            if showPlaybackView, let item = item as? AudioRecording {
                 PlaybackView(recording: item)
+                    .transition(.move(edge: .top))
+//                    .transition(.opacity)
+//                    .transition(.move(edge: .top))
             }
         }
+        .background(Color("PopupBackground"))
     }
 }
 
@@ -53,11 +61,9 @@ struct TappableListRow: View {
                 onListRowTap(item)
             }
         } label: {
-            VStack(spacing: 0) {
-                ListRow(item: item)
-            }
+            ListRow(item: item)
         }
-        
+        .background(Color("PopupBackground"))
     }
 }
 
@@ -95,7 +101,7 @@ struct ListRow: View {
                 .padding(.trailing)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        
+        .background(Color("PopupBackground"))
     }
 }
 
@@ -104,14 +110,10 @@ struct ListRow: View {
     @State var tapped = false
     return Group {
         List {
-            TestRow( item:  Folder(name: "Folder"), onListRowTap: {_ in }, onActionSelected: {_ in})
-            TestRow( item:  AudioRecording.sample, onListRowTap: {_ in }, onActionSelected: {_ in})
-            TestRow( item:  AudioRecording.sample, onListRowTap: {_ in }, onActionSelected: {_ in})
-            //            TappableListRowWithMenu( item:  AudioRecording.sample, onListRowTap: {_ in }, onActionSelected: {_ in })
-//            TappableListRow( item:  AudioRecording.sample, onListRowTap: {_ in })
-//            TappableListRowWithMenu( item:  AudioRecording.sample, onListRowTap: {_ in }, onActionSelected: {_ in })
-//            TappableListRowWithMenu( item:  AudioRecording.sample, onListRowTap: {_ in }, onActionSelected: {_ in })
-//            TappableListRowWithMenu( item:  AudioRecording.sample, onListRowTap: {_ in }, onActionSelected: {_ in })
+            TappableListRowWithMenu( item: Folder(name: "folder"), onListRowTap: {_ in }, onActionSelected: {_ in})
+            TappableListRowWithMenu( item:  AudioRecording.sample, onListRowTap: {_ in }, onActionSelected: {_ in})
+            TappableListRowWithMenu( item:  AudioRecording.sample, onListRowTap: {_ in }, onActionSelected: {_ in})
+            TappableListRowWithMenu( item:  AudioRecording.sample, onListRowTap: {_ in }, onActionSelected: {_ in})
         }
         .listStyle(.inset)
         .scrollContentBackground(.hidden)

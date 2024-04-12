@@ -60,11 +60,11 @@ struct MoveItemView: View {
         } label: {
             Text("Move")
                 .padding()
+                .frame(maxWidth: .infinity)
+                .background(.blue.opacity(0.5))
+                .foregroundStyle(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 15))
         }
-        .frame(maxWidth: .infinity)
-        .background(.blue.opacity(0.5))
-        .foregroundStyle(.white)
-        .clipShape(RoundedRectangle(cornerRadius: 15))
         .padding()
         .frame(maxHeight: .infinity, alignment: .bottom)
     }

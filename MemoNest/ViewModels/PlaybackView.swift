@@ -10,7 +10,6 @@ import AVFoundation
 
 struct PlaybackView: View {
     @ObservedObject var viewModel: PlaybackViewModel
-    @State private var debouncedTime: TimeInterval = 0
     
     init(recording: AudioRecording) {
         self.viewModel = PlaybackViewModel(recording: recording)
@@ -32,12 +31,9 @@ struct PlaybackView: View {
             
             HStack(spacing: 50) {
                 Spacer()
-                seekForwardButton
-                    .border(.red)
-                playPauseButton
-                    .border(.red)
                 seekBackwardButton
-                    .border(.red)
+                playPauseButton
+                seekForwardButton
                 Spacer()
             }
             .padding(.top)
@@ -49,7 +45,6 @@ struct PlaybackView: View {
         .onAppear {
             viewModel.handleOnAppear()
         }
-        
     }
     
     private var playPauseButton: some View {
@@ -64,6 +59,7 @@ struct PlaybackView: View {
                 .resizable()
                 .frame(width: 25, height: 25)
         }
+        .buttonStyle(.plain)
     }
     
     private var seekForwardButton: some View {
@@ -72,10 +68,11 @@ struct PlaybackView: View {
                 viewModel.seekForward()
             }
         } label: {
-            Image(systemName: "backward.circle")
+            Image(systemName: "forward.circle")
                 .resizable()
                 .frame(width: 25, height: 25)
         }
+        .buttonStyle(.plain)
     }
     
     private var seekBackwardButton: some View {
@@ -84,15 +81,16 @@ struct PlaybackView: View {
                 viewModel.seekBackward()
             }
         } label: {
-            Image(systemName: "forward.circle")
+            Image(systemName: "backward.circle")
                 .resizable()
                 .frame(width: 25, height: 25)
         }
+        .buttonStyle(.plain)
     }
 }
 
 #Preview {
-    GeometryReader { geo in
+    List {
         PlaybackView(recording: AudioRecording.sample)
     }
 }

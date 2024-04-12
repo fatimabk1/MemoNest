@@ -7,51 +7,41 @@
 
 import SwiftUI
 
-final class PlaygroundTestingViewModel: ObservableObject {
-    @Published var title = "Library"
-    
-    var myTitle: String {
-        return "My title" + title
-    }
-    
-    func updateTitle(_ title: String) {
-        self.title = title
-    }
-}
 
-struct PlaygroundTesting: View {
-    @ObservedObject var viewModel: PlaygroundTestingViewModel
-    @State var showing = false
-    
-    init() {
-        self.viewModel = PlaygroundTestingViewModel()
-    }
-    
+struct PlaygroundView: View {
+    @State private var expanded: Bool = false
+
     var body: some View {
         List {
-            ForEach(0..<10) { num in
-                VStack {
-                    HStack {
-                        Text("hi")
-                        Button("Button") {
-//                            withAnimation {
-                                showing.toggle()
-//                            }
-                        }
-                    }
-                    if showing {
-                        Text("here")
-                        Text("here")
-                        Text("here")
-                        Text("here")
-//                            .transition(.move(edge: .top)).transition(.move(edge: .bottom))
-                    }
+            Section(header: HeaderView(expanded: $expanded)) {
+                if expanded {
+                    CircleView()
                 }
             }
         }
     }
 }
 
+struct HeaderView: View {
+    @Binding var expanded: Bool
+
+    var body: some View {
+        Text("Header")
+            .onTapGesture {
+                withAnimation {
+                    expanded.toggle()
+                }
+            }
+    }
+}
+
+struct CircleView: View {
+    // Your PlaybackView code here
+    var body: some View {
+        Circle()
+    }
+}
+
 #Preview {
-    PlaygroundTesting()
+    PlaygroundView()
 }

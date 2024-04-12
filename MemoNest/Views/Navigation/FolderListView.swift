@@ -194,8 +194,7 @@ struct FolderListView: View {
     }
     
     private func createListRow(item: Item) -> some View {
-//        TappableListRowWithMenu(item: item, onListRowTap: viewModel.setFolder) { action in
-        TestRow(item: item, onListRowTap: viewModel.setFolder) { action in
+        TappableListRowWithMenu(item: item, onListRowTap: viewModel.setFolder) { action in
             if action == .delete {
                 viewModel.removeItem(item: item)
             } else if action == .rename {
