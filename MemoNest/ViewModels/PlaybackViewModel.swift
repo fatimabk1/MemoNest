@@ -36,7 +36,6 @@ final class PlaybackViewModel: ObservableObject {
     private var audioWasInterrupted = false
     private var cancellables = Set<AnyCancellable>()
     
-    var icon: String { recording.icon }
     var formattedDuration: String {
         FormatterService.formatTimeInterval(seconds: duration)
     }

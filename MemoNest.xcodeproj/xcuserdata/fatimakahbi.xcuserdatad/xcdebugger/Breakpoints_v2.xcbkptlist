@@ -367,7 +367,7 @@
             startingLineNumber = "84"
             endingLineNumber = "84"
             landmarkName = "setupRecorder()"
-            landmarkType = "9">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -396,8 +396,8 @@
             filePath = "MemoNest/ViewModels/RecordingViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
             landmarkName = "startRecording(parentID:folderTitle:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -477,8 +477,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "42"
             endingLineNumber = "42"
-            landmarkName = "filePath"
-            landmarkType = "24">
+            landmarkName = "init(audioRecorder:filePath:cancellables:)"
+            landmarkType = "7">
             <Locations>
                <Location
                   uuid = "69992C04-1964-4E5A-B349-26EAE7E3D207 - 5b1cb478e9d2c3bc"

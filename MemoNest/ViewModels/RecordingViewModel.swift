@@ -48,13 +48,11 @@ final class RecordingViewModel: ObservableObject {
         }
     }
     
-    
     func updateParentFolder(parentID: UUID?, folderTitle: String) {
         print("updating parent folder to \(folderTitle)")
         recordingParent = parentID
         recordingParentTitle = folderTitle
     }
-    
     
     func startRecording(parentID: UUID?, folderTitle: String) {
         checkPermissions()
