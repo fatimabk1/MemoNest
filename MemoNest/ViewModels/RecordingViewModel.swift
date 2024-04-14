@@ -113,7 +113,9 @@ final class RecordingViewModel: ObservableObject {
         if let recordingURL {
             database.addFile(fileName: recordingName, date: recordingDate,
                              parentID: recordingParent, duration: recordingDuration, recordingURL: recordingURL)
-            .sink {}
+            .sink {
+                completion()
+            }
             .store(in: &cancellables)
         }
     }
