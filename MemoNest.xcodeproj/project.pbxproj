@@ -10,7 +10,6 @@
 		083972E42BB36BA900C4B134 /* MoveItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E32BB36BA900C4B134 /* MoveItemView.swift */; };
 		083972E62BB496B300C4B134 /* MoveItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E52BB496B300C4B134 /* MoveItemViewModel.swift */; };
 		084454932BC71049007CDC57 /* FormatterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084454922BC71049007CDC57 /* FormatterService.swift */; };
-		084454972BC85703007CDC57 /* PlaygroundTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084454962BC85703007CDC57 /* PlaygroundTesting.swift */; };
 		085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743122B7D245E00E546A1 /* MemoNestApp.swift */; };
 		085743152B7D245E00E546A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743142B7D245E00E546A1 /* ContentView.swift */; };
 		085743172B7D245F00E546A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 085743162B7D245F00E546A1 /* Assets.xcassets */; };
@@ -18,28 +17,26 @@
 		085743242B7D245F00E546A1 /* MemoNestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743232B7D245F00E546A1 /* MemoNestTests.swift */; };
 		0857432E2B7D245F00E546A1 /* MemoNestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857432D2B7D245F00E546A1 /* MemoNestUITests.swift */; };
 		085743302B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857432F2B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift */; };
-		085743402B7D24E100E546A1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857433F2B7D24E100E546A1 /* File.swift */; };
 		085743422B7D24E800E546A1 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743412B7D24E800E546A1 /* Folder.swift */; };
 		085743442B7D251E00E546A1 /* FolderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743432B7D251E00E546A1 /* FolderListView.swift */; };
 		085743472B7D257C00E546A1 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743462B7D257C00E546A1 /* Item.swift */; };
 		085743492B7D262100E546A1 /* FolderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743482B7D262100E546A1 /* FolderListViewModel.swift */; };
 		0857434C2B7D265300E546A1 /* MockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434B2B7D265300E546A1 /* MockDataManager.swift */; };
 		085743502B7D408100E546A1 /* ListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434F2B7D408100E546A1 /* ListRow.swift */; };
+		08671E5D2BCC1ED1000E2338 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 08671E5C2BCC1ED1000E2338 /* Realm */; };
+		08671E5F2BCC1ED1000E2338 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 08671E5E2BCC1ED1000E2338 /* RealmSwift */; };
 		086ED08C2B98C81E00A30EBC /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED08B2B98C81E00A30EBC /* DataManager.swift */; };
 		086ED08E2B98C9C200A30EBC /* RealmDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED08D2B98C9C200A30EBC /* RealmDataManager.swift */; };
 		086ED0912B98CA2400A30EBC /* FileDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED0902B98CA2400A30EBC /* FileDB.swift */; };
 		086ED0932B98CA2C00A30EBC /* FolderDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED0922B98CA2C00A30EBC /* FolderDB.swift */; };
 		086ED09A2B9B54F400A30EBC /* FolderListViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED0992B9B54F400A30EBC /* FolderListViewModelTest.swift */; };
-		086ED09C2B9B595B00A30EBC /* MockDataManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED09B2B9B595B00A30EBC /* MockDataManagerTest.swift */; };
 		086ED09E2B9B630D00A30EBC /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED09D2B9B630D00A30EBC /* BackButton.swift */; };
 		086ED0A02B9B642000A30EBC /* InputPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED09F2B9B642000A30EBC /* InputPopup.swift */; };
 		08866EB42BB628080042318B /* MoveItemViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866EB32BB628080042318B /* MoveItemViewModelTest.swift */; };
-		08866F762BBB5BC60042318B /* RecordingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F752BBB5BC60042318B /* RecordingView.swift */; };
 		08866F782BBB5BD20042318B /* PlaybackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F772BBB5BD20042318B /* PlaybackView.swift */; };
 		08866F7A2BBB5C490042318B /* RecordingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F792BBB5C490042318B /* RecordingViewModel.swift */; };
 		08866F7C2BBB5C520042318B /* PlaybackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F7B2BBB5C520042318B /* PlaybackViewModel.swift */; };
 		08866F7E2BBC88430042318B /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F7D2BBC88430042318B /* RecordingManager.swift */; };
-		08866F822BBC8A110042318B /* PlaybackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F812BBC8A110042318B /* PlaybackManager.swift */; };
 		08866F842BBC8ABC0042318B /* AudioRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F832BBC8ABC0042318B /* AudioRecording.swift */; };
 		08866F8C2BBCB4180042318B /* PopupInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F8B2BBCB4170042318B /* PopupInput.swift */; };
 /* End PBXBuildFile section */
@@ -66,7 +63,6 @@
 		083972E52BB496B300C4B134 /* MoveItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemViewModel.swift; sourceTree = "<group>"; };
 		084454902BC5B6F2007CDC57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		084454922BC71049007CDC57 /* FormatterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterService.swift; sourceTree = "<group>"; };
-		084454962BC85703007CDC57 /* PlaygroundTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaygroundTesting.swift; sourceTree = "<group>"; };
 		0857430F2B7D245E00E546A1 /* MemoNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		085743122B7D245E00E546A1 /* MemoNestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestApp.swift; sourceTree = "<group>"; };
 		085743142B7D245E00E546A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -77,7 +73,6 @@
 		085743292B7D245F00E546A1 /* MemoNestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MemoNestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0857432D2B7D245F00E546A1 /* MemoNestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestUITests.swift; sourceTree = "<group>"; };
 		0857432F2B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		0857433F2B7D24E100E546A1 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		085743412B7D24E800E546A1 /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
 		085743432B7D251E00E546A1 /* FolderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListView.swift; sourceTree = "<group>"; };
 		085743462B7D257C00E546A1 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -89,16 +84,13 @@
 		086ED0902B98CA2400A30EBC /* FileDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDB.swift; sourceTree = "<group>"; };
 		086ED0922B98CA2C00A30EBC /* FolderDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDB.swift; sourceTree = "<group>"; };
 		086ED0992B9B54F400A30EBC /* FolderListViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListViewModelTest.swift; sourceTree = "<group>"; };
-		086ED09B2B9B595B00A30EBC /* MockDataManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataManagerTest.swift; sourceTree = "<group>"; };
 		086ED09D2B9B630D00A30EBC /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		086ED09F2B9B642000A30EBC /* InputPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPopup.swift; sourceTree = "<group>"; };
 		08866EB32BB628080042318B /* MoveItemViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemViewModelTest.swift; sourceTree = "<group>"; };
-		08866F752BBB5BC60042318B /* RecordingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingView.swift; sourceTree = "<group>"; };
 		08866F772BBB5BD20042318B /* PlaybackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlaybackView.swift; path = ../ViewModels/PlaybackView.swift; sourceTree = "<group>"; };
 		08866F792BBB5C490042318B /* RecordingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingViewModel.swift; sourceTree = "<group>"; };
 		08866F7B2BBB5C520042318B /* PlaybackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewModel.swift; sourceTree = "<group>"; };
 		08866F7D2BBC88430042318B /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
-		08866F812BBC8A110042318B /* PlaybackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackManager.swift; sourceTree = "<group>"; };
 		08866F832BBC8ABC0042318B /* AudioRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecording.swift; sourceTree = "<group>"; };
 		08866F8B2BBCB4170042318B /* PopupInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupInput.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -108,6 +100,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08671E5F2BCC1ED1000E2338 /* RealmSwift in Frameworks */,
+				08671E5D2BCC1ED1000E2338 /* Realm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,10 +200,8 @@
 		0857433C2B7D24BB00E546A1 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				0857433F2B7D24E100E546A1 /* File.swift */,
 				085743412B7D24E800E546A1 /* Folder.swift */,
 				08866F7D2BBC88430042318B /* RecordingManager.swift */,
-				08866F812BBC8A110042318B /* PlaybackManager.swift */,
 				08866F832BBC8ABC0042318B /* AudioRecording.swift */,
 				08866F8B2BBCB4170042318B /* PopupInput.swift */,
 			);
@@ -220,10 +212,8 @@
 			isa = PBXGroup;
 			children = (
 				08866F7F2BBC89A20042318B /* Navigation */,
-				08866F752BBB5BC60042318B /* RecordingView.swift */,
 				085743142B7D245E00E546A1 /* ContentView.swift */,
 				08866F772BBB5BD20042318B /* PlaybackView.swift */,
-				084454962BC85703007CDC57 /* PlaygroundTesting.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -284,7 +274,6 @@
 		086ED0972B9B546300A30EBC /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				086ED09B2B9B595B00A30EBC /* MockDataManagerTest.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -333,6 +322,10 @@
 			dependencies = (
 			);
 			name = MemoNest;
+			packageProductDependencies = (
+				08671E5C2BCC1ED1000E2338 /* Realm */,
+				08671E5E2BCC1ED1000E2338 /* RealmSwift */,
+			);
 			productName = MemoNest;
 			productReference = 0857430F2B7D245E00E546A1 /* MemoNest.app */;
 			productType = "com.apple.product-type.application";
@@ -405,6 +398,9 @@
 				Base,
 			);
 			mainGroup = 085743062B7D245E00E546A1;
+			packageReferences = (
+				08671E5B2BCC1ED1000E2338 /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
 			productRefGroup = 085743102B7D245E00E546A1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -447,9 +443,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08866F822BBC8A110042318B /* PlaybackManager.swift in Sources */,
 				085743152B7D245E00E546A1 /* ContentView.swift in Sources */,
-				084454972BC85703007CDC57 /* PlaygroundTesting.swift in Sources */,
 				0857434C2B7D265300E546A1 /* MockDataManager.swift in Sources */,
 				083972E62BB496B300C4B134 /* MoveItemViewModel.swift in Sources */,
 				08866F782BBB5BD20042318B /* PlaybackView.swift in Sources */,
@@ -457,12 +451,10 @@
 				08866F8C2BBCB4180042318B /* PopupInput.swift in Sources */,
 				08866F842BBC8ABC0042318B /* AudioRecording.swift in Sources */,
 				085743442B7D251E00E546A1 /* FolderListView.swift in Sources */,
-				08866F762BBB5BC60042318B /* RecordingView.swift in Sources */,
 				083972E42BB36BA900C4B134 /* MoveItemView.swift in Sources */,
 				085743492B7D262100E546A1 /* FolderListViewModel.swift in Sources */,
 				085743502B7D408100E546A1 /* ListRow.swift in Sources */,
 				08866F7C2BBB5C520042318B /* PlaybackViewModel.swift in Sources */,
-				085743402B7D24E100E546A1 /* File.swift in Sources */,
 				085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */,
 				086ED0932B98CA2C00A30EBC /* FolderDB.swift in Sources */,
 				086ED0912B98CA2400A30EBC /* FileDB.swift in Sources */,
@@ -482,7 +474,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				08866EB42BB628080042318B /* MoveItemViewModelTest.swift in Sources */,
-				086ED09C2B9B595B00A30EBC /* MockDataManagerTest.swift in Sources */,
 				086ED09A2B9B54F400A30EBC /* FolderListViewModelTest.swift in Sources */,
 				085743242B7D245F00E546A1 /* MemoNestTests.swift in Sources */,
 			);
@@ -565,6 +556,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -622,6 +614,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -816,6 +809,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		08671E5B2BCC1ED1000E2338 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		08671E5C2BCC1ED1000E2338 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 08671E5B2BCC1ED1000E2338 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		08671E5E2BCC1ED1000E2338 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 08671E5B2BCC1ED1000E2338 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 085743072B7D245E00E546A1 /* Project object */;
 }

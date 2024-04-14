@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    let database = MockDataManager(folders: MockDataManager.sampleFolders, files: MockDataManager.sampleFiles)
+    let database = MockDataManager(folders: MockDataManager.sampleFolders/*, files: MockDataManager.sampleFiles*/)
     
     var body: some View {
         NavigationStack {

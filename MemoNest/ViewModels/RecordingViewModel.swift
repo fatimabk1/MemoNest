@@ -48,10 +48,6 @@ final class RecordingViewModel: ObservableObject {
         }
     }
     
-    func handleOnAppear() {
-        prepareToRecord()
-        reset()
-    }
     
     func updateParentFolder(parentID: UUID?, folderTitle: String) {
         print("updating parent folder to \(folderTitle)")
@@ -59,30 +55,6 @@ final class RecordingViewModel: ObservableObject {
         recordingParentTitle = folderTitle
     }
     
-    private func prepareToRecord() {
-        DispatchQueue.global().async { [weak self] in
-            guard let self else { return }
-            let result = self.recordingManager.setupRecorder()
-            DispatchQueue.main.async {
-                switch(result){
-                case .success(let fileURL):
-                    self.filePath = fileURL
-                case .failure(let err):
-                    self.error = err
-                    self.hasError = true
-                }
-            }
-        }
-    }
-    
-    private func reset() {
-        recordingName = "New Recording \(Date().formatted())"
-        recordingParentTitle = "Library"
-        recordingDate = Date()
-        recordingParent = nil
-        recordingDuration = 0
-        currentDuration = 0
-    }
     
     func startRecording(parentID: UUID?, folderTitle: String) {
         checkPermissions()
@@ -91,10 +63,12 @@ final class RecordingViewModel: ObservableObject {
             error = RecordingError.noPermission
             return
         }
-        isRecording = true
-        
-        if filePath != nil {
+    
+        let result = recordingManager.setupRecorder()
+        switch(result){
+        case .success(let filePath):
             recordingManager.startRecording()
+            isRecording = true
             timerSubscription = Timer.publish(every: 1, on: .main, in: .common)
                 .autoconnect()
                 .receive(on: DispatchQueue.main)
@@ -103,23 +77,19 @@ final class RecordingViewModel: ObservableObject {
                         self?.currentDuration = startTime.distance(to: date)
                     }
                 }
-            isRecording = true
-        } else {
-            let result = recordingManager.setupRecorder()
-            switch(result){
-            case .success(_):
-                recordingManager.startRecording()
-                isRecording = true
-            case .failure(let err):
+            // set audio data
+            recordingName = "New Recording \(Date().formatted())"
+            recordingParentTitle = folderTitle
+            recordingDate = Date()
+            recordingParent = parentID
+            recordingDuration = 0
+            currentDuration = 0
+            recordingURL = filePath
+            
+        case .failure(let err):
                 hasError = true
                 error = err
-                return
-            }
         }
-        
-        updateParentFolder(parentID: parentID, folderTitle: folderTitle)
-        recordingDate = Date()
-        recordingURL = filePath!
     }
     
     func stopRecording() {
@@ -132,19 +102,14 @@ final class RecordingViewModel: ObservableObject {
         switch(result){
         case .success:
             isRecording = false
-            if filePath != nil{
-                addFile()
-            }
-            self.filePath = nil
         case .failure(let err):
             hasError = true
             error = err
         }
-        prepareToRecord()
-        reset()
     }
     
-    func addFile() {
+    func addFile(completion: @escaping () -> Void) {
+        if hasError { return }
         if let recordingURL {
             database.addFile(fileName: recordingName, date: recordingDate,
                              parentID: recordingParent, duration: recordingDuration, recordingURL: recordingURL)
@@ -152,8 +117,4 @@ final class RecordingViewModel: ObservableObject {
             .store(in: &cancellables)
         }
     }
-    
-    func rename() {}
-    func addRecording() {}
-    func saveToFolder() {}
 }

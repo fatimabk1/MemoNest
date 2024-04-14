@@ -28,6 +28,7 @@ struct MemoNestApp: App {
             try audioSession.setCategory(.playAndRecord, mode: .default)
             try audioSession.overrideOutputAudioPort(.speaker)
             try audioSession.setActive(true)
+            print("Setup complete")
         } catch {
             print("Error: cannot setup Audio Session")
         }

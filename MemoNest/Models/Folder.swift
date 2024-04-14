@@ -14,7 +14,7 @@ struct Folder: Item {
     var date: Date = Date()
     let icon = "folder"
     var type: ItemType = .folder
-    var audioInfo: audioMetaData? = nil
+    var audioInfo: AudioMetaData? = nil
 }
 
 extension Folder {

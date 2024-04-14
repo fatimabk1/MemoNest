@@ -25,6 +25,7 @@ enum SortType: CaseIterable {
 
 final class FolderListViewModel: ObservableObject {
     @Published var items = [Item]()
+    @Published var isLoading = false
     @Published var sortType = SortType.dateAsc {
         didSet {
             let folders = items.filter({$0 is Folder})
@@ -32,8 +33,6 @@ final class FolderListViewModel: ObservableObject {
             self.items = self.sortItems(folders) + self.sortItems(files)
         }
     }
-    @Published var playbackFile: AudioRecording?
-    @Published var hasPlaybackFile = false
     
     @Published var popup = PopupInput()
     @Published var itemAction: ItemAction? = nil
@@ -57,7 +56,7 @@ final class FolderListViewModel: ObservableObject {
     
     // TODO: swap w/Realm
     // TODO: REMOVE - TEMP FILES/FOLDERS for development
-    init(database: DataManager = MockDataManager(folders: MockDataManager.sampleFolders, files: MockDataManager.sampleFiles), queue: DispatchQueue = .main) {
+    init(database: DataManager = MockDataManager(folders: MockDataManager.sampleFolders/*, files: MockDataManager.sampleFiles*/), queue: DispatchQueue = .main) {
         self.database = database
         self.queue = queue
     }
@@ -126,18 +125,21 @@ final class FolderListViewModel: ObservableObject {
         
         database.fetchFolders(parentID: folderID)
             .zip(database.fetchFiles(parentID: folderID))
-            .receive(on: queue)
+            .receive(on: RunLoop.main) // Bug w/DispatchQueue.main, fixed. Hurray!
             .sink { [weak self] folders, files in
                 guard let self else { return }
                 let sortedFolders = self.sortItems(folders)
                 let sortedFiles = self.sortItems(files)
                 self.items = sortedFolders + sortedFiles
+                print("finished loading items")
+                isLoading = false
             }
             .store(in: &cancellables)
-        
     }
     
     func handleOnAppear() {
+        print("starting load items")
+        isLoading = true
         self.loadItems(atFolderID: currentFolder?.id)
     }
     

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct audioMetaData {
+struct AudioMetaData {
     let duration: TimeInterval
     let recordingURL:URL
 }
@@ -20,13 +20,13 @@ struct AudioRecording: Item {
     var date: Date = Date() // skip time, because date type includes date and time
     var parent: UUID?
     var type: ItemType = .recording
-    var audioInfo: audioMetaData?
+    var audioInfo: AudioMetaData?
     
     init(name: String, date: Date, parent: UUID? = nil, duration: TimeInterval, recordingURL: URL) {
         self.name = name
         self.date = date
         self.parent = parent
-        self.audioInfo = audioMetaData(duration: duration, recordingURL: recordingURL)
+        self.audioInfo = AudioMetaData(duration: duration, recordingURL: recordingURL)
     }
 }
 

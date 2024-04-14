@@ -13,6 +13,7 @@ final class MockDataManager: DataManager {
     var files = [AudioRecording]()
     var folders = [Folder]()
     var cancellables = Set<AnyCancellable>()
+    let queue =  DispatchQueue.global(qos: .userInitiated)
     
     init(folders: [Folder] = [], files: [AudioRecording] = []) {
         self.folders = folders
@@ -21,8 +22,8 @@ final class MockDataManager: DataManager {
     
     // MARK: fetch
     func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Folder?, Never>  {
-        Future<Folder?, Never> { promise in
-            DispatchQueue.global().async { [weak self] in
+        return Future<Folder?, Never> { promise in
+            self.queue.async { [weak self] in
                 guard let self else { return }
                 promise(.success(self.folders.first(where: {$0.id == folderID})))
             }
@@ -31,7 +32,7 @@ final class MockDataManager: DataManager {
     }
     func fetchFiles(parentID: UUID?) -> AnyPublisher<[AudioRecording], Never> {
         Future<[AudioRecording], Never> { promise in
-            DispatchQueue.global().async { [weak self] in
+            self.queue.async { [weak self] in
                 promise(.success(self?.files.filter({$0.parent == parentID}) ?? []))
             }
         }
@@ -39,7 +40,7 @@ final class MockDataManager: DataManager {
     }
     func fetchFolders(parentID: UUID?) -> AnyPublisher<[Folder], Never> {
         Future<[Folder], Never> { promise in
-            DispatchQueue.global().async { [weak self] in
+            self.queue.async { [weak self] in
                 promise(.success((self?.folders ?? []).filter({$0.parent == parentID})))
             }
         }
@@ -49,7 +50,7 @@ final class MockDataManager: DataManager {
     // MARK: rename
     func renameFolder(folderID: UUID, name: String) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
-            DispatchQueue.global().async { [weak self] in
+            self.queue.async { [weak self] in
                 guard let self else { return }
                 let index = self.folders.firstIndex(where: {$0.id == folderID})
                 guard let index else { return }
@@ -64,7 +65,7 @@ final class MockDataManager: DataManager {
     }
     func renameFile(fileID: UUID, name: String) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
-            DispatchQueue.global().async { [weak self] in
+            self.queue.async { [weak self] in
                 guard let self else { return }
                 
                 let index = self.files.firstIndex(where: {$0.id == fileID})
@@ -82,7 +83,7 @@ final class MockDataManager: DataManager {
     // MARK: move
     func moveFolder(folderID: UUID, newParentID: UUID?) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
-            DispatchQueue.global().async { [weak self] in
+            self.queue.async { [weak self] in
                 guard let self else { return }
                 
                 let index = self.folders.firstIndex(where: {$0.id == folderID})
@@ -98,7 +99,7 @@ final class MockDataManager: DataManager {
     }
     func moveFile(fileID: UUID, newParentID: UUID?) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
-            DispatchQueue.global().async { [weak self] in
+            self.queue.async { [weak self] in
                 guard let self else { return }
                 
                 let index = self.files.firstIndex(where: {$0.id == fileID})
@@ -116,16 +117,17 @@ final class MockDataManager: DataManager {
     // MARK: add
     func addFolder(folderName: String, parentID: UUID?) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
-            DispatchQueue.global().async { [weak self] in
+            self.queue.async { [weak self] in
                 self?.folders.append(Folder(name: folderName, parent: parentID))
                 promise(.success(()))
             }
         }
         .eraseToAnyPublisher()
     }
-    func addFile(fileName: String, date: Date, parentID: UUID?, duration: TimeInterval, recordingURL: URL) -> AnyPublisher<Void, Never> {
+    func 
+    addFile(fileName: String, date: Date, parentID: UUID?, duration: TimeInterval, recordingURL: URL) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
-            DispatchQueue.global().async { [weak self] in
+            self.queue.async { [weak self] in
                 let file = AudioRecording(name: fileName, date: date, parent: parentID,
                                           duration: duration, recordingURL: recordingURL)
                 self?.files.append(file)
@@ -166,7 +168,7 @@ final class MockDataManager: DataManager {
     }
     func removeSingleFolder(folderID: UUID) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
-            DispatchQueue.global().async { [weak self] in
+            self.queue.async { [weak self] in
                 guard let self else { return }
                 folders.removeAll(where: {$0.id == folderID})
                 promise(.success(()))
@@ -176,7 +178,7 @@ final class MockDataManager: DataManager {
     }
     func removeFile(fileID: UUID) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
-            DispatchQueue.global().async { [weak self] in
+            self.queue.async { [weak self] in
                 guard let self else { return }
                 files.removeAll(where: {$0.id == fileID})
                 promise(.success(()))
@@ -186,7 +188,7 @@ final class MockDataManager: DataManager {
     }
     func removeAll(ids: [UUID]) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
-            DispatchQueue.global().async { [weak self] in
+            self.queue.async { [weak self] in
                 guard let self else { return }
                 files.removeAll(where: {ids.contains($0.id)})
                 promise(.success(()))

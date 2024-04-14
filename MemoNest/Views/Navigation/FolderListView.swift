@@ -13,8 +13,6 @@ enum ItemAction {
 
 // TO DO LIST:
 /*
- - slow launch w/ audio session & recording set up
- - Error with rename text input:
  [RTIInputSystemClient remoteTextInputSessionWithID:performInputOperation:]  perform input operation requires a valid sessionID. inputModality = Keyboard, inputOperation = <null selector>, customInfoType = UIEmojiSearchOperations
  */
 
@@ -31,21 +29,21 @@ struct FolderListView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                NavigationStack {
-                    VStack {
-                        sortPicker
-                            .buttonStyle(.borderedProminent)
-                        List {
-                            ForEach(viewModel.items, id: \.id) { item in
-                                createListRow(item: item)
-                            }
+                VStack(spacing: 0) {
+                    sortPicker
+                        .buttonStyle(.borderedProminent)
+                    List {
+                        ForEach(viewModel.items, id: \.id) { item in
+                            createListRow(item: item)
                         }
-                        .listStyle(.inset)
-                        .scrollContentBackground(.hidden)
                     }
-                    .navigationBarTitleDisplayMode(.inline)
-                    .navigationTitle(viewModel.currentFolderTitle)
+                    .listStyle(.inset)
+                    .scrollContentBackground(.hidden)
+                    .frame(maxHeight: .infinity)
+                    bottomToolbar
                 }
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle(viewModel.currentFolderTitle)
                 .navigationDestination(isPresented: $viewModel.moveViewIsPresented) {
                     if let item = viewModel.editingItem, viewModel.itemAction == .move {
                         MoveItemView(moveItem: item, database: viewModel.database,
@@ -57,7 +55,6 @@ struct FolderListView: View {
                 }
                 .onAppear {
                     viewModel.handleOnAppear()
-                    recordingViewModel.handleOnAppear()
                 }
                 .alert(isPresented: $recordingViewModel.hasError) {
                     Alert(title: Text("\(recordingViewModel.error?.title ?? "")"))
@@ -67,7 +64,6 @@ struct FolderListView: View {
                         BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()}
                     }
                 }
-                bottomToolbar
                 addRenameInputView
             }
         }
@@ -81,16 +77,18 @@ struct FolderListView: View {
             }
             HStack {
                 homeButton
+                    .disabled(viewModel.isLoading)
                 Spacer()
                 recordButton
+                    .disabled(viewModel.isLoading)
                 Spacer()
                 addFolderButton
+                    .disabled(viewModel.isLoading)
             }
             .padding()
             .background(Color("PopupBackground"))
         }
-        .padding()
-        .frame(maxHeight: .infinity, alignment: .bottom)
+        .frame(alignment: .bottom)
         .ignoresSafeArea()
     }
     
@@ -156,18 +154,14 @@ struct FolderListView: View {
         }
     }
     
-    // TODO: REMOVE - TESTING ONLY
-    private func testRecord() {
-        recordingViewModel.isRecording.toggle()
-    }
-    
     private var recordButton: some View {
         Button {
             withAnimation {
-//                testRecord() // TODO: REMOVE - TESTING ONLY
                 if recordingViewModel.isRecording {
                     recordingViewModel.stopRecording()
-                    viewModel.loadItems(atFolderID: viewModel.currentFolder?.id)
+                    recordingViewModel.addFile {
+                        viewModel.loadItems(atFolderID: viewModel.currentFolder?.id)
+                    }
                 } else {
                     recordingViewModel.startRecording(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
                 }
@@ -204,7 +198,6 @@ struct FolderListView: View {
                 viewModel.moveViewIsPresented = true
             }
         }
-        
     }
 }
 

@@ -9,8 +9,6 @@ import Foundation
 import Combine
 
 protocol DataManager {   
-    var files: [AudioRecording] { get }
-    var folders: [Folder] { get }
     var cancellables: Set<AnyCancellable> { get}
     
     // fetch

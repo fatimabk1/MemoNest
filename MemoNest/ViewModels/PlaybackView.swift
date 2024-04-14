@@ -17,7 +17,6 @@ struct PlaybackView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Text(viewModel.isPlaying ? "Playing" : "Paused")
             Text("\(viewModel.formattedDuration)")
                 .frame(maxWidth: 100)
                 .frame(maxWidth: .infinity, alignment: .trailing)

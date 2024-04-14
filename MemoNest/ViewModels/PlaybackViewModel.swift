@@ -56,10 +56,14 @@ final class PlaybackViewModel: ObservableObject {
                 }
                 switch AVAudioSession.RouteChangeReason(rawValue: reason) {
                 case .newDeviceAvailable:
+                    print("setting audioPort to none")
                     try? AVAudioSession.sharedInstance().overrideOutputAudioPort(.none)
                 case .oldDeviceUnavailable:
+                    print("setting audioPort to speakers")
                     try? AVAudioSession.sharedInstance().overrideOutputAudioPort(.speaker)
                 default:
+                    print(AVAudioSession.RouteChangeReason(rawValue: reason) ?? "No route change found")
+                    print("defaulting audioport")
                     break
                 }
             }
@@ -99,17 +103,21 @@ final class PlaybackViewModel: ObservableObject {
                 return
             case .failure(let err):
                 self.error = err
+                self.hasError = true
             }
         }
     }
     
     private func setupAudioPlayer(fileURL: URL) -> Result<Void, PlaybackError> {
         do {
+            print("setup Audio player fileURL: \(fileURL)")
             audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
             duration = audioPlayer?.duration ?? 0
             audioPlayer?.prepareToPlay()
             return .success(())
-        } catch {
+        } catch (let err) {
+            print(err)
+            print(audioPlayer ?? "failed audio player?")
             print("Error setting up audio player")
             return .failure(PlaybackError.cannotCreatePlayerFromURL)
         }

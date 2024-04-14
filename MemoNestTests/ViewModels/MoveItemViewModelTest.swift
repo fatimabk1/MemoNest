@@ -245,6 +245,4 @@ final class MoveItemViewModelTest: XCTestCase {
         let expected = 3
         XCTAssertEqual(result, expected)
     }
-    
-    // TODO: goBack
 }
