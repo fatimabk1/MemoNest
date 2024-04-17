@@ -19,22 +19,24 @@ enum PlaybackError: Error {
 
 final class PlaybackViewModel: ObservableObject {
     @Published var isPlaying = false
-    @Published var currentTime: TimeInterval = 0 {
-        willSet {
-            if newValue >= duration && duration != 0 {
-                isPlaying = false
-            }
-        }
-    }
+    @Published var currentTime: TimeInterval = 0
+//    {
+//        willSet {
+//            if newValue >= duration && duration != 0 {
+//                isPlaying = false
+//            }
+//        }
+//    }
     @Published var duration: TimeInterval = 0
     @Published var hasError = false
     @Published var error: PlaybackError?
     @Published var title: String
     
     let recording: AudioRecording
-    private var audioPlayer: AVAudioPlayer?
+    var audioPlayer: AVAudioPlayer?
     private var audioWasInterrupted = false
     private var cancellables = Set<AnyCancellable>()
+    private var timerSubscription: AnyCancellable?
     
     var formattedDuration: String {
         FormatterService.formatTimeInterval(seconds: duration)
@@ -78,12 +80,14 @@ final class PlaybackViewModel: ObservableObject {
                 
                 switch AVAudioSession.InterruptionType(rawValue: reason) {
                 case .began:
-                    if self.isPlaying {
+                    if let isPlaying = self.audioPlayer?.isPlaying, isPlaying  {
                         self.audioWasInterrupted = true
                         self.pause()
                     }
                 case .ended:
+                    print("audio interruption ended")
                     if self.audioWasInterrupted {
+                        print("now playing again")
                         self.audioWasInterrupted = false
                         self.play()
                     }
@@ -124,25 +128,39 @@ final class PlaybackViewModel: ObservableObject {
     
     func play() {
         if hasError { return }
+        
+        // reset time when replaying
+        if audioPlayer?.currentTime == audioPlayer?.duration {
+            audioPlayer?.currentTime = 0
+        }
+        
         audioPlayer?.play()
-        isPlaying = true
         
         // keep current time synced with audio play time
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
-            guard let audioPlayer = self?.audioPlayer else { return }
-            self?.currentTime = audioPlayer.currentTime
-        }
+        timerSubscription = Timer.publish(every: 0.01, on: .main, in: .common)
+            .autoconnect()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] date in
+                if let audioPlayerCurrentTime = self?.audioPlayer?.currentTime {
+                    self?.currentTime = audioPlayerCurrentTime
+                    let isCurrentlyPlaying = self?.audioPlayer?.isPlaying ?? false
+                    if self?.isPlaying != isCurrentlyPlaying {
+                        self?.isPlaying = isCurrentlyPlaying
+                    }
+                }
+            }
     }
     
     func pause() {
         if hasError { return }
         audioPlayer?.pause()
         isPlaying = false
+        timerSubscription?.cancel()
     }
     
     func seek(to time: TimeInterval) {
         if hasError { return }
-            audioPlayer?.currentTime = time
+        audioPlayer?.currentTime = time
     }
     
     func seekForward() {

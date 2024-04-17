@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		080145092BCECEF100ACA3C9 /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080145082BCECEF100ACA3C9 /* Playground.swift */; };
 		083972E42BB36BA900C4B134 /* MoveItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E32BB36BA900C4B134 /* MoveItemView.swift */; };
 		083972E62BB496B300C4B134 /* MoveItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E52BB496B300C4B134 /* MoveItemViewModel.swift */; };
 		084454932BC71049007CDC57 /* FormatterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084454922BC71049007CDC57 /* FormatterService.swift */; };
@@ -59,6 +60,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		080145082BCECEF100ACA3C9 /* Playground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playground.swift; sourceTree = "<group>"; };
 		083972E32BB36BA900C4B134 /* MoveItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemView.swift; sourceTree = "<group>"; };
 		083972E52BB496B300C4B134 /* MoveItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemViewModel.swift; sourceTree = "<group>"; };
 		084454902BC5B6F2007CDC57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				086ED08F2B98CA1300A30EBC /* DataManager */,
 				085743162B7D245F00E546A1 /* Assets.xcassets */,
 				085743182B7D245F00E546A1 /* Preview Content */,
+				080145082BCECEF100ACA3C9 /* Playground.swift */,
 			);
 			path = MemoNest;
 			sourceTree = "<group>";
@@ -451,6 +454,7 @@
 				08866F8C2BBCB4180042318B /* PopupInput.swift in Sources */,
 				08866F842BBC8ABC0042318B /* AudioRecording.swift in Sources */,
 				085743442B7D251E00E546A1 /* FolderListView.swift in Sources */,
+				080145092BCECEF100ACA3C9 /* Playground.swift in Sources */,
 				083972E42BB36BA900C4B134 /* MoveItemView.swift in Sources */,
 				085743492B7D262100E546A1 /* FolderListViewModel.swift in Sources */,
 				085743502B7D408100E546A1 /* ListRow.swift in Sources */,

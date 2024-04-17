@@ -17,16 +17,20 @@ struct PlaybackView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Text("\(viewModel.formattedDuration)")
+            Text("\(FormatterService.formatTimeInterval(seconds: viewModel.currentTime))")
                 .frame(maxWidth: 100)
                 .frame(maxWidth: .infinity, alignment: .trailing)
-            Slider(value: $viewModel.currentTime,
-                   in: 0...viewModel.duration,
-                   onEditingChanged: { editing in
-                if !editing {
-                    viewModel.seek(to: viewModel.currentTime)
-                }
-            })
+            if viewModel.duration > 0 {
+                Slider(value: $viewModel.currentTime,
+                       in: 0...viewModel.duration,
+                       step: 0.1,
+                       onEditingChanged: { editing in
+                    if !editing {
+                        viewModel.seek(to: viewModel.currentTime)
+                    }
+                })
+                .tint(Color.blue)
+            }
             
             HStack(spacing: 50) {
                 Spacer()

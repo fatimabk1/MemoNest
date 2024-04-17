@@ -39,6 +39,27 @@ final class RecordingViewModel: ObservableObject {
     init(database: DataManager) {
         self.database = database
         self.recordingManager = RecordingManager()
+        handleInterruptions()
+    }
+    
+    private func handleInterruptions() {
+        NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)
+            .sink { notification in
+                guard let reason = notification.userInfo?[AVAudioSession.interruptionNotification] as? UInt else {
+                    return
+                }
+                
+                switch AVAudioSession.InterruptionType(rawValue: reason){
+                case .began:
+                    if self.isRecording {
+                        print("recording interrupted")
+                        self.stopRecording() // TODO: bubble up errors?
+                    }
+                default:
+                    break
+                }
+            }
+            .store(in: &cancellables)
     }
     
     private func checkPermissions() {
@@ -96,13 +117,16 @@ final class RecordingViewModel: ObservableObject {
         recordingDuration = recordingDate.distance(to: Date())
         timerSubscription?.cancel()
         timerSubscription = nil
+        print("timer subscription cancelled")
         
         switch(result){
         case .success:
             isRecording = false
+            print("setting isRecording = false")
         case .failure(let err):
             hasError = true
             error = err
+            print("ending recording caused an error")
         }
     }
     

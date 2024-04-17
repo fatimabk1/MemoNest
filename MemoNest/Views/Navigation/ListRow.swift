@@ -14,22 +14,20 @@ struct TappableListRowWithMenu: View {
     @State var showPlaybackView = false
     
     var body: some View {
-        VStack(spacing: 0) {
-            HStack(alignment: .top) {
+        VStack {
+            HStack {
                 Button {
                     if item is Folder {
                         onListRowTap(item)
                     } else {
-                        withAnimation {
-                            showPlaybackView.toggle()
-                        }
+                        showPlaybackView.toggle()
                     }
                 } label: {
-                    ListRow(item: item)
+                    VStack {
+                        ListRow(item: item)
+                    }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .buttonStyle(.plain)
-
                 Menu {
                     Button("Rename") { onActionSelected(.rename) }
                     Button("Delete") { onActionSelected(.delete) }
@@ -39,15 +37,11 @@ struct TappableListRowWithMenu: View {
                         .padding()
                 }
             }
-            .background(Color("PopupBackground"))
             if showPlaybackView, let item = item as? AudioRecording {
                 PlaybackView(recording: item)
-                    .transition(.move(edge: .top))
-//                    .transition(.opacity)
-//                    .transition(.move(edge: .top))
+                    .frame(maxWidth: .infinity)
             }
         }
-        .background(Color("PopupBackground"))
     }
 }
 

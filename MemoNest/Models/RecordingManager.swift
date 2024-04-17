@@ -44,26 +44,6 @@ final class RecordingManager: NSObject, AVAudioRecorderDelegate {
         self.audioRecorder = audioRecorder
         self.filePath = filePath
         self.cancellables = cancellables
-        self.handleInterruptions()
-    }
-    
-    private func handleInterruptions() {
-        NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)
-            .sink { notification in
-                guard let reason = notification.userInfo?[AVAudioSession.interruptionNotification] as? UInt else {
-                    return
-                }
-                
-                switch AVAudioSession.InterruptionType(rawValue: reason){
-                case .began:
-                    if self.isRecording {
-                        _ = self.stopRecording() // TODO: bubble up errors?
-                    }
-                default:
-                    break
-                }
-            }
-            .store(in: &cancellables)
     }
     
     func requestPermission(completion: @escaping(Bool) -> Void) {
