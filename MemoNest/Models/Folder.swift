@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 struct Folder: Item {
     let id = UUID()
@@ -18,7 +19,7 @@ struct Folder: Item {
 }
 
 extension Folder {
-    func asFolderDB() -> FolderDB {
-        return FolderDB(name: self.name, parent: self.parent)
+    func asFolderDB() -> AudioRecordingDB {
+        return AudioRecordingDB(name: name, date: date, type: type)
     }
 }

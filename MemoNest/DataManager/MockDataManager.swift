@@ -124,18 +124,17 @@ final class MockDataManager: DataManager {
         }
         .eraseToAnyPublisher()
     }
-    func 
-    addFile(fileName: String, date: Date, parentID: UUID?, duration: TimeInterval, recordingURL: URL) -> AnyPublisher<Void, Never> {
-        Future<Void, Never> { promise in
-            self.queue.async { [weak self] in
-                let file = AudioRecording(name: fileName, date: date, parent: parentID,
-                                          duration: duration, recordingURL: recordingURL)
-                self?.files.append(file)
-                promise(.success(()))
-            }
+    func addFile(fileName: String, date: Date, parentID: UUID?, duration: TimeInterval, recordingURL: URL) -> AnyPublisher<Void, Never> {
+    Future<Void, Never> { promise in
+        self.queue.async { [weak self] in
+            let file = AudioRecording(name: fileName, date: date, parent: parentID,
+                                        duration: duration, recordingURL: recordingURL)
+            self?.files.append(file)
+            promise(.success(()))
         }
-        .eraseToAnyPublisher()
     }
+    .eraseToAnyPublisher()
+}
     
     // MARK: remove
     func removeFolder(folderID: UUID) -> AnyPublisher<Void, Never>{

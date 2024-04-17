@@ -22,6 +22,8 @@ struct AudioRecording: Item {
     var type: ItemType = .recording
     var audioInfo: AudioMetaData?
     
+    init(id: UUID, name: String, date: Date, icon: String, parent: UUID? = nil, type: ItemType, duration: TimeInterval, recordingURL: URL)
+    
     init(name: String, date: Date, parent: UUID? = nil, duration: TimeInterval, recordingURL: URL) {
         self.name = name
         self.date = date
