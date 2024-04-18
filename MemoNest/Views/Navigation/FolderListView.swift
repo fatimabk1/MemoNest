@@ -202,7 +202,8 @@ struct FolderListView: View {
 }
 
 #Preview {
-    let audio1 = AudioRecording(name: "A really long name for a recording, let see how far it spills over!", date: Date(), duration: 123, recordingURL: URL(string: "www.sample.com")!)
-    let audio2 = AudioRecording(name: "Recording #4", date: Date(), duration: 123, recordingURL: URL(string: "www.sample.com")!)
+    var audioInfo = AudioMetaData(duration: 123, recordingURL: URL(string: "www.sample.com")!)
+    let audio1 = Item(name: "A really long name for a recording, let see how far it spills over!", date: Date(), type: .recording, audioInfo: audioInfo)
+    let audio2 = Item(name: "Recording #4", date: Date(), type: .recording, audioInfo: audioInfo)
     return FolderListView(database: MockDataManager(folders: MockDataManager.sampleFolders, files: [audio1, audio2]))
 }

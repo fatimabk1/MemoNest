@@ -10,19 +10,19 @@ import Combine
 
 
 final class MockDataManager: DataManager {
-    var files = [AudioRecording]()
-    var folders = [Folder]()
+    var files = [Item]()
+    var folders = [Item]()
     var cancellables = Set<AnyCancellable>()
     let queue =  DispatchQueue.global(qos: .userInitiated)
     
-    init(folders: [Folder] = [], files: [AudioRecording] = []) {
+    init(folders: [Item] = [], files: [Item] = []) {
         self.folders = folders
         self.files = files
     }
     
     // MARK: fetch
-    func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Folder?, Never>  {
-        return Future<Folder?, Never> { promise in
+    func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Item?, Never>  {
+        return Future<Item?, Never> { promise in
             self.queue.async { [weak self] in
                 guard let self else { return }
                 promise(.success(self.folders.first(where: {$0.id == folderID})))
@@ -30,16 +30,16 @@ final class MockDataManager: DataManager {
         }
         .eraseToAnyPublisher()
     }
-    func fetchFiles(parentID: UUID?) -> AnyPublisher<[AudioRecording], Never> {
-        Future<[AudioRecording], Never> { promise in
+    func fetchFiles(parentID: UUID?) -> AnyPublisher<[Item], Never> {
+        Future<[Item], Never> { promise in
             self.queue.async { [weak self] in
                 promise(.success(self?.files.filter({$0.parent == parentID}) ?? []))
             }
         }
         .eraseToAnyPublisher()
     }
-    func fetchFolders(parentID: UUID?) -> AnyPublisher<[Folder], Never> {
-        Future<[Folder], Never> { promise in
+    func fetchFolders(parentID: UUID?) -> AnyPublisher<[Item], Never> {
+        Future<[Item], Never> { promise in
             self.queue.async { [weak self] in
                 promise(.success((self?.folders ?? []).filter({$0.parent == parentID})))
             }
@@ -118,7 +118,7 @@ final class MockDataManager: DataManager {
     func addFolder(folderName: String, parentID: UUID?) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
             self.queue.async { [weak self] in
-                self?.folders.append(Folder(name: folderName, parent: parentID))
+                self?.folders.append(Item(name: folderName, parent: parentID, type: .folder))
                 promise(.success(()))
             }
         }
@@ -128,8 +128,8 @@ final class MockDataManager: DataManager {
     addFile(fileName: String, date: Date, parentID: UUID?, duration: TimeInterval, recordingURL: URL) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
             self.queue.async { [weak self] in
-                let file = AudioRecording(name: fileName, date: date, parent: parentID,
-                                          duration: duration, recordingURL: recordingURL)
+                let audioInfo = AudioMetaData(duration: duration, recordingURL: recordingURL)
+                let file = Item(name: fileName, parent: parentID, date: date, type: .recording, audioInfo: audioInfo)
                 self?.files.append(file)
                 promise(.success(()))
             }
@@ -150,7 +150,7 @@ final class MockDataManager: DataManager {
                     .eraseToAnyPublisher()
             }
         // fetch files
-            .flatMap { [weak self] _ -> AnyPublisher<[AudioRecording], Never> in
+            .flatMap { [weak self] _ -> AnyPublisher<[Item], Never> in
                 guard let self else { return Empty().eraseToAnyPublisher() }
                 return self.fetchFiles(parentID: folderID)
             }
@@ -210,27 +210,28 @@ final class MockDataManager: DataManager {
 }
 
 extension MockDataManager {
-    static let folderA = Folder(name: "Folder A")
-    static let folderB = Folder(name: "Folder B")
-    static let folderC = Folder(name: "Folder C")
-    static let folderAA1 = Folder(name: "Folder AA1", parent: folderA.id)
-    static let folderAA2 = Folder(name: "Folder AA2", parent: folderA.id)
-    static let folderAAA1 = Folder(name: "Folder AAA1", parent: folderAA1.id)
+    static let folderA = Item(name: "Folder A", type: .folder)
+    static let folderB = Item(name: "Folder B", type: .folder)
+    static let folderC = Item(name: "Folder C", type: .folder)
+    static let folderAA1 = Item(name: "Folder AA1", parent: folderA.id, type: .folder)
+    static let folderAA2 = Item(name: "Folder AA2", parent: folderA.id, type: .folder)
+    static let folderAAA1 = Item(name: "Folder AAA1", parent: folderAA1.id, type: .folder)
     static let sampleFolders = [folderA, folderB, folderC, folderAA1, folderAA2, folderAAA1]
     
-    static let audio1 = AudioRecording(name: "File1 in Library",
-                                       date: Date(), duration: 0, recordingURL: URL(string: "www.sample.com")!)
-    static let audio2 = AudioRecording(name: "File2 in Library", 
-                                       date: Date(), duration: 0, recordingURL: URL(string: "www.sample.com")!)
-    static let audio3 = AudioRecording(name: "File3 in Library", 
-                                       date: Date(), duration: 0, recordingURL: URL(string: "www.sample.com")!)
-    static let audioA1 = AudioRecording(name: "File in Folder A", 
-                                        date: Date(), parent: folderA.id, duration: 0, recordingURL: URL(string: "www.sample.com")!)
-    static let audioAA1 = AudioRecording(name: "File in Folder AA1", 
-                                         date: Date(), parent: folderAA1.id, duration: 0, recordingURL: URL(string: "www.sample.com")!)
-    static let audioAA2 = AudioRecording(name: "File in Folder AA2", 
-                                         date: Date(), parent: folderAA2.id, duration: 0, recordingURL: URL(string: "www.sample.com")!)
-    static let audioAAA1 = AudioRecording(name: "File in Folder AAA1", 
-                                          date: Date(), parent: folderAAA1.id, duration: 0, recordingURL: URL(string: "www.sample.com")!)
+    static let audioInfo = AudioMetaData( duration: 0, recordingURL: URL(string: "www.sample.com")!)
+    static let audio1 = Item(name: "File1 in Library",
+                             date: Date(), type: .recording, audioInfo: audioInfo)
+    static let audio2 = Item(name: "File2 in Library",
+                                       date: Date(), type: .recording, audioInfo: audioInfo)
+    static let audio3 = Item(name: "File3 in Library",
+                                       date: Date(), type: .recording, audioInfo: audioInfo)
+    static let audioA1 = Item(name: "File in Folder A",
+                              parent: folderA.id, date: Date(), type: .recording, audioInfo: audioInfo)
+    static let audioAA1 = Item(name: "File in Folder AA1",
+                               parent: folderAA1.id, date: Date(), type: .recording, audioInfo: audioInfo)
+    static let audioAA2 = Item(name: "File in Folder AA2",
+                               parent: folderAA2.id, date: Date(), type: .recording, audioInfo: audioInfo)
+    static let audioAAA1 = Item(name: "File in Folder AAA1",
+                                parent: folderAAA1.id, date: Date(), type: .recording, audioInfo: audioInfo)
     static let sampleFiles = [audio1, audio2, audio3, audioA1, audioAA1, audioAA2, audioAAA1]
 }

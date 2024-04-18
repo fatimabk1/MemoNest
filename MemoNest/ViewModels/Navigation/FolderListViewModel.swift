@@ -28,8 +28,8 @@ final class FolderListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var sortType = SortType.dateAsc {
         didSet {
-            let folders = items.filter({$0 is Folder})
-            let files = items.filter({$0 is AudioRecording})
+            let folders = items.filter({$0.isFolder()})
+            let files = items.filter({$0.isRecording()})
             self.items = self.sortItems(folders) + self.sortItems(files)
         }
     }
@@ -46,7 +46,7 @@ final class FolderListViewModel: ObservableObject {
     }
     
     let database: DataManager
-    @Published var currentFolder: Folder?
+    @Published var currentFolder: Item?
     private let queue: DispatchQueue
     private var cancellables = Set<AnyCancellable>()
     
@@ -110,16 +110,18 @@ final class FolderListViewModel: ObservableObject {
     
     // MARK: main logic
     func setFolder(item: Item){
-        guard item is Folder else { return }
+        guard item.type == .folder else { return }
         loadItems(atFolderID: item.id)
     }
     
     func loadItems(atFolderID folderID: UUID?) {
         database.fetchFolderInfo(folderID: folderID)
             .receive(on: queue)
+//            .receive(on: RunLoop.main)
             .sink { [weak self] folder in
                 guard let self else { return }
                 self.currentFolder = folder
+                print("Updated load folder: \(String(describing: self.currentFolder?.name))" )
             }
             .store(in: &cancellables)
         
@@ -149,7 +151,7 @@ final class FolderListViewModel: ObservableObject {
     }
     
     func renameItem(item: Item, name: String) {
-        if item is Folder {
+        if item.isFolder() {
             database.renameFolder(folderID: item.id, name: name)
                 .sink { [weak self] in
                     self?.loadItems(atFolderID: self?.currentFolder?.id)
@@ -165,7 +167,7 @@ final class FolderListViewModel: ObservableObject {
     }
     
     func removeItem(item: Item) {
-        if item is Folder {
+        if item.isFolder() {
             database.removeFolder(folderID: item.id)
                 .sink { [weak self] in
                     self?.loadItems(atFolderID: self?.currentFolder?.id)
@@ -181,7 +183,7 @@ final class FolderListViewModel: ObservableObject {
     }
     
     func moveItem(item: Item, destination: UUID?) {
-        if item is Folder {
+        if item.isFolder() {
             database.moveFolder(folderID: item.id, newParentID: destination)
                 .sink { _ in
                 }

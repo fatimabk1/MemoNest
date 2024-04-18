@@ -11,7 +11,7 @@ import AVFoundation
 struct PlaybackView: View {
     @ObservedObject var viewModel: PlaybackViewModel
     
-    init(recording: AudioRecording) {
+    init(recording: Item) {
         self.viewModel = PlaybackViewModel(recording: recording)
     }
     
@@ -94,6 +94,6 @@ struct PlaybackView: View {
 
 #Preview {
     List {
-        PlaybackView(recording: AudioRecording.sample)
+        PlaybackView(recording: Item.sampleRecording)
     }
 }

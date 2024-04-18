@@ -20,19 +20,12 @@ enum PlaybackError: Error {
 final class PlaybackViewModel: ObservableObject {
     @Published var isPlaying = false
     @Published var currentTime: TimeInterval = 0
-//    {
-//        willSet {
-//            if newValue >= duration && duration != 0 {
-//                isPlaying = false
-//            }
-//        }
-//    }
     @Published var duration: TimeInterval = 0
     @Published var hasError = false
     @Published var error: PlaybackError?
     @Published var title: String
     
-    let recording: AudioRecording
+    let recording: Item
     var audioPlayer: AVAudioPlayer?
     private var audioWasInterrupted = false
     private var cancellables = Set<AnyCancellable>()
@@ -42,7 +35,7 @@ final class PlaybackViewModel: ObservableObject {
         FormatterService.formatTimeInterval(seconds: duration)
     }
     
-    init(recording: AudioRecording) {
+    init(recording: Item) {
         self.recording = recording
         self.title = recording.name
         self.handleAudioRouteChanges()

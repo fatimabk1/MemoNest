@@ -12,9 +12,9 @@ protocol DataManager {
     var cancellables: Set<AnyCancellable> { get}
     
     // fetch
-    func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Folder?, Never>
-    func fetchFiles(parentID: UUID?) -> AnyPublisher<[AudioRecording], Never>
-    func fetchFolders(parentID: UUID?) -> AnyPublisher<[Folder], Never>
+    func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Item?, Never>
+    func fetchFiles(parentID: UUID?) -> AnyPublisher<[Item], Never>
+    func fetchFolders(parentID: UUID?) -> AnyPublisher<[Item], Never>
     
     // remove
     func removeFolder(folderID: UUID) -> AnyPublisher<Void, Never>

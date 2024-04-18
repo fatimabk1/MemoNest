@@ -18,9 +18,8 @@
 		085743242B7D245F00E546A1 /* MemoNestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743232B7D245F00E546A1 /* MemoNestTests.swift */; };
 		0857432E2B7D245F00E546A1 /* MemoNestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857432D2B7D245F00E546A1 /* MemoNestUITests.swift */; };
 		085743302B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857432F2B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift */; };
-		085743422B7D24E800E546A1 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743412B7D24E800E546A1 /* Folder.swift */; };
+		085743422B7D24E800E546A1 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743412B7D24E800E546A1 /* Item.swift */; };
 		085743442B7D251E00E546A1 /* FolderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743432B7D251E00E546A1 /* FolderListView.swift */; };
-		085743472B7D257C00E546A1 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743462B7D257C00E546A1 /* Item.swift */; };
 		085743492B7D262100E546A1 /* FolderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743482B7D262100E546A1 /* FolderListViewModel.swift */; };
 		0857434C2B7D265300E546A1 /* MockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434B2B7D265300E546A1 /* MockDataManager.swift */; };
 		085743502B7D408100E546A1 /* ListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857434F2B7D408100E546A1 /* ListRow.swift */; };
@@ -28,17 +27,15 @@
 		08671E5F2BCC1ED1000E2338 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 08671E5E2BCC1ED1000E2338 /* RealmSwift */; };
 		086ED08C2B98C81E00A30EBC /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED08B2B98C81E00A30EBC /* DataManager.swift */; };
 		086ED08E2B98C9C200A30EBC /* RealmDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED08D2B98C9C200A30EBC /* RealmDataManager.swift */; };
-		086ED0912B98CA2400A30EBC /* FileDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED0902B98CA2400A30EBC /* FileDB.swift */; };
-		086ED0932B98CA2C00A30EBC /* FolderDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED0922B98CA2C00A30EBC /* FolderDB.swift */; };
 		086ED09A2B9B54F400A30EBC /* FolderListViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED0992B9B54F400A30EBC /* FolderListViewModelTest.swift */; };
 		086ED09E2B9B630D00A30EBC /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED09D2B9B630D00A30EBC /* BackButton.swift */; };
 		086ED0A02B9B642000A30EBC /* InputPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086ED09F2B9B642000A30EBC /* InputPopup.swift */; };
+		08779CD22BD1DC5C00D94BF3 /* ItemDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08779CD12BD1DC5C00D94BF3 /* ItemDB.swift */; };
 		08866EB42BB628080042318B /* MoveItemViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866EB32BB628080042318B /* MoveItemViewModelTest.swift */; };
 		08866F782BBB5BD20042318B /* PlaybackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F772BBB5BD20042318B /* PlaybackView.swift */; };
 		08866F7A2BBB5C490042318B /* RecordingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F792BBB5C490042318B /* RecordingViewModel.swift */; };
 		08866F7C2BBB5C520042318B /* PlaybackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F7B2BBB5C520042318B /* PlaybackViewModel.swift */; };
 		08866F7E2BBC88430042318B /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F7D2BBC88430042318B /* RecordingManager.swift */; };
-		08866F842BBC8ABC0042318B /* AudioRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F832BBC8ABC0042318B /* AudioRecording.swift */; };
 		08866F8C2BBCB4180042318B /* PopupInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F8B2BBCB4170042318B /* PopupInput.swift */; };
 /* End PBXBuildFile section */
 
@@ -75,25 +72,22 @@
 		085743292B7D245F00E546A1 /* MemoNestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MemoNestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0857432D2B7D245F00E546A1 /* MemoNestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestUITests.swift; sourceTree = "<group>"; };
 		0857432F2B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		085743412B7D24E800E546A1 /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
+		085743412B7D24E800E546A1 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		085743432B7D251E00E546A1 /* FolderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListView.swift; sourceTree = "<group>"; };
-		085743462B7D257C00E546A1 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		085743482B7D262100E546A1 /* FolderListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListViewModel.swift; sourceTree = "<group>"; };
 		0857434B2B7D265300E546A1 /* MockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataManager.swift; sourceTree = "<group>"; };
 		0857434F2B7D408100E546A1 /* ListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRow.swift; sourceTree = "<group>"; };
 		086ED08B2B98C81E00A30EBC /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		086ED08D2B98C9C200A30EBC /* RealmDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDataManager.swift; sourceTree = "<group>"; };
-		086ED0902B98CA2400A30EBC /* FileDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDB.swift; sourceTree = "<group>"; };
-		086ED0922B98CA2C00A30EBC /* FolderDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDB.swift; sourceTree = "<group>"; };
 		086ED0992B9B54F400A30EBC /* FolderListViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListViewModelTest.swift; sourceTree = "<group>"; };
 		086ED09D2B9B630D00A30EBC /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		086ED09F2B9B642000A30EBC /* InputPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPopup.swift; sourceTree = "<group>"; };
+		08779CD12BD1DC5C00D94BF3 /* ItemDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDB.swift; sourceTree = "<group>"; };
 		08866EB32BB628080042318B /* MoveItemViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemViewModelTest.swift; sourceTree = "<group>"; };
 		08866F772BBB5BD20042318B /* PlaybackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlaybackView.swift; path = ../ViewModels/PlaybackView.swift; sourceTree = "<group>"; };
 		08866F792BBB5C490042318B /* RecordingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingViewModel.swift; sourceTree = "<group>"; };
 		08866F7B2BBB5C520042318B /* PlaybackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewModel.swift; sourceTree = "<group>"; };
 		08866F7D2BBC88430042318B /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
-		08866F832BBC8ABC0042318B /* AudioRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecording.swift; sourceTree = "<group>"; };
 		08866F8B2BBCB4170042318B /* PopupInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupInput.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -203,9 +197,8 @@
 		0857433C2B7D24BB00E546A1 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				085743412B7D24E800E546A1 /* Folder.swift */,
+				085743412B7D24E800E546A1 /* Item.swift */,
 				08866F7D2BBC88430042318B /* RecordingManager.swift */,
-				08866F832BBC8ABC0042318B /* AudioRecording.swift */,
 				08866F8B2BBCB4170042318B /* PopupInput.swift */,
 			);
 			path = Models;
@@ -234,7 +227,6 @@
 		085743452B7D255A00E546A1 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				085743462B7D257C00E546A1 /* Item.swift */,
 				086ED08B2B98C81E00A30EBC /* DataManager.swift */,
 			);
 			path = Protocols;
@@ -245,8 +237,7 @@
 			children = (
 				0857434B2B7D265300E546A1 /* MockDataManager.swift */,
 				086ED08D2B98C9C200A30EBC /* RealmDataManager.swift */,
-				086ED0902B98CA2400A30EBC /* FileDB.swift */,
-				086ED0922B98CA2C00A30EBC /* FolderDB.swift */,
+				08779CD12BD1DC5C00D94BF3 /* ItemDB.swift */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -448,11 +439,11 @@
 			files = (
 				085743152B7D245E00E546A1 /* ContentView.swift in Sources */,
 				0857434C2B7D265300E546A1 /* MockDataManager.swift in Sources */,
+				08779CD22BD1DC5C00D94BF3 /* ItemDB.swift in Sources */,
 				083972E62BB496B300C4B134 /* MoveItemViewModel.swift in Sources */,
 				08866F782BBB5BD20042318B /* PlaybackView.swift in Sources */,
 				08866F7E2BBC88430042318B /* RecordingManager.swift in Sources */,
 				08866F8C2BBCB4180042318B /* PopupInput.swift in Sources */,
-				08866F842BBC8ABC0042318B /* AudioRecording.swift in Sources */,
 				085743442B7D251E00E546A1 /* FolderListView.swift in Sources */,
 				080145092BCECEF100ACA3C9 /* Playground.swift in Sources */,
 				083972E42BB36BA900C4B134 /* MoveItemView.swift in Sources */,
@@ -460,12 +451,9 @@
 				085743502B7D408100E546A1 /* ListRow.swift in Sources */,
 				08866F7C2BBB5C520042318B /* PlaybackViewModel.swift in Sources */,
 				085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */,
-				086ED0932B98CA2C00A30EBC /* FolderDB.swift in Sources */,
-				086ED0912B98CA2400A30EBC /* FileDB.swift in Sources */,
-				085743422B7D24E800E546A1 /* Folder.swift in Sources */,
+				085743422B7D24E800E546A1 /* Item.swift in Sources */,
 				086ED08C2B98C81E00A30EBC /* DataManager.swift in Sources */,
 				08866F7A2BBB5C490042318B /* RecordingViewModel.swift in Sources */,
-				085743472B7D257C00E546A1 /* Item.swift in Sources */,
 				084454932BC71049007CDC57 /* FormatterService.swift in Sources */,
 				086ED08E2B98C9C200A30EBC /* RealmDataManager.swift in Sources */,
 				086ED0A02B9B642000A30EBC /* InputPopup.swift in Sources */,

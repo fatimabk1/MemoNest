@@ -11,7 +11,7 @@ import Combine
 
 final class MoveItemViewModel: ObservableObject {
     @Published var items = [Item]()
-    @Published var currentFolder: Folder?
+    @Published var currentFolder: Item?
     private let database: DataManager
     private let queue: DispatchQueue
     private var cancellables = Set<AnyCancellable>()
@@ -34,7 +34,7 @@ final class MoveItemViewModel: ObservableObject {
     }
     
     func setFolder(item: Item){
-        guard item is Folder else { return }
+        guard item.isFolder() else { return }
         loadFolders(atFolderID: item.id)
     }
     

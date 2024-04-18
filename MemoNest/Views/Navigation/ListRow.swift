@@ -17,7 +17,7 @@ struct TappableListRowWithMenu: View {
         VStack {
             HStack {
                 Button {
-                    if item is Folder {
+                    if item.isFolder() {
                         onListRowTap(item)
                     } else {
                         showPlaybackView.toggle()
@@ -37,9 +37,9 @@ struct TappableListRowWithMenu: View {
                         .padding()
                 }
             }
-            if showPlaybackView, let item = item as? AudioRecording {
+            if showPlaybackView, item.isRecording() {
                 PlaybackView(recording: item)
-                    .frame(maxWidth: .infinity)
+//                    .frame(maxWidth: .infinity)
             }
         }
     }
@@ -51,7 +51,7 @@ struct TappableListRow: View {
     
     var body: some View {
         Button {
-            if item is Folder {
+            if item.isFolder(){
                 onListRowTap(item)
             }
         } label: {
@@ -78,11 +78,11 @@ struct ListRow: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            Image(systemName: item.icon)
+            Image(systemName: item.getIcon())
             VStack(alignment: .leading) {
                 Text(item.name)
                     .lineLimit(0)
-                if item is AudioRecording {
+                if item.isRecording() {
                     Text("\(formattedDuration)")
                         .foregroundStyle(.secondary)
                         .font(.callout)
@@ -104,10 +104,10 @@ struct ListRow: View {
     @State var tapped = false
     return Group {
         List {
-            TappableListRowWithMenu( item: Folder(name: "folder"), onListRowTap: {_ in }, onActionSelected: {_ in})
-            TappableListRowWithMenu( item:  AudioRecording.sample, onListRowTap: {_ in }, onActionSelected: {_ in})
-            TappableListRowWithMenu( item:  AudioRecording.sample, onListRowTap: {_ in }, onActionSelected: {_ in})
-            TappableListRowWithMenu( item:  AudioRecording.sample, onListRowTap: {_ in }, onActionSelected: {_ in})
+            TappableListRowWithMenu( item: Item(name: "folder", type: .folder), onListRowTap: {_ in }, onActionSelected: {_ in})
+            TappableListRowWithMenu( item:  Item.sampleRecording, onListRowTap: {_ in }, onActionSelected: {_ in})
+            TappableListRowWithMenu( item:  Item.sampleRecording, onListRowTap: {_ in }, onActionSelected: {_ in})
+            TappableListRowWithMenu( item:  Item.sampleRecording, onListRowTap: {_ in }, onActionSelected: {_ in})
         }
         .listStyle(.inset)
         .scrollContentBackground(.hidden)

@@ -13,8 +13,8 @@ final class MoveItemViewModelTest: XCTestCase {
     
     func test_itemIsMoveItem_returnsTrue_givenMoveItem() {
         // given
-        let folderA = Folder(name: "folderA")
-        let folderAA = Folder(name: "folderAA", parent: folderA.id)
+        let folderA = Item(name: "folderA", type: .folder)
+        let folderAA = Item(name: "folderAA", parent: folderA.id, type: .folder)
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [folderA, folderAA], files: [])
         let viewModel = MoveItemViewModel(moveItem: folderA, database: database, queue: queue)
@@ -28,8 +28,8 @@ final class MoveItemViewModelTest: XCTestCase {
     
     func test_itemIsMoveItem_returnsTrue_givenOtherItem() {
         // given
-        let folderA = Folder(name: "folderA")
-        let folderAA = Folder(name: "folderAA", parent: folderA.id)
+        let folderA = Item(name: "folderA", type: .folder)
+        let folderAA = Item(name: "folderAA", parent: folderA.id, type: .folder)
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [folderA, folderAA], files: [])
         let viewModel = MoveItemViewModel(moveItem: folderA, database: database, queue: queue)
@@ -42,9 +42,9 @@ final class MoveItemViewModelTest: XCTestCase {
     }
     
     func test_setFolder_setsCurrentFolder_givenFolder()  {
-        let folderA = Folder(name: "folderA")
-        let folderAA = Folder(name: "folderAA", parent: folderA.id)
-        let fileAA = File(name: "fileAA", parent: folderA.id)
+        let folderA = Item(name: "folderA", type: .folder)
+        let folderAA = Item(name: "folderAA", parent: folderA.id, type: .folder)
+        let fileAA = Item(name: "fileAA", parent: folderA.id, type: .recording, audioInfo: Item.sampleAudioInfo)
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [folderA, folderAA], files: [fileAA])
         let viewModel = MoveItemViewModel(moveItem: folderA, database: database, queue: queue)
@@ -76,19 +76,19 @@ final class MoveItemViewModelTest: XCTestCase {
     
     func test_loadFolders_loadFolders_givenRootFolder()  {
         // Given
-        let folderA = Folder(name: "Folder A")
-        let folderB = Folder(name: "Folder B")
-        let folderC = Folder(name: "Folder C")
+        let folderA = Item(name: "Folder A", type: .folder)
+        let folderB = Item(name: "Folder B", type: .folder)
+        let folderC = Item(name: "Folder C", type: .folder)
         let folders = [folderA, folderB, folderC]
         
-        let file1 = File(name: "File1 in Library")
-        let file2 = File(name: "File2 in Library")
-        let file3 = File(name: "File3 in Library")
-        let file4 = File(name: "File4 in Library")
-        let file5 = File(name: "File5 in Library")
-        let file6 = File(name: "File6 in Library")
-        let file7 = File(name: "File7 in Library")
-        let file8 = File(name: "File8 in Library")
+        let file1 = Item(name: "File1 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file2 = Item(name: "File2 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file3 = Item(name: "File3 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file4 = Item(name: "File4 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file5 = Item(name: "File5 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file6 = Item(name: "File6 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file7 = Item(name: "File7 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file8 = Item(name: "File8 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
         let files = [file1, file2, file3, file4, file5, file6, file7, file8]
         
         let queue = DispatchQueue.main
@@ -121,21 +121,21 @@ final class MoveItemViewModelTest: XCTestCase {
     
     func test_loadFolders_loadFolders_givenNestedFolder()  {
         // Given
-        let folderA = Folder(name: "Folder A")
-        let folderB = Folder(name: "Folder B")
-        let folderC = Folder(name: "Folder C")
-        let folderAA1 = Folder(name: "Folder AA1", parent: folderA.id)
-        let folderAA2 = Folder(name: "Folder AA2", parent: folderA.id)
-        let folderAAA1 = Folder(name: "Folder AAA1", parent: folderAA1.id)
+        let folderA = Item(name: "Folder A", type: .folder)
+        let folderB = Item(name: "Folder B", type: .folder)
+        let folderC = Item(name: "Folder C", type: .folder)
+        let folderAA1 = Item(name: "Folder AA1", parent: folderA.id, type: .folder)
+        let folderAA2 = Item(name: "Folder AA2", parent: folderA.id, type: .folder)
+        let folderAAA1 = Item(name: "Folder AAA1", parent: folderAA1.id, type: .folder)
         let folders = [folderA, folderB, folderC, folderAA1, folderAA2, folderAAA1]
         
-        let file1 = File(name: "File1 in Library")
-        let file2 = File(name: "File2 in Library")
-        let file3 = File(name: "File3 in Library")
-        let fileA1 = File(name: "File in Folder A", parent: folderA.id)
-        let fileAA1 = File(name: "File in Folder AA1", parent: folderAA1.id)
-        let fileAA2 = File(name: "File in Folder AA2", parent: folderAA2.id)
-        let fileAAA1 = File(name: "File in Folder AAA1", parent: folderAAA1.id)
+        let file1 = Item(name: "File1 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file2 = Item(name: "File2 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file3 = Item(name: "File3 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let fileA1 = Item(name: "File in Folder A", parent: folderA.id, type: .recording, audioInfo: Item.sampleAudioInfo)
+        let fileAA1 = Item(name: "File in Folder AA1", parent: folderAA1.id, type: .recording, audioInfo: Item.sampleAudioInfo)
+        let fileAA2 = Item(name: "File in Folder AA2", parent: folderAA2.id, type: .recording, audioInfo: Item.sampleAudioInfo)
+        let fileAAA1 = Item(name: "File in Folder AAA1", parent: folderAAA1.id, type: .recording, audioInfo: Item.sampleAudioInfo)
         let files = [file1, file2, file3, fileA1, fileAA1, fileAA2, fileAAA1]
         
         
@@ -168,15 +168,15 @@ final class MoveItemViewModelTest: XCTestCase {
     
     func test_loadFolders_loadFolders_givenEmptyFolder()  {
         // Given
-        let folderA = Folder(name: "Folder A")
-        let folderB = Folder(name: "Folder B")
-        let folderC = Folder(name: "Folder C")
+        let folderA = Item(name: "Folder A", type: .folder)
+        let folderB = Item(name: "Folder B", type: .folder)
+        let folderC = Item(name: "Folder C", type: .folder)
         let folders = [folderA, folderB, folderC]
         
-        let file1 = File(name: "File1 in Library")
-        let file2 = File(name: "File2 in Library")
-        let file3 = File(name: "File3 in Library")
-        let fileA1 = File(name: "File in Folder A", parent: folderA.id)
+        let file1 = Item(name: "File1 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file2 = Item(name: "File2 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file3 = Item(name: "File3 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let fileA1 = Item(name: "File in Folder A", parent: folderA.id, type: .recording, audioInfo: Item.sampleAudioInfo)
         let files = [file1, file2, file3, fileA1]
         
         
@@ -209,19 +209,19 @@ final class MoveItemViewModelTest: XCTestCase {
     
     func test_handleOnAppear_loadRootFolder()  {
         // Given
-        let folderA = Folder(name: "Folder A")
-        let folderB = Folder(name: "Folder B")
-        let folderC = Folder(name: "Folder C")
+        let folderA = Item(name: "Folder A", type: .folder)
+        let folderB = Item(name: "Folder B", type: .folder)
+        let folderC = Item(name: "Folder C", type: .folder)
         let folders = [folderA, folderB, folderC]
         
-        let file1 = File(name: "File1 in Library")
-        let file2 = File(name: "File2 in Library")
-        let file3 = File(name: "File3 in Library")
-        let file4 = File(name: "File4 in Library")
-        let file5 = File(name: "File5 in Library")
-        let file6 = File(name: "File6 in Library")
-        let file7 = File(name: "File7 in Library")
-        let file8 = File(name: "File8 in Library")
+        let file1 = Item(name: "File1 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file2 = Item(name: "File2 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file3 = Item(name: "File3 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file4 = Item(name: "File4 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file5 = Item(name: "File5 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file6 = Item(name: "File6 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file7 = Item(name: "File7 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
+        let file8 = Item(name: "File8 in Library", type: .recording, audioInfo: Item.sampleAudioInfo)
         let files = [file1, file2, file3, file4, file5, file6, file7, file8]
         
         let queue = DispatchQueue.main
