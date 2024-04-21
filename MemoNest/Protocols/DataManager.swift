@@ -32,5 +32,5 @@ protocol DataManager {
     
     // add
     func addFolder(folderName: String, parentID: UUID?) -> AnyPublisher<Void, Never>
-    func addFile(fileName: String, date: Date, parentID: UUID?, duration: TimeInterval, recordingURL: URL) -> AnyPublisher<Void, Never>
+    func addFile(fileName: String, date: Date, parentID: UUID?, duration: TimeInterval, recordingURLFileName: String) -> AnyPublisher<Void, Never>
 }

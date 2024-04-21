@@ -364,10 +364,10 @@
             filePath = "MemoNest/Models/RecordingManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
-            landmarkName = "setupRecorder()"
-            landmarkType = "7">
+            startingLineNumber = "70"
+            endingLineNumber = "70"
+            landmarkName = "only return and save fileName, not full URL path"
+            landmarkType = "19">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -475,9 +475,9 @@
             filePath = "MemoNest/Models/RecordingManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "init(audioRecorder:filePath:cancellables:)"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "init(audioRecorder:cancellables:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -680,8 +680,8 @@
             filePath = "MemoNest/ViewModels/PlaybackViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
             landmarkName = "seek(to:)"
             landmarkType = "7">
          </BreakpointContent>

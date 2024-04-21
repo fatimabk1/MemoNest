@@ -71,7 +71,7 @@ struct PlaybackView: View {
                 viewModel.seekForward()
             }
         } label: {
-            Image(systemName: "forward.circle")
+            Image(systemName: "goforward.15") // goforward.five
                 .resizable()
                 .frame(width: 25, height: 25)
         }
@@ -84,7 +84,7 @@ struct PlaybackView: View {
                 viewModel.seekBackward()
             }
         } label: {
-            Image(systemName: "backward.circle")
+            Image(systemName: "gobackward.15")
                 .resizable()
                 .frame(width: 25, height: 25)
         }

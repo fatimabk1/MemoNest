@@ -92,8 +92,11 @@ final class PlaybackViewModel: ObservableObject {
     }
     
     func handleOnAppear() {
-        if let recordingURL = recording.audioInfo?.recordingURL {
-            let result = setupAudioPlayer(fileURL: recordingURL)
+        if let recordingURLFileName = recording.audioInfo?.recordingURLFileName {
+            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            let path = paths[0].appendingPathComponent(recordingURLFileName)
+            
+            let result = setupAudioPlayer(fileURL: path)
             switch(result){
             case .success:
                 return

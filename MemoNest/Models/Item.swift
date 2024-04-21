@@ -54,10 +54,10 @@ struct Item {
 
 struct AudioMetaData {
     let duration: TimeInterval
-    let recordingURL:URL
+    let recordingURLFileName: String
 }
 
 extension Item {
-    static let sampleAudioInfo = AudioMetaData(duration: TimeInterval(25), recordingURL: URL(string: "https://www.sampleURL.com")!)
+    static let sampleAudioInfo = AudioMetaData(duration: TimeInterval(25), recordingURLFileName: "https://www.sampleURL.com")
     static let sampleRecording = Item(name: "Recording #1", parent: nil, date: Date(), type: .recording, audioInfo: sampleAudioInfo)
 }

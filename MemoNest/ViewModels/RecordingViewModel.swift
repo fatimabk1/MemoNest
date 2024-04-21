@@ -27,7 +27,7 @@ final class RecordingViewModel: ObservableObject {
     private var recordingDuration: TimeInterval = 0
     var recordingDate: Date = Date()
     var recordingParent: UUID? = nil
-    var recordingURL: URL!
+    var recordingURLFileName: String!
     var formattedDuration: String { FormatterService.formatTimeInterval(seconds: recordingDuration) }
     
     // duration of recording while in progress
@@ -85,12 +85,12 @@ final class RecordingViewModel: ObservableObject {
     
         let result = recordingManager.setupRecorder()
         switch(result){
-        case .success(let filePath):
+        case .success(let fileName):
             recordingManager.startRecording()
             isRecording = true
             timerSubscription = Timer.publish(every: 1, on: .main, in: .common)
                 .autoconnect()
-                .receive(on: DispatchQueue.main)
+//                .receive(on: DispatchQueue.main)
                 .sink { [weak self] date in
                     if let startTime = self?.recordingDate {
                         self?.currentDuration = startTime.distance(to: date)
@@ -103,7 +103,7 @@ final class RecordingViewModel: ObservableObject {
             recordingParent = parentID
             recordingDuration = 0
             currentDuration = 0
-            recordingURL = filePath
+            recordingURLFileName = fileName
             
         case .failure(let err):
                 hasError = true
@@ -132,9 +132,9 @@ final class RecordingViewModel: ObservableObject {
     
     func addFile(completion: @escaping () -> Void) {
         if hasError { return }
-        if let recordingURL {
+        if let recordingURLFileName {
             database.addFile(fileName: recordingName, date: recordingDate,
-                             parentID: recordingParent, duration: recordingDuration, recordingURL: recordingURL)
+                             parentID: recordingParent, duration: recordingDuration, recordingURLFileName: recordingURLFileName)
             .sink {
                 completion()
             }

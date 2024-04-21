@@ -11,8 +11,8 @@ import RealmSwift
 
 extension Item {
     func asItemDB() -> ItemDB {
-        let recordingURLString = audioInfo?.recordingURL.absoluteString
-        return ItemDB(id: id, name: name, parent: parent, date: date, typeRaw: type.rawValue, duration: audioInfo?.duration, recordingURL: recordingURLString)
+        let recordingURLFileName = audioInfo?.recordingURLFileName
+        return ItemDB(id: id, name: name, parent: parent, date: date, typeRaw: type.rawValue, duration: audioInfo?.duration, recordingURLFileName: recordingURLFileName)
     }
 }
 
@@ -23,9 +23,9 @@ final class ItemDB: Object {
     @Persisted var date: Date
     @Persisted var typeRaw: String
     @Persisted var duration: TimeInterval?
-    @Persisted var recordingURL: String?
+    @Persisted var recordingURLFileName: String?
     
-    init(id: UUID = UUID(), name: String, parent: UUID? = nil, date: Date = Date(), typeRaw: String, duration: TimeInterval? = nil, recordingURL: String? = nil) {
+    init(id: UUID = UUID(), name: String, parent: UUID? = nil, date: Date = Date(), typeRaw: String, duration: TimeInterval? = nil, recordingURLFileName: String? = nil) {
         super.init()
         self.id = id
         self.name = name
@@ -33,7 +33,7 @@ final class ItemDB: Object {
         self.date = date
         self.typeRaw = typeRaw
         self.duration = duration
-        self.recordingURL = recordingURL
+        self.recordingURLFileName = recordingURLFileName
     }
     
     override static func primaryKey() -> String? {
@@ -43,11 +43,10 @@ final class ItemDB: Object {
 
 extension ItemDB {
     func asItem() -> Item {
-        var type = ItemType.folder
+        let type = ItemType(rawValue: typeRaw) ?? .folder // shouldn't fail
         var audioInfo: AudioMetaData? = nil
-        if typeRaw == "recording", let duration, let recordingURL, let url = URL(string: recordingURL) {
-            type = ItemType.recording
-            audioInfo = AudioMetaData(duration: duration, recordingURL: url)
+        if type == .recording, let duration, let recordingURLFileName {
+            audioInfo = AudioMetaData(duration: duration, recordingURLFileName: recordingURLFileName)
         }
         return Item(id: id, name: name, parent: parent, date: date, type: type, audioInfo: audioInfo)
     }

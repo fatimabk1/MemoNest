@@ -29,7 +29,8 @@ enum RecordingError: Error {
 final class RecordingManager: NSObject, AVAudioRecorderDelegate {
     var audioRecorder: AVAudioRecorder?
     
-    private var filePath: URL?
+//    private var fileName: String
+//    private var filePath: URL?
     private var cancellables = Set<AnyCancellable>()
     private var isRecording = false
     private let audioSettings =  [
@@ -39,10 +40,9 @@ final class RecordingManager: NSObject, AVAudioRecorderDelegate {
         AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
     ]
     
-    init(audioRecorder: AVAudioRecorder? = nil, filePath: URL? = nil, cancellables: Set<AnyCancellable> = Set<AnyCancellable>()) {
+    init(audioRecorder: AVAudioRecorder? = nil, cancellables: Set<AnyCancellable> = Set<AnyCancellable>()) {
         super.init()
         self.audioRecorder = audioRecorder
-        self.filePath = filePath
         self.cancellables = cancellables
     }
     
@@ -53,27 +53,29 @@ final class RecordingManager: NSObject, AVAudioRecorderDelegate {
         }
     }
     
-    private func getNewFileName() -> URL {
+    private func getNewFileName() -> String {
         print("Generating audio file name")
         let unique = UUID()
+        let fileName = "\(unique).m4a"
+        return fileName
+    }
+    
+    private func getFileURL(fileName: String) -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let path = paths[0].appendingPathComponent("\(unique).m4a")
+        let path = paths[0].appendingPathComponent(fileName)
         return path
     }
     
-    func setupRecorder() -> Result<URL, RecordingError> {
+    // MARK: only return and save fileName, not full URL path
+    func setupRecorder() -> Result<String, RecordingError> {
         print("Setting up recorder")
         do {
-            filePath = getNewFileName()
-            if let filePath {
-                audioRecorder = try AVAudioRecorder(url: filePath, settings: audioSettings)
-                audioRecorder?.prepareToRecord()
-                audioRecorder?.delegate = self
-                return .success(filePath)
-            }
-            // shouldn't get here
-            return .failure(RecordingError.unableToSetupRecorder)
-            
+            let fileName = getNewFileName()
+            let fileURL = getFileURL(fileName: fileName)
+            audioRecorder = try AVAudioRecorder(url: fileURL, settings: audioSettings)
+            audioRecorder?.prepareToRecord()
+            audioRecorder?.delegate = self
+            return .success(fileName)
         } catch(let err) {
             print(err)
             return .failure(RecordingError.unableToSetupRecorder)

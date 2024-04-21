@@ -125,10 +125,10 @@ final class MockDataManager: DataManager {
         .eraseToAnyPublisher()
     }
     func 
-    addFile(fileName: String, date: Date, parentID: UUID?, duration: TimeInterval, recordingURL: URL) -> AnyPublisher<Void, Never> {
+    addFile(fileName: String, date: Date, parentID: UUID?, duration: TimeInterval, recordingURLFileName: String) -> AnyPublisher<Void, Never> {
         Future<Void, Never> { promise in
             self.queue.async { [weak self] in
-                let audioInfo = AudioMetaData(duration: duration, recordingURL: recordingURL)
+                let audioInfo = AudioMetaData(duration: duration, recordingURLFileName: recordingURLFileName)
                 let file = Item(name: fileName, parent: parentID, date: date, type: .recording, audioInfo: audioInfo)
                 self?.files.append(file)
                 promise(.success(()))
@@ -218,7 +218,7 @@ extension MockDataManager {
     static let folderAAA1 = Item(name: "Folder AAA1", parent: folderAA1.id, type: .folder)
     static let sampleFolders = [folderA, folderB, folderC, folderAA1, folderAA2, folderAAA1]
     
-    static let audioInfo = AudioMetaData( duration: 0, recordingURL: URL(string: "www.sample.com")!)
+    static let audioInfo = AudioMetaData(duration: 0, recordingURLFileName: "www.sample.com")
     static let audio1 = Item(name: "File1 in Library",
                              date: Date(), type: .recording, audioInfo: audioInfo)
     static let audio2 = Item(name: "File2 in Library",
