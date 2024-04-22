@@ -711,10 +711,10 @@
             filePath = "MemoNest/ViewModels/Navigation/FolderListViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
-            landmarkName = "handleOnAppear()"
-            landmarkType = "7">
+            startingLineNumber = "162"
+            endingLineNumber = "162"
+            landmarkName = "FolderListViewModel"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

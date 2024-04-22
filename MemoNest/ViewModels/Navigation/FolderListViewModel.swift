@@ -129,13 +129,14 @@ final class FolderListViewModel: ObservableObject {
             database.fetchFolderInfo(folderID: folderID)
                 .receive(on: queue)
                 .sink(receiveCompletion: { [weak self] completion in
-                    print("received completion: \(completion)")
                     self?.handleError(completionStatus: completion)
                 }, receiveValue: { [weak self] folder in
                     self?.currentFolder = folder
                     print("Updated load folder: \(String(describing: self?.currentFolder?.name))" )
                 })
                 .store(in: &cancellables)
+        } else {
+            self.currentFolder = nil
         }
         
         database.fetchFolders(parentID: folderID)

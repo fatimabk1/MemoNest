@@ -41,7 +41,6 @@ final class MoveItemViewModel: ObservableObject {
             database.fetchFolderInfo(folderID: folderID)
                 .receive(on: queue)
                 .sink(receiveCompletion: { [weak self] completion in
-                    print("received completion: \(completion)")
 //                    self?.handleError(completionStatus: completion) // TODO: handleError()
                 }, receiveValue: { [weak self] folder in
                     self?.currentFolder = folder
