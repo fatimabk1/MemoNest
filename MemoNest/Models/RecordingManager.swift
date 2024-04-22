@@ -10,7 +10,7 @@ import AVFoundation
 import Combine
 
 
-enum RecordingError: Error {
+enum RecordingError: TitledError {
     case unableToSetupRecorder, unableToDeactivateAudioSession, noPermission
     
     var title: String {

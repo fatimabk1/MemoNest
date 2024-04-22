@@ -11,6 +11,7 @@
 		083972E42BB36BA900C4B134 /* MoveItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E32BB36BA900C4B134 /* MoveItemView.swift */; };
 		083972E62BB496B300C4B134 /* MoveItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E52BB496B300C4B134 /* MoveItemViewModel.swift */; };
 		084454932BC71049007CDC57 /* FormatterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084454922BC71049007CDC57 /* FormatterService.swift */; };
+		0853B8892BD69D5300066FB4 /* TitledError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0853B8882BD69D5300066FB4 /* TitledError.swift */; };
 		085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743122B7D245E00E546A1 /* MemoNestApp.swift */; };
 		085743152B7D245E00E546A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743142B7D245E00E546A1 /* ContentView.swift */; };
 		085743172B7D245F00E546A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 085743162B7D245F00E546A1 /* Assets.xcassets */; };
@@ -62,6 +63,7 @@
 		083972E52BB496B300C4B134 /* MoveItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemViewModel.swift; sourceTree = "<group>"; };
 		084454902BC5B6F2007CDC57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		084454922BC71049007CDC57 /* FormatterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterService.swift; sourceTree = "<group>"; };
+		0853B8882BD69D5300066FB4 /* TitledError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitledError.swift; sourceTree = "<group>"; };
 		0857430F2B7D245E00E546A1 /* MemoNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		085743122B7D245E00E546A1 /* MemoNestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestApp.swift; sourceTree = "<group>"; };
 		085743142B7D245E00E546A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -118,12 +120,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		084454912BC71038007CDC57 /* Helpers */ = {
+		084454912BC71038007CDC57 /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				084454922BC71049007CDC57 /* FormatterService.swift */,
 			);
-			path = Helpers;
+			path = Services;
+			sourceTree = "<group>";
+		};
+		0853B88A2BD69D6200066FB4 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				0853B8882BD69D5300066FB4 /* TitledError.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		085743062B7D245E00E546A1 = {
@@ -149,10 +159,10 @@
 		085743112B7D245E00E546A1 /* MemoNest */ = {
 			isa = PBXGroup;
 			children = (
-				084454912BC71038007CDC57 /* Helpers */,
+				0853B88A2BD69D6200066FB4 /* Protocols */,
+				084454912BC71038007CDC57 /* Services */,
 				084454902BC5B6F2007CDC57 /* Info.plist */,
 				085743122B7D245E00E546A1 /* MemoNestApp.swift */,
-				085743452B7D255A00E546A1 /* Protocols */,
 				0857433E2B7D24C400E546A1 /* ViewModels */,
 				0857433D2B7D24C000E546A1 /* Views */,
 				0857433C2B7D24BB00E546A1 /* Models */,
@@ -235,6 +245,7 @@
 		086ED08F2B98CA1300A30EBC /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
+				085743452B7D255A00E546A1 /* Protocols */,
 				0857434B2B7D265300E546A1 /* MockDataManager.swift */,
 				086ED08D2B98C9C200A30EBC /* RealmDataManager.swift */,
 				08779CD12BD1DC5C00D94BF3 /* ItemDB.swift */,
@@ -441,6 +452,7 @@
 				0857434C2B7D265300E546A1 /* MockDataManager.swift in Sources */,
 				08779CD22BD1DC5C00D94BF3 /* ItemDB.swift in Sources */,
 				083972E62BB496B300C4B134 /* MoveItemViewModel.swift in Sources */,
+				0853B8892BD69D5300066FB4 /* TitledError.swift in Sources */,
 				08866F782BBB5BD20042318B /* PlaybackView.swift in Sources */,
 				08866F7E2BBC88430042318B /* RecordingManager.swift in Sources */,
 				08866F8C2BBCB4180042318B /* PopupInput.swift in Sources */,

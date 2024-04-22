@@ -59,6 +59,9 @@ struct FolderListView: View {
                 .alert(isPresented: $recordingViewModel.hasError) {
                     Alert(title: Text("\(recordingViewModel.error?.title ?? "")"))
                 }
+                .alert(isPresented: $viewModel.hasError) {
+                    Alert(title: Text("\(viewModel.error?.title ?? "")"))
+                }
                 .toolbar {
                     ToolbarItemGroup(placement: .topBarLeading) {
                         BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()}

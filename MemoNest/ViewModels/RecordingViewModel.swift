@@ -13,7 +13,7 @@ import Combine
 final class RecordingViewModel: ObservableObject {
     @Published var isRecording = false
     @Published var hasError = false
-    @Published var error: RecordingError?
+    @Published var error: TitledError?
     @Published var filePath: URL?
     
     var recordingManager: RecordingManager
@@ -135,9 +135,20 @@ final class RecordingViewModel: ObservableObject {
         if let recordingURLFileName {
             database.addFile(fileName: recordingName, date: recordingDate,
                              parentID: recordingParent, duration: recordingDuration, recordingURLFileName: recordingURLFileName)
-            .sink {
-                completion()
-            }
+            .sink (
+                receiveCompletion: { completion in
+                    switch completion {
+                    case .failure(let error):
+                        self.hasError = true
+                        self.error = error
+                        print("Received error: \(error)")
+                    case .finished:
+                        print("sucess")
+                    }
+                }, receiveValue: { _ in
+                  completion()
+                }
+            )
             .store(in: &cancellables)
         }
     }

@@ -1,88 +1,310 @@
-////
-////  RealmDataManager.swift
-////  MemoNest
-////
-////  Created by Fatima Kahbi on 3/6/24.
-////
 //
-//import Foundation
-//import Combine
-//import RealmSwift
+//  RealmDataManager.swift
+//  MemoNest
 //
+//  Created by Fatima Kahbi on 3/6/24.
 //
-//final class RealmDataManager: DataManager {
-//    private let realm: Realm?
-//    
-//    init(_ realm: Realm?) {
-//        self.realm = realm
-//    }
-//
-//    var cancellables = Set<AnyCancellable>()
-//    
-//    func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Folder?, Never> {
-//        return Just<Folder?>(nil)
-//            .eraseToAnyPublisher()
-//    }
-//    
-//    func fetchFiles(parentID: UUID?) -> AnyPublisher<[AudioRecording], Never> {
-//        return Just<[AudioRecording]>([])
-//            .eraseToAnyPublisher()
-//    }
-//    
-//    func fetchFolders(parentID: UUID?) -> AnyPublisher<[Folder], Never> {
-//        return Just<[Folder]>([])
-//            .eraseToAnyPublisher()
-//    }
-//    
-//    func removeFolder(folderID: UUID) -> AnyPublisher<Void, Never> {
-//        return Just<Void>(())
-//            .eraseToAnyPublisher()
-//    }
-//    
-//    func removeSingleFolder(folderID: UUID) -> AnyPublisher<Void, Never> {
-//        return Just<Void>(())
-//            .eraseToAnyPublisher()
-//    }
-//    
-//    func removeFile(fileID: UUID) -> AnyPublisher<Void, Never> {
-//        return Just<Void>(())
-//            .eraseToAnyPublisher()
-//    }
-//    
-//    func removeAll(ids: [UUID]) -> AnyPublisher<Void, Never> {
-//        return Just<Void>(())
-//            .eraseToAnyPublisher()
-//    }
-//    
-//    func renameFolder(folderID: UUID, name: String) -> AnyPublisher<Void, Never> {
-//        return Just<Void>(())
-//            .eraseToAnyPublisher()
-//    }
-//    
-//    func renameFile(fileID: UUID, name: String) -> AnyPublisher<Void, Never> {
-//        return Just<Void>(())
-//            .eraseToAnyPublisher()
-//    }
-//    
-//    func moveFolder(folderID: UUID, newParentID: UUID?) -> AnyPublisher<Void, Never> {
-//        return Just<Void>(())
-//            .eraseToAnyPublisher()
-//    }
-//    
-//    func moveFile(fileID: UUID, newParentID: UUID?) -> AnyPublisher<Void, Never> {
-//        return Just<Void>(())
-//            .eraseToAnyPublisher()
-//    }
-//    
-//    func addFolder(folderName: String, parentID: UUID?) -> AnyPublisher<Void, Never> {
-//        return Just<Void>(())
-//            .eraseToAnyPublisher()
-//    }
-//    
-//    func addFile(fileName: String, date: Date, parentID: UUID?, duration: TimeInterval, recordingURL: URL) -> AnyPublisher<Void, Never> {
-//        return Just<Void>(())
-//            .eraseToAnyPublisher()
-//    }
-//    
-//    
-//}
+
+import Foundation
+import Combine
+import RealmSwift
+
+final class RealmDataManager: DataManager {
+    private let queue: DispatchQueue = DispatchQueue.global(qos: .background)
+    private let configuration = Realm.Configuration (
+        schemaVersion: 0,
+        migrationBlock: { migration, oldSchema in
+            // future migration code
+        })
+    private var cancellables = Set<AnyCancellable>()
+    
+    init() {
+        Realm.Configuration.defaultConfiguration = configuration
+    }
+    
+    
+    func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Item?, DatabaseError> {
+        print("in fetch Folder Info")
+        return Future<Item?, DatabaseError> { promise in
+            self.queue.async {
+                guard let realm = try? Realm() else {
+                    print("realm not instantiated")
+                    return promise(.failure(.realmNotInstantiated))
+                }
+                let folder = realm.object(ofType: ItemDB.self, forPrimaryKey: folderID)
+                promise(.success(folder?.asItem()))
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+    
+    func fetchFiles(parentID: UUID?) -> AnyPublisher<[Item], DatabaseError> {
+        return Future<[Item], DatabaseError> { promise in
+            self.queue.async {
+                guard let realm = try? Realm() else {print("realm not instantiated")
+                    return promise(.failure(.realmNotInstantiated)) }
+                
+                let items = realm.objects(ItemDB.self)
+                let fileGroup = items.where { $0.typeRaw == "recording" && $0.parent == parentID }
+                let files = fileGroup.map({$0.asItem()})
+                promise(.success(Array(files)))
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+    
+    func fetchFolders(parentID: UUID?) -> AnyPublisher<[Item], DatabaseError> {
+        return Future<[Item], DatabaseError> { promise in
+            self.queue.async {
+                guard let realm = try? Realm() else {print("realm not instantiated")
+                    return promise(.failure(.realmNotInstantiated)) }
+                
+                let items = realm.objects(ItemDB.self)
+                let folderGroup = items.where { $0.typeRaw == "folder" && $0.parent == parentID }
+                let folders = folderGroup.map({$0.asItem()})
+                promise(.success(Array(folders)))
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+    
+    func removeFolder(folderID: UUID) -> AnyPublisher<Void, DatabaseError> {
+        self.fetchFolders(parentID: folderID)
+        // handle child folders
+            .flatMap { [weak self] childFolders -> AnyPublisher<Void, DatabaseError> in
+                guard let self else { return Empty().eraseToAnyPublisher() }
+                let childFolderDeletions = childFolders.compactMap { self.removeFolder(folderID: $0.id) } // recursive delete each child folder
+                return Publishers.MergeMany(childFolderDeletions) // merge into a single event stream
+                    .collect() // wait for all sync deletions to finish
+                    .map { _ in () } // transform output to void to match AnyPublisher type
+                    .eraseToAnyPublisher()
+            }
+        // fetch files
+            .flatMap { [weak self] _ -> AnyPublisher<[Item], DatabaseError> in
+                guard let self else { return Empty().eraseToAnyPublisher() }
+                return self.fetchFiles(parentID: folderID)
+            }
+        // delete files
+            .flatMap { [weak self] files  -> AnyPublisher<Void, DatabaseError> in
+                guard let self else { return Empty().eraseToAnyPublisher() }
+                return self.removeAll(ids: files.map({$0.id}))
+            }
+        // delete folder itself
+            .flatMap { [weak self] _  -> AnyPublisher<Void, DatabaseError> in
+                guard let self else { return Empty().eraseToAnyPublisher() }
+                return self.removeSingleFolder(folderID: folderID)
+            }
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+    }
+    
+    func removeSingleFolder(folderID: UUID) -> AnyPublisher<Void, DatabaseError> {
+        return Future<Void, DatabaseError> { promise in
+            self.queue.async {
+                guard let realm = try? Realm() else {print("realm not instantiated")
+                    return promise(.failure(.realmNotInstantiated)) }
+                
+                let folder = realm.object(ofType: ItemDB.self, forPrimaryKey: folderID)
+                guard let folder else { return promise(.failure(.itemNotFound)) }
+                
+                do {
+                    try realm.write {
+                        realm.delete(folder)
+                        promise(.success(()))
+                    }
+                } catch {
+                    promise(.failure((.failedDelete)))
+                }
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+    
+    func removeFile(fileID: UUID) -> AnyPublisher<Void, DatabaseError> {
+        return Future<Void, DatabaseError> { promise in
+            self.queue.async {
+                guard let realm = try? Realm() else {print("realm not instantiated")
+                    return promise(.failure(.realmNotInstantiated)) }
+                
+                let file = realm.object(ofType: ItemDB.self, forPrimaryKey: fileID)
+                guard let file else { return promise(.failure(.itemNotFound)) }
+                
+                do {
+                    try realm.write {
+                        realm.delete(file)
+                        promise(.success(()))
+                    }
+                } catch {
+                    promise(.failure((.failedDelete)))
+                }
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+    
+    func removeAll(ids: [UUID]) -> AnyPublisher<Void, DatabaseError> {
+        return Future<Void, DatabaseError> { promise in
+            self.queue.async {
+                guard let realm = try? Realm() else {print("realm not instantiated")
+                    return promise(.failure(.realmNotInstantiated)) }
+                
+                let items = realm.objects(ItemDB.self)
+                let itemsToRemove = items.filter { item in
+                    ids.contains(item.id)
+                }
+                
+                do {
+                    try realm.write {
+                        realm.delete(itemsToRemove)
+                        promise(.success(()))
+                    }
+                } catch {
+                    promise(.failure((.failedDelete)))
+                }
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+    
+    func renameFolder(folderID: UUID, name: String) -> AnyPublisher<Void, DatabaseError> {
+        return Future<Void, DatabaseError> { promise in
+            self.queue.async {
+                guard let realm = try? Realm() else {print("realm not instantiated")
+                    return promise(.failure(.realmNotInstantiated)) }
+                
+                let folderDB = realm.object(ofType: ItemDB.self, forPrimaryKey: folderID)
+                guard let folderDB else { return promise(.failure(.itemNotFound)) }
+                
+                do {
+                    try realm.write {
+                        folderDB.name = name
+                        promise(.success(()))
+                    }
+                } catch {
+                    promise(.failure((.failedDelete)))
+                }
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+    
+    func renameFile(fileID: UUID, name: String) -> AnyPublisher<Void, DatabaseError> {
+        return Future<Void, DatabaseError> { promise in
+            self.queue.async {
+                guard let realm = try? Realm() else {print("realm not instantiated")
+                    return promise(.failure(.realmNotInstantiated)) }
+                
+                let fileDB = realm.object(ofType: ItemDB.self, forPrimaryKey: fileID)
+                guard let fileDB else { return promise(.failure(.itemNotFound)) }
+                
+                do {
+                    try realm.write {
+                        fileDB.name = name
+                        promise(.success(()))
+                    }
+                } catch {
+                    promise(.failure((.failedDelete)))
+                }
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+    
+    func moveFolder(folderID: UUID, newParentID: UUID?) -> AnyPublisher<Void, DatabaseError> {
+        return Future<Void, DatabaseError> { promise in
+            self.queue.async {
+                guard let realm = try? Realm() else {print("realm not instantiated")
+                    return promise(.failure(.realmNotInstantiated)) }
+                
+                let folderDB = realm.object(ofType: ItemDB.self, forPrimaryKey: folderID)
+                guard let folderDB else { return promise(.failure(.itemNotFound)) }
+                
+                do {
+                    try realm.write {
+                        folderDB.parent = newParentID
+                        promise(.success(()))
+                    }
+                } catch {
+                    promise(.failure((.failedDelete)))
+                }
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+    
+    func moveFile(fileID: UUID, newParentID: UUID?) -> AnyPublisher<Void, DatabaseError> {
+        return Future<Void, DatabaseError> { promise in
+            self.queue.async {
+                guard let realm = try? Realm() else {print("realm not instantiated")
+                    return promise(.failure(.realmNotInstantiated)) }
+                
+                let fileDB = realm.object(ofType: ItemDB.self, forPrimaryKey: fileID)
+                guard let fileDB else { return promise(.failure(.itemNotFound)) }
+                
+                do {
+                    try realm.write {
+                        fileDB.parent = newParentID
+                        promise(.success(()))
+                    }
+                } catch {
+                    promise(.failure((.failedDelete)))
+                }
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+    
+    func addFolder(folderName: String, parentID: UUID?) -> AnyPublisher<Void, DatabaseError> {
+        return Future<Void, DatabaseError> { promise in
+            self.queue.async {
+                guard let realm = try? Realm() else {print("realm not instantiated")
+                    return promise(.failure(.realmNotInstantiated)) }
+                
+                do {
+                    print(Thread.current)
+                    try realm.write {
+                        let folderDB = ItemDB(name: folderName, parent: parentID, typeRaw: ItemType.folder.rawValue)
+                        realm.add(folderDB)
+                        promise(.success(()))
+                    }
+                } catch {
+                    promise(.failure((.failedAdd)))
+                }
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+    
+    func addFile(fileName: String, date: Date, parentID: UUID?, duration: TimeInterval, recordingURLFileName: String) -> AnyPublisher<Void, DatabaseError> {
+        return Future<Void, DatabaseError> { promise in
+            self.queue.async {
+                guard let realm = try? Realm() else {print("realm not instantiated")
+                    return promise(.failure(.realmNotInstantiated)) }
+                
+                let fileDB = ItemDB(name: fileName, parent: parentID, date: date, typeRaw: ItemType.recording.rawValue, duration: duration, recordingURLFileName: recordingURLFileName)
+                
+                do {
+                    try realm.write {
+                        realm.add(fileDB)
+                        promise(.success(()))
+                    }
+                } catch {
+                    promise(.failure((.failedAdd)))
+                }
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+}

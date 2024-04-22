@@ -21,8 +21,6 @@ final class MoveItemViewModel: ObservableObject {
     var currentFolderTitle: String { currentFolder?.name ?? "Library" }
     var hasParent: Bool { currentFolder != nil }
     
-    // TODO: swap w/Realm
-    // TODO: REMOVE - TEMP FILES/FOLDERS for development
     init(moveItem: Item, database: DataManager, queue: DispatchQueue = .main) {
         self.moveItem = moveItem
         self.database = database
@@ -39,19 +37,35 @@ final class MoveItemViewModel: ObservableObject {
     }
     
     func loadFolders(atFolderID folderID: UUID?) {
-        database.fetchFolderInfo(folderID: folderID)
-            .receive(on: queue)
-            .sink { [weak self] folder in
-                guard let self else { return }
-                self.currentFolder = folder
-            }
-            .store(in: &cancellables)
+        if let folderID {
+            database.fetchFolderInfo(folderID: folderID)
+                .receive(on: queue)
+                .sink(receiveCompletion: { [weak self] completion in
+                    print("received completion: \(completion)")
+//                    self?.handleError(completionStatus: completion) // TODO: handleError()
+                }, receiveValue: { [weak self] folder in
+                    self?.currentFolder = folder
+                    print("Updated load folder: \(String(describing: self?.currentFolder?.name))" )
+                })
+                .store(in: &cancellables)
+        }
         
         database.fetchFolders(parentID: folderID)
             .receive(on: queue)
-            .sink { [weak self] folders in
-                self?.items = folders
-            }
+            .sink (
+                receiveCompletion: { completion in
+                    switch completion {
+                    case .failure(let error):
+//                        self.hasError = true // TODO: add error flag
+//                        self.error = error
+                        print("Received error: \(error)")
+                    case .finished:
+                        print("sucess")
+                    }
+                }, receiveValue: { [weak self] folders in
+                    self?.items = folders
+                }
+            )
             .store(in: &cancellables)
     }
     

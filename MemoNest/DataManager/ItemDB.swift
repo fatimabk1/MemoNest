@@ -25,6 +25,12 @@ final class ItemDB: Object {
     @Persisted var duration: TimeInterval?
     @Persisted var recordingURLFileName: String?
     
+    // default init
+    override init() {
+        super.init()
+    }
+    
+    // designated init
     init(id: UUID = UUID(), name: String, parent: UUID? = nil, date: Date = Date(), typeRaw: String, duration: TimeInterval? = nil, recordingURLFileName: String? = nil) {
         super.init()
         self.id = id

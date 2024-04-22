@@ -9,7 +9,7 @@ import Foundation
 import AVFoundation
 import Combine
 
-enum PlaybackError: Error {
+enum PlaybackError: TitledError {
     case cannotCreatePlayerFromURL
     
     var title: String {

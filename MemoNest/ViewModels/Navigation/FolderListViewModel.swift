@@ -25,7 +25,11 @@ enum SortType: CaseIterable {
 
 final class FolderListViewModel: ObservableObject {
     @Published var items = [Item]()
+    @Published var currentFolder: Item?
     @Published var isLoading = false
+    @Published var hasError = false
+    @Published var error: TitledError?
+    
     @Published var sortType = SortType.dateAsc {
         didSet {
             let folders = items.filter({$0.isFolder()})
@@ -33,7 +37,6 @@ final class FolderListViewModel: ObservableObject {
             self.items = self.sortItems(folders) + self.sortItems(files)
         }
     }
-    
     @Published var popup = PopupInput()
     @Published var itemAction: ItemAction? = nil
     @Published var editingItem: Item? = nil
@@ -46,7 +49,6 @@ final class FolderListViewModel: ObservableObject {
     }
     
     let database: DataManager
-    @Published var currentFolder: Item?
     private let queue: DispatchQueue
     private var cancellables = Set<AnyCancellable>()
     
@@ -54,9 +56,7 @@ final class FolderListViewModel: ObservableObject {
     var hasParent: Bool { currentFolder != nil }
     var sortButtonTitle: String { sortType.toString() }
     
-    // TODO: swap w/Realm
-    // TODO: REMOVE - TEMP FILES/FOLDERS for development
-    init(database: DataManager = MockDataManager(folders: MockDataManager.sampleFolders/*, files: MockDataManager.sampleFiles*/), queue: DispatchQueue = .main) {
+    init(database: DataManager, queue: DispatchQueue = .main) {
         self.database = database
         self.queue = queue
     }
@@ -75,6 +75,16 @@ final class FolderListViewModel: ObservableObject {
         return items.sorted(by: { a, b in
             a.date > b.date
         })
+    }
+    private func handleError(completionStatus: Subscribers.Completion<DatabaseError>) {
+        switch completionStatus {
+        case .failure(let error):
+            self.hasError = true
+            self.error = error
+            print("Received error: \(error)")
+        case .finished:
+            print("sucess")
+        }
     }
     
     func sortItems(_ items: [Item]) -> [Item] {
@@ -107,7 +117,6 @@ final class FolderListViewModel: ObservableObject {
         }
     }
     
-    
     // MARK: main logic
     func setFolder(item: Item){
         guard item.type == .folder else { return }
@@ -115,27 +124,32 @@ final class FolderListViewModel: ObservableObject {
     }
     
     func loadItems(atFolderID folderID: UUID?) {
-        database.fetchFolderInfo(folderID: folderID)
-            .receive(on: queue)
-//            .receive(on: RunLoop.main)
-            .sink { [weak self] folder in
-                guard let self else { return }
-                self.currentFolder = folder
-                print("Updated load folder: \(String(describing: self.currentFolder?.name))" )
-            }
-            .store(in: &cancellables)
+        print("about to call fetch folder info")
+        if let folderID {
+            database.fetchFolderInfo(folderID: folderID)
+                .receive(on: queue)
+                .sink(receiveCompletion: { [weak self] completion in
+                    print("received completion: \(completion)")
+                    self?.handleError(completionStatus: completion)
+                }, receiveValue: { [weak self] folder in
+                    self?.currentFolder = folder
+                    print("Updated load folder: \(String(describing: self?.currentFolder?.name))" )
+                })
+                .store(in: &cancellables)
+        }
         
         database.fetchFolders(parentID: folderID)
             .zip(database.fetchFiles(parentID: folderID))
-            .receive(on: RunLoop.main) // Bug w/DispatchQueue.main, fixed. Hurray!
-            .sink { [weak self] folders, files in
+            .sink(receiveCompletion: { [weak self] completion in
+                self?.handleError(completionStatus: completion)
+            }, receiveValue: { [weak self] folders, files in
                 guard let self else { return }
                 let sortedFolders = self.sortItems(folders)
                 let sortedFiles = self.sortItems(files)
                 self.items = sortedFolders + sortedFiles
                 print("finished loading items")
                 isLoading = false
-            }
+            })
             .store(in: &cancellables)
     }
     
@@ -143,6 +157,7 @@ final class FolderListViewModel: ObservableObject {
         print("starting load items")
         isLoading = true
         self.loadItems(atFolderID: currentFolder?.id)
+        print(String(cString: __dispatch_queue_get_label(nil)))
     }
     
     func goBack() {
@@ -153,15 +168,19 @@ final class FolderListViewModel: ObservableObject {
     func renameItem(item: Item, name: String) {
         if item.isFolder() {
             database.renameFolder(folderID: item.id, name: name)
-                .sink { [weak self] in
+                .sink(receiveCompletion: { [weak self] completion in
+                    self?.handleError(completionStatus: completion)
+                }, receiveValue: { [weak self] in
                     self?.loadItems(atFolderID: self?.currentFolder?.id)
-                }
+                })
                 .store(in: &cancellables)
         } else {
             database.renameFile(fileID: item.id, name: name)
-                .sink { [weak self] in
+                .sink(receiveCompletion: { [weak self] completion in
+                    self?.handleError(completionStatus: completion)
+                }, receiveValue: { [weak self] in
                     self?.loadItems(atFolderID: self?.currentFolder?.id)
-                }
+                })
                 .store(in: &cancellables)
         }
     }
@@ -169,15 +188,19 @@ final class FolderListViewModel: ObservableObject {
     func removeItem(item: Item) {
         if item.isFolder() {
             database.removeFolder(folderID: item.id)
-                .sink { [weak self] in
+                .sink(receiveCompletion: { [weak self] completion in
+                    self?.handleError(completionStatus: completion)
+                }, receiveValue: { [weak self] in
                     self?.loadItems(atFolderID: self?.currentFolder?.id)
-                }
+                })
                 .store(in: &cancellables)
         } else {
             database.removeFile(fileID: item.id)
-                .sink { [weak self] in
+                .sink(receiveCompletion: { [weak self] completion in
+                    self?.handleError(completionStatus: completion)
+                }, receiveValue: { [weak self] in
                     self?.loadItems(atFolderID: self?.currentFolder?.id)
-                }
+                })
                 .store(in: &cancellables)
         }
     }
@@ -185,23 +208,31 @@ final class FolderListViewModel: ObservableObject {
     func moveItem(item: Item, destination: UUID?) {
         if item.isFolder() {
             database.moveFolder(folderID: item.id, newParentID: destination)
-                .sink { _ in
-                }
+                .sink(receiveCompletion: { [weak self] completion in
+                    self?.handleError(completionStatus: completion)
+                }, receiveValue: { [weak self] in
+                    self?.loadItems(atFolderID: self?.currentFolder?.id)
+                })
                 .store(in: &cancellables)
             
         } else {
             database.moveFile(fileID: item.id, newParentID: destination)
-                .sink { _ in
-                }
+                .sink(receiveCompletion: { [weak self] completion in
+                    self?.handleError(completionStatus: completion)
+                }, receiveValue: { [weak self] in
+                    self?.loadItems(atFolderID: self?.currentFolder?.id)
+                })
                 .store(in: &cancellables)
         }
     }
-    
+
     func addFolder(folderName: String = "New Folder") {
         database.addFolder(folderName: folderName, parentID: currentFolder?.id)
-            .sink { [weak self] in
+            .sink(receiveCompletion: { [weak self] completion in
+                self?.handleError(completionStatus: completion)
+            }, receiveValue: { [weak self] in
                 self?.loadItems(atFolderID: self?.currentFolder?.id)
-            }
+            })
             .store(in: &cancellables)
     }
 }
