@@ -12,6 +12,8 @@ import Combine
 final class MoveItemViewModel: ObservableObject {
     @Published var items = [Item]()
     @Published var currentFolder: Item?
+    @Published var hasError = false
+    @Published var error: TitledError?
     private let database: DataManager
     private let queue: DispatchQueue
     private var cancellables = Set<AnyCancellable>()
@@ -25,6 +27,17 @@ final class MoveItemViewModel: ObservableObject {
         self.moveItem = moveItem
         self.database = database
         self.queue = queue
+    }
+    
+    private func handleError(completionStatus: Subscribers.Completion<DatabaseError>) {
+        switch completionStatus {
+        case .failure(let error):
+            self.hasError = true
+            self.error = error
+            print("Received error: \(error)")
+        case .finished:
+            print("sucess")
+        }
     }
     
     func itemIsMoveItem(item: Item) -> Bool {
@@ -41,7 +54,7 @@ final class MoveItemViewModel: ObservableObject {
             database.fetchFolderInfo(folderID: folderID)
                 .receive(on: queue)
                 .sink(receiveCompletion: { [weak self] completion in
-//                    self?.handleError(completionStatus: completion) // TODO: handleError()
+                    self?.handleError(completionStatus: completion)
                 }, receiveValue: { [weak self] folder in
                     self?.currentFolder = folder
                     print("Updated load folder: \(String(describing: self?.currentFolder?.name))" )
@@ -52,15 +65,8 @@ final class MoveItemViewModel: ObservableObject {
         database.fetchFolders(parentID: folderID)
             .receive(on: queue)
             .sink (
-                receiveCompletion: { completion in
-                    switch completion {
-                    case .failure(let error):
-//                        self.hasError = true // TODO: add error flag
-//                        self.error = error
-                        print("Received error: \(error)")
-                    case .finished:
-                        print("sucess")
-                    }
+                receiveCompletion: { [weak self] completion in
+                    self?.handleError(completionStatus: completion)
                 }, receiveValue: { [weak self] folders in
                     self?.items = folders
                 }

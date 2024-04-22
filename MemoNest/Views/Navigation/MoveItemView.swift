@@ -35,6 +35,9 @@ struct MoveItemView: View {
             .onAppear {
                 viewModel.handleOnAppear()
             }
+            .alert(isPresented: $viewModel.hasError) {
+                Alert(title: Text("\(viewModel.error?.title ?? "")"))
+            }
             moveButton
         }
     }

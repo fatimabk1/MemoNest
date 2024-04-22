@@ -348,8 +348,8 @@
             filePath = "MemoNest/ViewModels/Navigation/MoveItemViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
             landmarkName = "MoveItemViewModel"
             landmarkType = "3">
          </BreakpointContent>
@@ -713,8 +713,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "162"
             endingLineNumber = "162"
-            landmarkName = "FolderListViewModel"
-            landmarkType = "3">
+            landmarkName = "handleOnAppear()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
