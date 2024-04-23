@@ -39,7 +39,6 @@ struct TappableListRowWithMenu: View {
             }
             if showPlaybackView, item.isRecording() {
                 PlaybackView(recording: item)
-//                    .frame(maxWidth: .infinity)
             }
         }
     }

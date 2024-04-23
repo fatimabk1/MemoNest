@@ -90,7 +90,6 @@ final class RecordingViewModel: ObservableObject {
             isRecording = true
             timerSubscription = Timer.publish(every: 1, on: .main, in: .common)
                 .autoconnect()
-//                .receive(on: DispatchQueue.main)
                 .sink { [weak self] date in
                     if let startTime = self?.recordingDate {
                         self?.currentDuration = startTime.distance(to: date)

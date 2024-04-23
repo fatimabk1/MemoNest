@@ -15,9 +15,9 @@ enum ItemType: String, PersistableEnum {
     func icon() -> String {
         switch(self) {
         case .folder:
-            "Folder"
+            "folder.fill"
         case .recording:
-            "Headphones"
+            "headphones"
         }
     }
 }

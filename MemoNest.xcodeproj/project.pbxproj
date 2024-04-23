@@ -16,9 +16,6 @@
 		085743152B7D245E00E546A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743142B7D245E00E546A1 /* ContentView.swift */; };
 		085743172B7D245F00E546A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 085743162B7D245F00E546A1 /* Assets.xcassets */; };
 		0857431A2B7D245F00E546A1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 085743192B7D245F00E546A1 /* Preview Assets.xcassets */; };
-		085743242B7D245F00E546A1 /* MemoNestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743232B7D245F00E546A1 /* MemoNestTests.swift */; };
-		0857432E2B7D245F00E546A1 /* MemoNestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857432D2B7D245F00E546A1 /* MemoNestUITests.swift */; };
-		085743302B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857432F2B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift */; };
 		085743422B7D24E800E546A1 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743412B7D24E800E546A1 /* Item.swift */; };
 		085743442B7D251E00E546A1 /* FolderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743432B7D251E00E546A1 /* FolderListView.swift */; };
 		085743492B7D262100E546A1 /* FolderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743482B7D262100E546A1 /* FolderListViewModel.swift */; };
@@ -70,10 +67,7 @@
 		085743162B7D245F00E546A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		085743192B7D245F00E546A1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0857431F2B7D245F00E546A1 /* MemoNestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MemoNestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		085743232B7D245F00E546A1 /* MemoNestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestTests.swift; sourceTree = "<group>"; };
 		085743292B7D245F00E546A1 /* MemoNestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MemoNestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0857432D2B7D245F00E546A1 /* MemoNestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestUITests.swift; sourceTree = "<group>"; };
-		0857432F2B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		085743412B7D24E800E546A1 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		085743432B7D251E00E546A1 /* FolderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListView.swift; sourceTree = "<group>"; };
 		085743482B7D262100E546A1 /* FolderListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListViewModel.swift; sourceTree = "<group>"; };
@@ -141,7 +135,6 @@
 			children = (
 				085743112B7D245E00E546A1 /* MemoNest */,
 				085743222B7D245F00E546A1 /* MemoNestTests */,
-				0857432C2B7D245F00E546A1 /* MemoNestUITests */,
 				085743102B7D245E00E546A1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -185,23 +178,9 @@
 		085743222B7D245F00E546A1 /* MemoNestTests */ = {
 			isa = PBXGroup;
 			children = (
-				086ED0942B9B545000A30EBC /* Helpers */,
 				086ED0952B9B545700A30EBC /* ViewModels */,
-				086ED0962B9B545F00A30EBC /* Views */,
-				086ED0972B9B546300A30EBC /* Models */,
-				086ED0982B9B546900A30EBC /* RealmDatabase */,
-				085743232B7D245F00E546A1 /* MemoNestTests.swift */,
 			);
 			path = MemoNestTests;
-			sourceTree = "<group>";
-		};
-		0857432C2B7D245F00E546A1 /* MemoNestUITests */ = {
-			isa = PBXGroup;
-			children = (
-				0857432D2B7D245F00E546A1 /* MemoNestUITests.swift */,
-				0857432F2B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift */,
-			);
-			path = MemoNestUITests;
 			sourceTree = "<group>";
 		};
 		0857433C2B7D24BB00E546A1 /* Models */ = {
@@ -253,13 +232,6 @@
 			path = DataManager;
 			sourceTree = "<group>";
 		};
-		086ED0942B9B545000A30EBC /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Helpers;
-			sourceTree = "<group>";
-		};
 		086ED0952B9B545700A30EBC /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -267,27 +239,6 @@
 				08866EB32BB628080042318B /* MoveItemViewModelTest.swift */,
 			);
 			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		086ED0962B9B545F00A30EBC /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		086ED0972B9B546300A30EBC /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		086ED0982B9B546900A30EBC /* RealmDatabase */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = RealmDatabase;
 			sourceTree = "<group>";
 		};
 		08866F7F2BBC89A20042318B /* Navigation */ = {
@@ -479,7 +430,6 @@
 			files = (
 				08866EB42BB628080042318B /* MoveItemViewModelTest.swift in Sources */,
 				086ED09A2B9B54F400A30EBC /* FolderListViewModelTest.swift in Sources */,
-				085743242B7D245F00E546A1 /* MemoNestTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,8 +437,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				085743302B7D245F00E546A1 /* MemoNestUITestsLaunchTests.swift in Sources */,
-				0857432E2B7D245F00E546A1 /* MemoNestUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
