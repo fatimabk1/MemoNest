@@ -12,6 +12,7 @@
 		083972E62BB496B300C4B134 /* MoveItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083972E52BB496B300C4B134 /* MoveItemViewModel.swift */; };
 		084454932BC71049007CDC57 /* FormatterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084454922BC71049007CDC57 /* FormatterService.swift */; };
 		0853B8892BD69D5300066FB4 /* TitledError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0853B8882BD69D5300066FB4 /* TitledError.swift */; };
+		0853B88D2BD7FF7800066FB4 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0853B88C2BD7FF7800066FB4 /* Colors.swift */; };
 		085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743122B7D245E00E546A1 /* MemoNestApp.swift */; };
 		085743152B7D245E00E546A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085743142B7D245E00E546A1 /* ContentView.swift */; };
 		085743172B7D245F00E546A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 085743162B7D245F00E546A1 /* Assets.xcassets */; };
@@ -64,6 +65,7 @@
 		084454902BC5B6F2007CDC57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		084454922BC71049007CDC57 /* FormatterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterService.swift; sourceTree = "<group>"; };
 		0853B8882BD69D5300066FB4 /* TitledError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitledError.swift; sourceTree = "<group>"; };
+		0853B88C2BD7FF7800066FB4 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		0857430F2B7D245E00E546A1 /* MemoNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		085743122B7D245E00E546A1 /* MemoNestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoNestApp.swift; sourceTree = "<group>"; };
 		085743142B7D245E00E546A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -136,6 +138,14 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		0853B88B2BD7FF6000066FB4 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				0853B88C2BD7FF7800066FB4 /* Colors.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
 		085743062B7D245E00E546A1 = {
 			isa = PBXGroup;
 			children = (
@@ -159,6 +169,7 @@
 		085743112B7D245E00E546A1 /* MemoNest */ = {
 			isa = PBXGroup;
 			children = (
+				0853B88B2BD7FF6000066FB4 /* Constants */,
 				0853B88A2BD69D6200066FB4 /* Protocols */,
 				084454912BC71038007CDC57 /* Services */,
 				084454902BC5B6F2007CDC57 /* Info.plist */,
@@ -461,6 +472,7 @@
 				083972E42BB36BA900C4B134 /* MoveItemView.swift in Sources */,
 				085743492B7D262100E546A1 /* FolderListViewModel.swift in Sources */,
 				085743502B7D408100E546A1 /* ListRow.swift in Sources */,
+				0853B88D2BD7FF7800066FB4 /* Colors.swift in Sources */,
 				08866F7C2BBB5C520042318B /* PlaybackViewModel.swift in Sources */,
 				085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */,
 				085743422B7D24E800E546A1 /* Item.swift in Sources */,

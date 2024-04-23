@@ -13,6 +13,16 @@ struct TappableListRowWithMenu: View {
     let onActionSelected: (ItemAction) -> Void
     @State var showPlaybackView = false
     
+    private let gradient = LinearGradient(colors: [Colors.listRowStart, Colors.listRowEnd], startPoint: .topLeading, endPoint: .bottomTrailing)
+
+    private var formattedDuration: String {
+        if let duration = item.audioInfo?.duration {
+            FormatterService.formatTimeInterval(seconds: duration)
+        } else {
+            ""
+        }
+    }
+    
     var body: some View {
         VStack {
             HStack {
@@ -35,13 +45,22 @@ struct TappableListRowWithMenu: View {
                 } label: {
                     Image(systemName: "ellipsis.circle")
                         .padding()
+                        .foregroundStyle(Colors.lighter)
                 }
             }
             if showPlaybackView, item.isRecording() {
                 PlaybackView(recording: item)
-//                    .frame(maxWidth: .infinity)
             }
         }
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+//                .stroke(Colors.main)
+                .foregroundStyle(gradient)
+//                .foregroundStyle(Colors.listRowStart)
+//                .foregroundStyle(Colors.listRowEnd)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .shadow(color: Color.black, radius: 5)
+        )
     }
 }
 
@@ -57,18 +76,17 @@ struct TappableListRow: View {
         } label: {
             ListRow(item: item)
         }
-        .background(Color("PopupBackground"))
     }
 }
 
 struct ListRow: View {
     let item: Item
     
-    var formattedDate: String {
+    private var formattedDate: String {
         FormatterService.formatDate(date: item.date)
     }
     
-    var formattedDuration: String {
+    private var formattedDuration: String {
         if let duration = item.audioInfo?.duration {
             FormatterService.formatTimeInterval(seconds: duration)
         } else {
@@ -80,36 +98,50 @@ struct ListRow: View {
         HStack(alignment: .top) {
             Image(systemName: item.getIcon())
             VStack(alignment: .leading) {
-                Text(item.name)
-                    .lineLimit(0)
-                if item.isRecording() {
-                    Text("\(formattedDuration)")
-                        .foregroundStyle(.secondary)
-                        .font(.callout)
+                HStack {
+                    Text(item.name)
+                        .lineLimit(0)
+                        .foregroundStyle(Colors.mainText)
+                    Spacer()
+                    if item.isRecording() {
+                        Text("\(formattedDuration)")
+                            .foregroundStyle(Colors.secondaryText)
+                            .font(.callout)
+                    }
                 }
+                
+                Text(formattedDate)
+                    .font(.callout)
+                    .foregroundStyle(Colors.secondaryText)
+                    .padding(.trailing)
             }
-            Spacer()
-            Text(formattedDate)
-                .font(.callout)
-                .foregroundStyle(.secondary)
-                .padding(.trailing)
         }
+        .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color("PopupBackground"))
     }
 }
 
 
 #Preview {
     @State var tapped = false
+    
+    let longNameAudio = Item(id: UUID(), name: "really really long recording nam,e lets see okay", parent: nil, date: Date(), type: .recording, audioInfo: Item.sampleAudioInfo)
+    
     return Group {
         List {
             TappableListRowWithMenu( item: Item(name: "folder", type: .folder), onListRowTap: {_ in }, onActionSelected: {_ in})
-            TappableListRowWithMenu( item:  Item.sampleRecording, onListRowTap: {_ in }, onActionSelected: {_ in})
-            TappableListRowWithMenu( item:  Item.sampleRecording, onListRowTap: {_ in }, onActionSelected: {_ in})
-            TappableListRowWithMenu( item:  Item.sampleRecording, onListRowTap: {_ in }, onActionSelected: {_ in})
+                .listRowBackground(Color.clear)
+            TappableListRowWithMenu( item: longNameAudio, onListRowTap: {_ in }, onActionSelected: {_ in})
+                .listRowBackground(Color.clear)
+            TappableListRow( item:  longNameAudio /*Item.sampleRecording*/, onListRowTap: {_ in })
+                .listRowBackground(Color.clear)
+            ListRow( item:  Item.sampleRecording)
+                .listRowBackground(Color.clear)
         }
-        .listStyle(.inset)
+//        .listStyle(.inset)
+        .background(Colors.main)
         .scrollContentBackground(.hidden)
+        .listRowBackground(Colors.main)
+        
     }
 }

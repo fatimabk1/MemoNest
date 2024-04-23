@@ -32,16 +32,20 @@ struct FolderListView: View {
                 VStack(spacing: 0) {
                     sortPicker
                         .buttonStyle(.borderedProminent)
+                        .padding(.bottom)
                     List {
                         ForEach(viewModel.items, id: \.id) { item in
                             createListRow(item: item)
+                                .listRowBackground(Color.clear)
                         }
                     }
                     .listStyle(.inset)
+                    .listItemTint(Colors.main)
                     .scrollContentBackground(.hidden)
                     .frame(maxHeight: .infinity)
                     bottomToolbar
                 }
+                .background(Colors.main)
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationTitle(viewModel.currentFolderTitle)
                 .navigationDestination(isPresented: $viewModel.moveViewIsPresented) {
@@ -89,10 +93,8 @@ struct FolderListView: View {
                     .disabled(viewModel.isLoading)
             }
             .padding()
-            .background(Color("PopupBackground"))
+            .background(Colors.main)
         }
-        .frame(alignment: .bottom)
-        .ignoresSafeArea()
     }
     
     private var recordingView: some View {
@@ -100,21 +102,27 @@ struct FolderListView: View {
             VStack(alignment: .leading) {
                 TextField("Recording Name", text: $recordingViewModel.recordingName)
                     .fontWeight(.semibold)
+                    .foregroundStyle(Colors.mainText)
                 VStack {
                     HStack {
                         Text(recordingViewModel.recordingParentTitle)
+                            .foregroundStyle(Colors.secondaryText)
                         Spacer()
-                        Button("Set Location") {
+                        Button {
                             recordingViewModel.updateParentFolder(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
+                        } label: {
+                            Text("Set Location")
+                                .foregroundStyle(Colors.accent)
                         }
                     }
                     Text("\(recordingViewModel.formattedcurrentDuration)")
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundStyle(Colors.secondaryText)
                 }
             }
             .padding()
         }
-        .background(Color("PopupBackground"))
+        .background(Colors.main)
     }
     
     private var sortPicker: some View {
@@ -124,6 +132,7 @@ struct FolderListView: View {
             }
         }
         .pickerStyle(.menu)
+        .tint(Colors.lighter)
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal)
     }
@@ -154,25 +163,28 @@ struct FolderListView: View {
             Image(systemName: "house")
                 .resizable()
                 .frame(width: 30, height: 30)
+                .foregroundStyle(Colors.lighter)
         }
     }
     
     private var recordButton: some View {
         Button {
             withAnimation {
-                if recordingViewModel.isRecording {
-                    recordingViewModel.stopRecording()
-                    recordingViewModel.addFile {
-                        viewModel.loadItems(atFolderID: viewModel.currentFolder?.id)
-                    }
-                } else {
-                    recordingViewModel.startRecording(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
-                }
+                recordingViewModel.isRecording.toggle()
+                // TODO: REMOVE - TESTING ONLY
+//                if recordingViewModel.isRecording {
+//                    recordingViewModel.stopRecording()
+//                    recordingViewModel.addFile {
+//                        viewModel.loadItems(atFolderID: viewModel.currentFolder?.id)
+//                    }
+//                } else {
+//                    recordingViewModel.startRecording(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
+//                }
             }
         } label: {
             Image(systemName: "waveform.circle")
                 .resizable()
-                .foregroundStyle(recordingViewModel.isRecording ? .red : .blue)
+                .foregroundStyle(recordingViewModel.isRecording ? Colors.secondary : Colors.lighter)
                 .frame(width: 50, height: 50)
         }
         .symbolEffect(.variableColor.iterative, options: .repeating.speed(0.5), isActive: recordingViewModel.isRecording)
@@ -186,6 +198,7 @@ struct FolderListView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 30, height: 30)
+                .foregroundStyle(Colors.lighter)
         }
         .opacity(viewModel.itemAction == .move ? 0 : 1)
     }
