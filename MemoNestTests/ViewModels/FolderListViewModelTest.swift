@@ -534,30 +534,6 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertEqual(result, expected)
     }
     
-    // MARK: add -- now in recordingViewModel
-//    func test_addFile_updatesFiles_givenFileNameAndParentFolderID()  {
-//        // Given
-//        let queue = DispatchQueue.main
-//        let database = MockDataManager(folders: [], files: [])
-//        let viewModel = FolderListViewModel(database: database, queue: queue)
-//        
-//        // When - move folderA into folderB
-//        let expectation = XCTestExpectation(description: "async function did not return")
-//        let cancellable = viewModel.$items
-//            .dropFirst()
-//            .sink { _ in
-//                expectation.fulfill()
-//            }
-//        viewModel.addFile(fileName: "NewFile")
-//        wait(for: [expectation], timeout: 1)
-//        cancellable.cancel()
-//        
-//        // Then
-//        let expected = 1
-//        let result = viewModel.items.count
-//        XCTAssertEqual(result, expected)
-//    }
-    
     func test_addFolder_updatesFolders_givenFolderNameAndParentFolderID()  {
         // Given
         let queue = DispatchQueue.main

@@ -45,13 +45,6 @@
 			remoteGlobalIDString = 0857430E2B7D245E00E546A1;
 			remoteInfo = MemoNest;
 		};
-		0857432A2B7D245F00E546A1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 085743072B7D245E00E546A1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0857430E2B7D245E00E546A1;
-			remoteInfo = MemoNest;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -67,7 +60,6 @@
 		085743162B7D245F00E546A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		085743192B7D245F00E546A1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0857431F2B7D245F00E546A1 /* MemoNestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MemoNestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		085743292B7D245F00E546A1 /* MemoNestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MemoNestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		085743412B7D24E800E546A1 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		085743432B7D251E00E546A1 /* FolderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListView.swift; sourceTree = "<group>"; };
 		085743482B7D262100E546A1 /* FolderListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListViewModel.swift; sourceTree = "<group>"; };
@@ -98,13 +90,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		0857431C2B7D245F00E546A1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		085743262B7D245F00E546A1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -144,7 +129,6 @@
 			children = (
 				0857430F2B7D245E00E546A1 /* MemoNest.app */,
 				0857431F2B7D245F00E546A1 /* MemoNestTests.xctest */,
-				085743292B7D245F00E546A1 /* MemoNestUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -304,24 +288,6 @@
 			productReference = 0857431F2B7D245F00E546A1 /* MemoNestTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		085743282B7D245F00E546A1 /* MemoNestUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 085743392B7D245F00E546A1 /* Build configuration list for PBXNativeTarget "MemoNestUITests" */;
-			buildPhases = (
-				085743252B7D245F00E546A1 /* Sources */,
-				085743262B7D245F00E546A1 /* Frameworks */,
-				085743272B7D245F00E546A1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0857432B2B7D245F00E546A1 /* PBXTargetDependency */,
-			);
-			name = MemoNestUITests;
-			productName = MemoNestUITests;
-			productReference = 085743292B7D245F00E546A1 /* MemoNestUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -336,10 +302,6 @@
 						CreatedOnToolsVersion = 15.0;
 					};
 					0857431E2B7D245F00E546A1 = {
-						CreatedOnToolsVersion = 15.0;
-						TestTargetID = 0857430E2B7D245E00E546A1;
-					};
-					085743282B7D245F00E546A1 = {
 						CreatedOnToolsVersion = 15.0;
 						TestTargetID = 0857430E2B7D245E00E546A1;
 					};
@@ -363,7 +325,6 @@
 			targets = (
 				0857430E2B7D245E00E546A1 /* MemoNest */,
 				0857431E2B7D245F00E546A1 /* MemoNestTests */,
-				085743282B7D245F00E546A1 /* MemoNestUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -379,13 +340,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		0857431D2B7D245F00E546A1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		085743272B7D245F00E546A1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -433,13 +387,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		085743252B7D245F00E546A1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -447,11 +394,6 @@
 			isa = PBXTargetDependency;
 			target = 0857430E2B7D245E00E546A1 /* MemoNest */;
 			targetProxy = 085743202B7D245F00E546A1 /* PBXContainerItemProxy */;
-		};
-		0857432B2B7D245F00E546A1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0857430E2B7D245E00E546A1 /* MemoNest */;
-			targetProxy = 0857432A2B7D245F00E546A1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -685,42 +627,6 @@
 			};
 			name = Release;
 		};
-		0857433A2B7D245F00E546A1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N483G6TVAZ;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = fatimabk.MemoNestUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = MemoNest;
-			};
-			name = Debug;
-		};
-		0857433B2B7D245F00E546A1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N483G6TVAZ;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = fatimabk.MemoNestUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = MemoNest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -747,15 +653,6 @@
 			buildConfigurations = (
 				085743372B7D245F00E546A1 /* Debug */,
 				085743382B7D245F00E546A1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		085743392B7D245F00E546A1 /* Build configuration list for PBXNativeTarget "MemoNestUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0857433A2B7D245F00E546A1 /* Debug */,
-				0857433B2B7D245F00E546A1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
