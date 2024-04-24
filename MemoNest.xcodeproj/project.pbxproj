@@ -146,6 +146,7 @@
 		085743112B7D245E00E546A1 /* MemoNest */ = {
 			isa = PBXGroup;
 			children = (
+				085743162B7D245F00E546A1 /* Assets.xcassets */,
 				0853B88B2BD7FF6000066FB4 /* Constants */,
 				0853B88A2BD69D6200066FB4 /* Protocols */,
 				084454912BC71038007CDC57 /* Services */,
@@ -155,7 +156,6 @@
 				0857433D2B7D24C000E546A1 /* Views */,
 				0857433C2B7D24BB00E546A1 /* Models */,
 				086ED08F2B98CA1300A30EBC /* DataManager */,
-				085743162B7D245F00E546A1 /* Assets.xcassets */,
 				085743182B7D245F00E546A1 /* Preview Content */,
 				080145082BCECEF100ACA3C9 /* Playground.swift */,
 			);

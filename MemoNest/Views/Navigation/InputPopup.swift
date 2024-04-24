@@ -21,36 +21,41 @@ struct InputPopup: View {
     
     var body: some View {
         ZStack {
-            Color.gray
-                .opacity(0.3)
+            Color.blueVeryDark
+                .opacity(0.7)
                 .ignoresSafeArea()
             ZStack {
-                Color("PopupBackground")
+                Colors.background
                 VStack {
                     Text(popup.popupTitle)
                         .padding()
                         .font(.headline)
-                    TextField(popup.prompt, text: $input)
+                        .foregroundStyle(Colors.mainText)
+                    TextField("", text: $input, prompt: Text(popup.prompt).foregroundStyle(Colors.blueDark))
                         .padding(.horizontal)
+                        .foregroundStyle(Colors.blueLight)
                     Divider()
                         .padding(.horizontal)
+                        .foregroundStyle(Colors.blueMedium)
                     HStack {
                         Button {
                             action(nil)
                         } label: {
                             Text("Cancel")
-                                .foregroundStyle(.red)
+                                .foregroundStyle(Colors.icon)
                         }
                         Spacer()
                         Button {
                             action(input)
                         } label: {
                             Text("Save")
+                            .foregroundStyle(Colors.blueLight)
                         }
                     }
                     .padding()
                 }
             }
+            
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .padding(.horizontal)
             .fixedSize(horizontal: false, vertical: true)

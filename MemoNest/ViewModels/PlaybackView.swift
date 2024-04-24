@@ -20,6 +20,8 @@ struct PlaybackView: View {
             Text("\(FormatterService.formatTimeInterval(seconds: viewModel.currentTime))")
                 .frame(maxWidth: 100)
                 .frame(maxWidth: .infinity, alignment: .trailing)
+                .foregroundStyle(Colors.blueLight)
+                .font(.caption)
             if viewModel.duration > 0 {
                 Slider(value: $viewModel.currentTime,
                        in: 0...viewModel.duration,
@@ -29,7 +31,7 @@ struct PlaybackView: View {
                         viewModel.seek(to: viewModel.currentTime)
                     }
                 })
-                .tint(Color.blue)
+                .tint(Color.blueVeryLight)
             }
             
             HStack(spacing: 50) {
@@ -42,6 +44,7 @@ struct PlaybackView: View {
             .padding(.top)
         }
         .padding()
+        .background(Colors.background)
         .alert(isPresented: $viewModel.hasError) {
             Alert(title: Text("\(viewModel.error?.title ?? "")"))
         }
@@ -63,6 +66,7 @@ struct PlaybackView: View {
                 .frame(width: 25, height: 25)
         }
         .buttonStyle(.plain)
+        .foregroundStyle(Colors.blueDark)
     }
     
     private var seekForwardButton: some View {
@@ -76,6 +80,7 @@ struct PlaybackView: View {
                 .frame(width: 25, height: 25)
         }
         .buttonStyle(.plain)
+        .foregroundStyle(Colors.blueDark)
     }
     
     private var seekBackwardButton: some View {
@@ -89,6 +94,7 @@ struct PlaybackView: View {
                 .frame(width: 25, height: 25)
         }
         .buttonStyle(.plain)
+        .foregroundStyle(Colors.blueDark)
     }
 }
 

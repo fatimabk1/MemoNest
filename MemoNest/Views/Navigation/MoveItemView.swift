@@ -23,12 +23,23 @@ struct MoveItemView: View {
         ZStack {
             NavigationStack {
                 folderList
+                    .background(Colors.background)
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle(viewModel.currentFolderTitle)
                     .navigationBarItems(leading: BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()} )
                     .toolbar {
+                        ToolbarItem(placement: .principal) {
+                            Text(viewModel.currentFolderTitle)
+                                .foregroundColor(Colors.mainText)
+                                .fontWeight(.bold)
+                        }
                         ToolbarItemGroup(placement: .automatic) {
-                            Button("Cancel") { isPresenting = false }
+                            Button {
+                                isPresenting = false
+                            } label: {
+                                Text("Cancel")
+                                    .foregroundStyle(Colors.blueMedium)
+                            }
                         }
                     }
             }
@@ -40,6 +51,7 @@ struct MoveItemView: View {
             }
             moveButton
         }
+        
     }
     
     var folderList: some View {
@@ -48,6 +60,7 @@ struct MoveItemView: View {
                 let isMoveItem = viewModel.itemIsMoveItem(item: item)
                 TappableListRow(item: item,
                                 onListRowTap: viewModel.setFolder)
+                    .listRowBackground(Color.clear)
                 .disabled(isMoveItem ? true : false)
                 .foregroundStyle(isMoveItem ? .gray : .primary)
             }
@@ -64,8 +77,8 @@ struct MoveItemView: View {
             Text("Move")
                 .padding()
                 .frame(maxWidth: .infinity)
-                .background(.blue.opacity(0.5))
-                .foregroundStyle(.white)
+                .background(Colors.blueMedium)
+                .foregroundStyle(Colors.mainText)
                 .clipShape(RoundedRectangle(cornerRadius: 15))
         }
         .padding()

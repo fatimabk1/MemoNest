@@ -8,16 +8,12 @@
 import SwiftUI
 
 struct Colors {
-    static let main = Color("Main") // spacecadet
-    static let secondary = Color("Secondary") // Butterscotch
-    static let accent = Color("Accent") // Verdigris
-    static let lighter = Color("Lighter") //
-    static let darker = Color("Darker")
-    static let listRowStart = Color("ListRowGradientStart")
-    static let listRowEnd = Color("ListRowGradientEnd")
-    
+    static let background = Color("Background") // spacecadet
+    static let blueDark = Color("BlueDark")
+    static let icon = Color("IconColor")
+    static let blueLight = Color("BlueLight")
     static let mainText = Color.white
-    static let secondaryText = Color("SecondaryText")
-    
-//    static let lightText = Color("LightText")
+    static let blueMedium = Color("BlueMedium")
+    static let blueVeryLight = Color("BlueVeryLight")
+    static let blueVeryDark = Color("BlueVeryDark")
 }

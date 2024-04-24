@@ -12,8 +12,6 @@ struct TappableListRowWithMenu: View {
     let onListRowTap: (Item) -> Void
     let onActionSelected: (ItemAction) -> Void
     @State var showPlaybackView = false
-    
-    private let gradient = LinearGradient(colors: [Colors.listRowStart, Colors.listRowEnd], startPoint: .topLeading, endPoint: .bottomTrailing)
 
     private var formattedDuration: String {
         if let duration = item.audioInfo?.duration {
@@ -37,30 +35,19 @@ struct TappableListRowWithMenu: View {
                         ListRow(item: item)
                     }
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 Menu {
                     Button("Rename") { onActionSelected(.rename) }
                     Button("Delete") { onActionSelected(.delete) }
                     Button("Move") { onActionSelected(.move) }
                 } label: {
                     Image(systemName: "ellipsis.circle")
-                        .padding()
-                        .foregroundStyle(Colors.lighter)
+                        .foregroundStyle(Colors.blueMedium)
                 }
             }
             if showPlaybackView, item.isRecording() {
                 PlaybackView(recording: item)
             }
         }
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-//                .stroke(Colors.main)
-                .foregroundStyle(gradient)
-//                .foregroundStyle(Colors.listRowStart)
-//                .foregroundStyle(Colors.listRowEnd)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .shadow(color: Color.black, radius: 5)
-        )
     }
 }
 
@@ -93,27 +80,36 @@ struct ListRow: View {
             ""
         }
     }
-    
+        
     var body: some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .center) {
             Image(systemName: item.getIcon())
+                .resizable()
+                .frame(width: 20, height: 20)
+                .foregroundStyle(Colors.icon)
+                .padding(.trailing, 5)
             VStack(alignment: .leading) {
                 HStack {
                     Text(item.name)
                         .lineLimit(0)
                         .foregroundStyle(Colors.mainText)
+                        .fontWeight(item.isFolder() ? .semibold : .regular)
                     Spacer()
                     if item.isRecording() {
                         Text("\(formattedDuration)")
-                            .foregroundStyle(Colors.secondaryText)
-                            .font(.callout)
+                            .foregroundStyle(Colors.blueLight)
+                            .font(.footnote)
+                            .fontWeight(.light)
                     }
                 }
                 
-                Text(formattedDate)
-                    .font(.callout)
-                    .foregroundStyle(Colors.secondaryText)
-                    .padding(.trailing)
+                if item.isRecording() {
+                    Text(formattedDate)
+                        .foregroundStyle(Colors.blueVeryLight)
+                        .fontWeight(.light)
+                        .font(.footnote)
+                        .padding(.trailing)
+                }
             }
         }
         .padding()
@@ -138,10 +134,10 @@ struct ListRow: View {
             ListRow( item:  Item.sampleRecording)
                 .listRowBackground(Color.clear)
         }
-//        .listStyle(.inset)
-        .background(Colors.main)
+        .listStyle(.inset)
+        .background(Colors.background)
         .scrollContentBackground(.hidden)
-        .listRowBackground(Colors.main)
+        .listRowBackground(Colors.background)
         
     }
 }

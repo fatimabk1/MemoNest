@@ -17,6 +17,7 @@ struct BackButton: View {
                 backFunction()
             } label: {
                 Image(systemName: "chevron.backward")
+                    .foregroundStyle(Colors.blueVeryLight)
             }
         } else {
             EmptyView()

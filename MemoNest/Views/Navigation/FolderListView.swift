@@ -34,14 +34,13 @@ struct FolderListView: View {
                         }
                     }
                     .listStyle(.inset)
-                    .listItemTint(Colors.main)
+                    .listItemTint(Colors.background)
                     .scrollContentBackground(.hidden)
                     .frame(maxHeight: .infinity)
                     bottomToolbar
                 }
-                .background(Colors.main)
                 .navigationBarTitleDisplayMode(.inline)
-                .navigationTitle(viewModel.currentFolderTitle)
+                .background(Colors.background)
                 .navigationDestination(isPresented: $viewModel.moveViewIsPresented) {
                     if let item = viewModel.editingItem, viewModel.itemAction == .move {
                         MoveItemView(moveItem: item, database: viewModel.database,
@@ -61,6 +60,12 @@ struct FolderListView: View {
                     Alert(title: Text("\(viewModel.error?.title ?? "")"))
                 }
                 .toolbar {
+                    ToolbarItem(placement: viewModel.hasParent ? .principal : .topBarLeading) {
+                        Text(viewModel.currentFolderTitle)
+                            .foregroundColor(Colors.mainText)
+                            .fontWeight(.bold)
+                            .font(viewModel.hasParent ? .title3 : .title)
+                    }
                     ToolbarItemGroup(placement: .topBarLeading) {
                         BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()}
                     }
@@ -87,7 +92,7 @@ struct FolderListView: View {
                     .disabled(viewModel.isLoading)
             }
             .padding()
-            .background(Colors.main)
+            .background(Colors.background)
         }
     }
     
@@ -100,23 +105,26 @@ struct FolderListView: View {
                 VStack {
                     HStack {
                         Text(recordingViewModel.recordingParentTitle)
-                            .foregroundStyle(Colors.secondaryText)
+                            .foregroundStyle(Colors.blueLight)
+                            .font(.callout)
                         Spacer()
                         Button {
                             recordingViewModel.updateParentFolder(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
                         } label: {
                             Text("Set Location")
-                                .foregroundStyle(Colors.accent)
+                                .foregroundStyle(Colors.blueMedium)
+                                .font(.callout)
                         }
                     }
                     Text("\(recordingViewModel.formattedcurrentDuration)")
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .foregroundStyle(Colors.secondaryText)
+                        .foregroundStyle(Colors.blueLight)
+                        .font(.callout)
                 }
             }
             .padding()
         }
-        .background(Colors.main)
+        .background(Colors.background)
     }
     
     private var sortPicker: some View {
@@ -126,7 +134,7 @@ struct FolderListView: View {
             }
         }
         .pickerStyle(.menu)
-        .tint(Colors.lighter)
+        .tint(Colors.blueVeryDark)
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal)
     }
@@ -157,7 +165,7 @@ struct FolderListView: View {
             Image(systemName: "house")
                 .resizable()
                 .frame(width: 30, height: 30)
-                .foregroundStyle(Colors.lighter)
+                .foregroundStyle(Colors.blueLight)
         }
     }
     
@@ -178,7 +186,7 @@ struct FolderListView: View {
         } label: {
             Image(systemName: "waveform.circle")
                 .resizable()
-                .foregroundStyle(recordingViewModel.isRecording ? Colors.secondary : Colors.lighter)
+                .foregroundStyle(recordingViewModel.isRecording ? Colors.icon : Colors.blueLight)
                 .frame(width: 50, height: 50)
         }
         .symbolEffect(.variableColor.iterative, options: .repeating.speed(0.5), isActive: recordingViewModel.isRecording)
@@ -192,7 +200,7 @@ struct FolderListView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 30, height: 30)
-                .foregroundStyle(Colors.lighter)
+                .foregroundStyle(Colors.blueLight)
         }
         .opacity(viewModel.itemAction == .move ? 0 : 1)
     }
@@ -213,7 +221,7 @@ struct FolderListView: View {
 
 #Preview {
     let audioInfo = AudioMetaData(duration: 123, recordingURLFileName: "www.sample.com")
-    let audio1 = Item(name: "A really long name for a recording, let see how far it spills over!", date: Date(), type: .recording, audioInfo: audioInfo)
-    let audio2 = Item(name: "Recording #4", date: Date(), type: .recording, audioInfo: audioInfo)
+    let audio1 = Item(name: "Philosophy Lecture #4, The Self", date: Date(), type: .recording, audioInfo: audioInfo)
+    let audio2 = Item(name: "PHilosophy Review nOtes", date: Date(), type: .recording, audioInfo: audioInfo)
     return FolderListView(database: MockDataManager(folders: MockDataManager.sampleFolders, files: [audio1, audio2]))
 }
