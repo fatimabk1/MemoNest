@@ -71,7 +71,7 @@ struct PlaybackView: View {
                 viewModel.seekForward()
             }
         } label: {
-            Image(systemName: "goforward.15") // goforward.five
+            Image(systemName: "goforward.15")
                 .resizable()
                 .frame(width: 25, height: 25)
         }

@@ -29,8 +29,6 @@ enum RecordingError: TitledError {
 final class RecordingManager: NSObject, AVAudioRecorderDelegate {
     var audioRecorder: AVAudioRecorder?
     
-//    private var fileName: String
-//    private var filePath: URL?
     private var cancellables = Set<AnyCancellable>()
     private var isRecording = false
     private let audioSettings =  [
@@ -66,7 +64,6 @@ final class RecordingManager: NSObject, AVAudioRecorderDelegate {
         return path
     }
     
-    // MARK: only return and save fileName, not full URL path
     func setupRecorder() -> Result<String, RecordingError> {
         print("Setting up recorder")
         do {

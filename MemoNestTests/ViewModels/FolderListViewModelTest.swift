@@ -9,48 +9,6 @@ import XCTest
 import Combine
 @testable import MemoNest
 
-/*
- 
- let folderA = Item(name: "Folder A")
- let folderB = Item(name: "Folder B")
- let folderC = Item(name: "Folder C")
- let folderAA1 = Item(name: "Folder AA1", parent: folderA.id)
- let folderAA2 = Item(name: "Folder AA2", parent: folderA.id)
- let folderAAA1 = Item(name: "Folder AAA1", parent: folderAA1.id)
- let folders = [folderA, folderB, folderC, folderAA1, folderAA2, folderAAA1]
- let file1 = File(name: "File1 in Library")
- let file2 = File(name: "File2 in Library")
- let file3 = File(name: "File3 in Library")
- let fileA1 = File(name: "File in Folder A", folder: folderA.id)
- let fileAA1 = File(name: "File in Folder AA1", folder: folderAA1.id)
- let fileAA2 = File(name: "File in Folder AA2", folder: folderAA2.id)
- let fileAAA1 = File(name: "File in Folder AAA1", folder: folderAAA1.id)
- let files = [file1, file2, file3, fileA1, fileAA1, fileAA2, fileAAA1]
- 
- */
-
-
-/*
-let queue = DispatchQueue.main
-let database = MockDataManager(folders: [folderA], files: [file1])
-let viewModel = FolderListViewModel(database: database, queue: queue)
-
-// When
-var c = Set<AnyCancellable>()
-let expectation = XCTestExpectation(description: "async function did not return")
-var result = ""
-viewModel.$items
-    .dropFirst()
-    .sink { items in
-        result = items.first(where: {$0.id == file1.id})?.name ?? "NO ITEMS"
-        expectation.fulfill()
-    }
-    .store(in: &c)
-let expected = "MyFile"
-viewModel.renameItem(item: file1, name: expected)
-wait(for: [expectation], timeout: 1)
-*/
-
 final class FolderListViewModelTest: XCTestCase {
     
     // MARK: setAction
@@ -575,30 +533,6 @@ final class FolderListViewModelTest: XCTestCase {
         let result = viewModel.items.count
         XCTAssertEqual(result, expected)
     }
-    
-    // MARK: add -- now in recordingViewModel
-//    func test_addFile_updatesFiles_givenFileNameAndParentFolderID()  {
-//        // Given
-//        let queue = DispatchQueue.main
-//        let database = MockDataManager(folders: [], files: [])
-//        let viewModel = FolderListViewModel(database: database, queue: queue)
-//        
-//        // When - move folderA into folderB
-//        let expectation = XCTestExpectation(description: "async function did not return")
-//        let cancellable = viewModel.$items
-//            .dropFirst()
-//            .sink { _ in
-//                expectation.fulfill()
-//            }
-//        viewModel.addFile(fileName: "NewFile")
-//        wait(for: [expectation], timeout: 1)
-//        cancellable.cancel()
-//        
-//        // Then
-//        let expected = 1
-//        let result = viewModel.items.count
-//        XCTAssertEqual(result, expected)
-//    }
     
     func test_addFolder_updatesFolders_givenFolderNameAndParentFolderID()  {
         // Given

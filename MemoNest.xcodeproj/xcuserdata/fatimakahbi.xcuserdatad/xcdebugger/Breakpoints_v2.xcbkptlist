@@ -285,8 +285,8 @@
             filePath = "MemoNest/Views/Navigation/FolderListView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
             landmarkName = "addRenameInputView"
             landmarkType = "24">
             <Locations>
@@ -357,22 +357,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "316014D1-481C-4B3F-92E8-CACC9B29E48D"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MemoNest/Models/RecordingManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
-            landmarkName = "setupRecorder()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "300BBBDD-6B67-4EED-B88E-AC70A0C3AAE1"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -412,10 +396,10 @@
             filePath = "MemoNest/Models/RecordingManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
-            landmarkName = "init(audioRecorder:cancellables:)"
-            landmarkType = "7">
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "RecordingManager"
+            landmarkType = "3">
             <Locations>
                <Location
                   uuid = "69992C04-1964-4E5A-B349-26EAE7E3D207 - 5b1cb478e9d2c3bc"
@@ -475,8 +459,8 @@
             filePath = "MemoNest/Views/Navigation/FolderListView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
             landmarkName = "recordButton"
             landmarkType = "24">
             <Locations>
@@ -553,8 +537,8 @@
             filePath = "MemoNest/Views/Navigation/FolderListView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "61"
-            endingLineNumber = "61"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
             landmarkName = "body"
             landmarkType = "24">
             <Locations>

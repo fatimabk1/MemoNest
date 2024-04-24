@@ -26,9 +26,7 @@ enum DatabaseError: TitledError {
     }
 }
 
-protocol DataManager {
-//    var cancellables: Set<AnyCancellable> { get}
-    
+protocol DataManager {    
     // fetch
     func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Item?, DatabaseError>
     func fetchFiles(parentID: UUID?) -> AnyPublisher<[Item], DatabaseError>

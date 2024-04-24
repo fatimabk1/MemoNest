@@ -11,12 +11,6 @@ enum ItemAction {
     case move, delete, rename, add, none
 }
 
-// TO DO LIST:
-/*
- [RTIInputSystemClient remoteTextInputSessionWithID:performInputOperation:]  perform input operation requires a valid sessionID. inputModality = Keyboard, inputOperation = <null selector>, customInfoType = UIEmojiSearchOperations
- */
-
-
 struct FolderListView: View {
     @ObservedObject var viewModel: FolderListViewModel
     @ObservedObject var recordingViewModel: RecordingViewModel

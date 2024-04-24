@@ -8,12 +8,10 @@
 import SwiftUI
 
 
-// MARK: for renaming
 struct InputPopup: View {
     @State private var input: String
     let popup: PopupInput
     let action: (String?) -> Void
-//    @Environment(\.dismiss) var dismiss
 
     init(popup: PopupInput, action: @escaping (String?) -> Void) {
         self._input = State(initialValue: popup.placeholder)
