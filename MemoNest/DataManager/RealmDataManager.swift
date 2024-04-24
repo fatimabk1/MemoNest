@@ -24,7 +24,6 @@ final class RealmDataManager: DataManager {
     
     
     func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Item?, DatabaseError> {
-        print("in fetch Folder Info")
         return Future<Item?, DatabaseError> { promise in
             self.queue.async {
                 guard let realm = try? Realm() else {
@@ -271,7 +270,6 @@ final class RealmDataManager: DataManager {
                     return promise(.failure(.realmNotInstantiated)) }
                 
                 do {
-                    print(Thread.current)
                     try realm.write {
                         let folderDB = ItemDB(name: folderName, parent: parentID, typeRaw: ItemType.folder.rawValue)
                         realm.add(folderDB)
