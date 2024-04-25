@@ -172,16 +172,16 @@ struct FolderListView: View {
     private var recordButton: some View {
         Button {
             withAnimation {
-                recordingViewModel.isRecording.toggle()
+//                recordingViewModel.isRecording.toggle()
                 // TODO: REMOVE - TESTING ONLY
-//                if recordingViewModel.isRecording {
-//                    recordingViewModel.stopRecording()
-//                    recordingViewModel.addFile {
-//                        viewModel.loadItems(atFolderID: viewModel.currentFolder?.id)
-//                    }
-//                } else {
-//                    recordingViewModel.startRecording(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
-//                }
+                if recordingViewModel.isRecording {
+                    recordingViewModel.stopRecording()
+                    recordingViewModel.addFile {
+                        viewModel.loadItems(atFolderID: viewModel.currentFolder?.id)
+                    }
+                } else {
+                    recordingViewModel.startRecording(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
+                }
             }
         } label: {
             Image(systemName: "waveform.circle")
