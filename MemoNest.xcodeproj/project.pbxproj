@@ -36,6 +36,13 @@
 		08866F7C2BBB5C520042318B /* PlaybackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F7B2BBB5C520042318B /* PlaybackViewModel.swift */; };
 		08866F7E2BBC88430042318B /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F7D2BBC88430042318B /* RecordingManager.swift */; };
 		08866F8C2BBCB4180042318B /* PopupInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F8B2BBCB4170042318B /* PopupInput.swift */; };
+		089B5C4F2BDBF1E5009AFF15 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 089B5C4D2BDBF1E5009AFF15 /* Poppins-SemiBold.ttf */; };
+		089B5C502BDBF1E5009AFF15 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 089B5C4E2BDBF1E5009AFF15 /* Poppins-Bold.ttf */; };
+		089B5C522BDBF1F4009AFF15 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 089B5C512BDBF1F4009AFF15 /* Poppins-Regular.ttf */; };
+		089B5C542BDBF204009AFF15 /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 089B5C532BDBF204009AFF15 /* Poppins-Light.ttf */; };
+		089B5C562BDBF20E009AFF15 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 089B5C552BDBF20E009AFF15 /* Poppins-Thin.ttf */; };
+		089B5C582BDBF21C009AFF15 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 089B5C572BDBF21C009AFF15 /* Poppins-Medium.ttf */; };
+		089B5C5A2BDBF456009AFF15 /* CustomFontModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089B5C592BDBF456009AFF15 /* CustomFontModifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +86,13 @@
 		08866F7B2BBB5C520042318B /* PlaybackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewModel.swift; sourceTree = "<group>"; };
 		08866F7D2BBC88430042318B /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
 		08866F8B2BBCB4170042318B /* PopupInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupInput.swift; sourceTree = "<group>"; };
+		089B5C4D2BDBF1E5009AFF15 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
+		089B5C4E2BDBF1E5009AFF15 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
+		089B5C512BDBF1F4009AFF15 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		089B5C532BDBF204009AFF15 /* Poppins-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Light.ttf"; sourceTree = "<group>"; };
+		089B5C552BDBF20E009AFF15 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Thin.ttf"; sourceTree = "<group>"; };
+		089B5C572BDBF21C009AFF15 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
+		089B5C592BDBF456009AFF15 /* CustomFontModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFontModifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +160,7 @@
 		085743112B7D245E00E546A1 /* MemoNest */ = {
 			isa = PBXGroup;
 			children = (
+				089B5C4C2BDBF1CB009AFF15 /* Font */,
 				085743162B7D245F00E546A1 /* Assets.xcassets */,
 				0853B88B2BD7FF6000066FB4 /* Constants */,
 				0853B88A2BD69D6200066FB4 /* Protocols */,
@@ -257,6 +272,20 @@
 			path = Navigation;
 			sourceTree = "<group>";
 		};
+		089B5C4C2BDBF1CB009AFF15 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				089B5C4E2BDBF1E5009AFF15 /* Poppins-Bold.ttf */,
+				089B5C532BDBF204009AFF15 /* Poppins-Light.ttf */,
+				089B5C512BDBF1F4009AFF15 /* Poppins-Regular.ttf */,
+				089B5C572BDBF21C009AFF15 /* Poppins-Medium.ttf */,
+				089B5C552BDBF20E009AFF15 /* Poppins-Thin.ttf */,
+				089B5C4D2BDBF1E5009AFF15 /* Poppins-SemiBold.ttf */,
+				089B5C592BDBF456009AFF15 /* CustomFontModifier.swift */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -345,8 +374,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				089B5C4F2BDBF1E5009AFF15 /* Poppins-SemiBold.ttf in Resources */,
+				089B5C562BDBF20E009AFF15 /* Poppins-Thin.ttf in Resources */,
+				089B5C542BDBF204009AFF15 /* Poppins-Light.ttf in Resources */,
 				0857431A2B7D245F00E546A1 /* Preview Assets.xcassets in Resources */,
 				085743172B7D245F00E546A1 /* Assets.xcassets in Resources */,
+				089B5C582BDBF21C009AFF15 /* Poppins-Medium.ttf in Resources */,
+				089B5C502BDBF1E5009AFF15 /* Poppins-Bold.ttf in Resources */,
+				089B5C522BDBF1F4009AFF15 /* Poppins-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,6 +419,7 @@
 				086ED08C2B98C81E00A30EBC /* DataManager.swift in Sources */,
 				08866F7A2BBB5C490042318B /* RecordingViewModel.swift in Sources */,
 				084454932BC71049007CDC57 /* FormatterService.swift in Sources */,
+				089B5C5A2BDBF456009AFF15 /* CustomFontModifier.swift in Sources */,
 				086ED08E2B98C9C200A30EBC /* RealmDataManager.swift in Sources */,
 				086ED0A02B9B642000A30EBC /* InputPopup.swift in Sources */,
 				086ED09E2B9B630D00A30EBC /* BackButton.swift in Sources */,

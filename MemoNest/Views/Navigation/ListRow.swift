@@ -7,12 +7,70 @@
 
 import SwiftUI
 
-struct TappableListRowWithMenu: View {
+
+struct RowMenu: View {
+    let onActionSelected: (ItemAction) -> Void
+    
+    var body: some View {
+        Menu {
+            Button {
+                onActionSelected(.rename)
+            } label: {
+                Text("Rename")
+                    .customFont(style: .body)
+            }
+            Button {
+                onActionSelected(.delete)
+            } label: {
+                Text("Delete")
+                    .customFont(style: .body)
+            }
+            Button {
+                onActionSelected(.move)
+            } label: {
+                Text("Move")
+                    .customFont(style: .body)
+            }
+        } label: {
+            Image(systemName: "ellipsis.circle")
+                .foregroundStyle(Colors.blueMedium)
+        }
+        
+    }
+}
+
+struct FolderRow: View {
     let item: Item
     let onListRowTap: (Item) -> Void
     let onActionSelected: (ItemAction) -> Void
-    @State var showPlaybackView = false
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Button {
+                    onListRowTap(item)
+                } label: {
+                    ListRow(item: item)
+                }
+                RowMenu(onActionSelected: onActionSelected)
+            }
+        }
+    }
+}
 
+struct RecordingRow: View {
+    let item: Item
+    let onActionSelected: (ItemAction) -> Void
+    
+    @State var showPlaybackView = false
+    @ObservedObject var playbackViewModel: PlaybackViewModel
+    
+    init(item: Item, onActionSelected: @escaping (ItemAction) -> Void) {
+        self.item = item
+        self.onActionSelected = onActionSelected
+        playbackViewModel = PlaybackViewModel(item: item)
+    }
+    
     private var formattedDuration: String {
         if let duration = item.audioInfo?.duration {
             FormatterService.formatTimeInterval(seconds: duration)
@@ -25,27 +83,14 @@ struct TappableListRowWithMenu: View {
         VStack {
             HStack {
                 Button {
-                    if item.isFolder() {
-                        onListRowTap(item)
-                    } else {
-                        showPlaybackView.toggle()
-                    }
+                    showPlaybackView.toggle()
                 } label: {
-                    VStack {
-                        ListRow(item: item)
-                    }
+                    ListRow(item: item)
                 }
-                Menu {
-                    Button("Rename") { onActionSelected(.rename) }
-                    Button("Delete") { onActionSelected(.delete) }
-                    Button("Move") { onActionSelected(.move) }
-                } label: {
-                    Image(systemName: "ellipsis.circle")
-                        .foregroundStyle(Colors.blueMedium)
-                }
+                RowMenu(onActionSelected: onActionSelected)
             }
-            if showPlaybackView, item.isRecording() {
-                PlaybackView(recording: item)
+            if showPlaybackView, item.isAudio() {
+                PlaybackView(viewModel: playbackViewModel)
             }
         }
     }
@@ -91,23 +136,21 @@ struct ListRow: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text(item.name)
-                        .lineLimit(0)
+                        .lineLimit(2)
                         .foregroundStyle(Colors.mainText)
-                        .fontWeight(item.isFolder() ? .semibold : .regular)
+                        .customFont(style: .body, fontWeight: item.isFolder() ? .semibold : .regular)
                     Spacer()
-                    if item.isRecording() {
+                    if item.isAudio() {
                         Text("\(formattedDuration)")
                             .foregroundStyle(Colors.blueLight)
-                            .font(.footnote)
-                            .fontWeight(.light)
+                            .customFont(style: .footnote, fontWeight: .light)
                     }
                 }
                 
-                if item.isRecording() {
+                if item.isAudio() {
                     Text(formattedDate)
                         .foregroundStyle(Colors.blueVeryLight)
-                        .fontWeight(.light)
-                        .font(.footnote)
+                        .customFont(style: .footnote, fontWeight: .light)
                         .padding(.trailing)
                 }
             }
@@ -125,13 +168,9 @@ struct ListRow: View {
     
     return Group {
         List {
-            TappableListRowWithMenu( item: Item(name: "folder", type: .folder), onListRowTap: {_ in }, onActionSelected: {_ in})
+            FolderRow( item: Item(name: "folder", type: .folder), onListRowTap: {_ in }, onActionSelected: {_ in})
                 .listRowBackground(Color.clear)
-            TappableListRowWithMenu( item: longNameAudio, onListRowTap: {_ in }, onActionSelected: {_ in})
-                .listRowBackground(Color.clear)
-            TappableListRow( item:  longNameAudio /*Item.sampleRecording*/, onListRowTap: {_ in })
-                .listRowBackground(Color.clear)
-            ListRow( item:  Item.sampleRecording)
+            RecordingRow( item: longNameAudio, onActionSelected: {_ in})
                 .listRowBackground(Color.clear)
         }
         .listStyle(.inset)
@@ -141,3 +180,52 @@ struct ListRow: View {
         
     }
 }
+
+//struct TappableListRowWithMenu: View {
+//    let item: Item
+//    let onListRowTap: (Item) -> Void
+//    let onActionSelected: (ItemAction) -> Void
+////    @ObservedObject var playbackViewModel: PlaybackViewModel?
+//    @State var showPlaybackView = false
+//    
+//    init(item: Item, onListRowTap: @escaping (Item) -> Void, onActionSelected: @escaping (ItemAction) -> Void) {
+//        self.item = item
+//        self.onListRowTap = onListRowTap
+//        self.onActionSelected = onActionSelected
+////        if item.isRecording() {
+////            playbackViewModel = PlaybackViewModel(item: item)
+////        } else {
+////            playbackViewModel = nil
+////        }
+//    }
+//
+//    private var formattedDuration: String {
+//        if let duration = item.audioInfo?.duration {
+//            FormatterService.formatTimeInterval(seconds: duration)
+//        } else {
+//            ""
+//        }
+//    }
+//    
+//    var body: some View {
+//        VStack {
+//            HStack {
+//                Button {
+//                    if item.isFolder() {
+//                        onListRowTap(item)
+//                    } else {
+//                        showPlaybackView.toggle()
+//                    }
+//                } label: {
+//                    VStack {
+//                        ListRow(item: item)
+//                    }
+//                }
+////                RowMenu
+//            }
+////            if showPlaybackView, item.isRecording(), let playbackViewModel {
+////                PlaybackView(viewModel: playbackViewModel)
+////            }
+//        }
+//    }
+//}

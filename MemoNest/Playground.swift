@@ -6,22 +6,25 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct Playground: View {
     @State var isGuestsExpanded: Bool = true
+    @State var value = 50.0
     var body: some View {
-        List()  {
-            ForEach( 0..<10 ) { num in
-                DisclosureGroup {
-                    VStack {
-                        RoundedRectangle(cornerRadius: 25)
-                            .frame(height: 200)
-                        Text("more details on guest")
-                    }
-                } label: {
-                    Text("Guest \(num)")
+        VStack {
+            Text("Philosophy Lecture #4")
+//                .customFont(style: .title)
+                .customFont(style: .title, fontWeight: .heavy)
+//                .font(.custom("Poppins-Regular", size: 22))
+            
+            
+            Slider(value: $value)
+                .onAppear {
+                    UISlider.appearance().thumbTintColor = .clear
                 }
-            }
+                .tint(Colors.icon)
+                .padding()
         }
     }
 }

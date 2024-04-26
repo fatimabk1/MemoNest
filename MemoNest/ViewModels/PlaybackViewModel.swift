@@ -25,7 +25,7 @@ final class PlaybackViewModel: ObservableObject {
     @Published var error: PlaybackError?
     @Published var title: String
     
-    let recording: Item
+    let item: Item
     var audioPlayer: AVAudioPlayer?
     private var audioWasInterrupted = false
     private var cancellables = Set<AnyCancellable>()
@@ -35,16 +35,20 @@ final class PlaybackViewModel: ObservableObject {
         FormatterService.formatTimeInterval(seconds: duration)
     }
     
-    init(recording: Item) {
-        self.recording = recording
-        self.title = recording.name
+    init(item: Item) {
+        self.item = item
+        self.title = item.name
         self.handleAudioRouteChanges()
         self.handleInterruptions()
+        self.setupPlayback()
+        print("Calling playback VM init() for \(title)")
     }
     
     private func handleAudioRouteChanges() {
+        print("calling handleAudioRouteChanges")
         NotificationCenter.default.publisher(for: AVAudioSession.routeChangeNotification)
             .sink { notification in
+                print("handleAudioRouteChanges - received notification")
                 guard let reason = notification.userInfo?[AVAudioSessionRouteChangeReasonKey] as? UInt else {
                     return
                 }
@@ -67,32 +71,41 @@ final class PlaybackViewModel: ObservableObject {
     private func handleInterruptions() {
         NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)
             .sink { notification in
-                guard let reason = notification.userInfo?[AVAudioSession.interruptionNotification] as? UInt else {
+                print("handleInterruptions - recieved notification")
+                guard let userInfo = notification.userInfo, 
+                    let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+                    let type = AVAudioSession.InterruptionType(rawValue: typeValue) else
+                {
+                    print("\tno interrtuption type - returning")
                     return
                 }
                 
-                switch AVAudioSession.InterruptionType(rawValue: reason) {
+                switch type {
                 case .began:
-                    if let isPlaying = self.audioPlayer?.isPlaying, isPlaying  {
+                    print("BEGAN playback interruption")
+                    if let isPlaying = self.audioPlayer?.isPlaying, isPlaying, !self.audioWasInterrupted  {
                         self.audioWasInterrupted = true
+                        print("now pausing - calling pause()")
                         self.pause()
                     }
                 case .ended:
-                    print("audio interruption ended")
+                    print("ENDED playback interruption")
                     if self.audioWasInterrupted {
-                        print("now playing again")
+                        print("now playing again - calling play()")
                         self.audioWasInterrupted = false
                         self.play()
                     }
+                    
                 default:
+                    print("Playback DEFAULT case - neither began/ended")
                     break
                 }
             }
             .store(in: &cancellables)
     }
     
-    func handleOnAppear() {
-        if let recordingURLFileName = recording.audioInfo?.recordingURLFileName {
+    func setupPlayback() {
+        if let recordingURLFileName = item.audioInfo?.recordingURLFileName {
             let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
             let path = paths[0].appendingPathComponent(recordingURLFileName)
             

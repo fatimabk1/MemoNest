@@ -11,8 +11,8 @@ import AVFoundation
 struct PlaybackView: View {
     @ObservedObject var viewModel: PlaybackViewModel
     
-    init(recording: Item) {
-        self.viewModel = PlaybackViewModel(recording: recording)
+    init(viewModel: PlaybackViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -21,7 +21,7 @@ struct PlaybackView: View {
                 .frame(maxWidth: 100)
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .foregroundStyle(Colors.blueLight)
-                .font(.caption)
+                .customFont(style: .caption)
             if viewModel.duration > 0 {
                 Slider(value: $viewModel.currentTime,
                        in: 0...viewModel.duration,
@@ -31,7 +31,11 @@ struct PlaybackView: View {
                         viewModel.seek(to: viewModel.currentTime)
                     }
                 })
-                .tint(Color.blueVeryLight)
+                .tint(Colors.icon)
+                .onAppear {
+                    UISlider.appearance().maximumTrackTintColor = UIColor(Colors.blueMedium)
+                    UISlider.appearance().thumbTintColor = .clear
+                }
             }
             
             HStack(spacing: 50) {
@@ -48,9 +52,6 @@ struct PlaybackView: View {
         .alert(isPresented: $viewModel.hasError) {
             Alert(title: Text("\(viewModel.error?.title ?? "")"))
         }
-        .onAppear {
-            viewModel.handleOnAppear()
-        }
     }
     
     private var playPauseButton: some View {
@@ -66,7 +67,7 @@ struct PlaybackView: View {
                 .frame(width: 25, height: 25)
         }
         .buttonStyle(.plain)
-        .foregroundStyle(Colors.blueDark)
+        .foregroundStyle(Colors.blueMedium)
     }
     
     private var seekForwardButton: some View {
@@ -80,7 +81,7 @@ struct PlaybackView: View {
                 .frame(width: 25, height: 25)
         }
         .buttonStyle(.plain)
-        .foregroundStyle(Colors.blueDark)
+        .foregroundStyle(Colors.blueMedium)
     }
     
     private var seekBackwardButton: some View {
@@ -94,12 +95,13 @@ struct PlaybackView: View {
                 .frame(width: 25, height: 25)
         }
         .buttonStyle(.plain)
-        .foregroundStyle(Colors.blueDark)
+        .foregroundStyle(Colors.blueMedium)
     }
 }
 
 #Preview {
-    List {
-        PlaybackView(recording: Item.sampleRecording)
+    let playbackVM = PlaybackViewModel(item: Item.sampleRecording)
+    return List {
+        PlaybackView(viewModel: playbackVM)
     }
 }

@@ -33,7 +33,7 @@ final class FolderListViewModel: ObservableObject {
     @Published var sortType = SortType.dateAsc {
         didSet {
             let folders = items.filter({$0.isFolder()})
-            let files = items.filter({$0.isRecording()})
+            let files = items.filter({$0.isAudio()})
             self.items = self.sortItems(folders) + self.sortItems(files)
         }
     }
@@ -114,6 +114,17 @@ final class FolderListViewModel: ObservableObject {
                                     prompt: "Enter folder name",
                                     placeholder: "New Folder")
             return
+        }
+    }
+    
+    func handleMenuTap(item: Item, action: ItemAction) {
+        if action == .delete {
+            removeItem(item: item)
+        } else if action == .rename {
+            setAction(action: action, item: item)
+        } else if action == .move {
+            setAction(action: action, item: item)
+            moveViewIsPresented = true
         }
     }
     

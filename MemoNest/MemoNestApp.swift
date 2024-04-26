@@ -25,7 +25,7 @@ struct MemoNestApp: App {
         print("Setting up audio session")
         let audioSession = AVAudioSession()
         do {
-            try audioSession.setCategory(.playAndRecord, mode: .default)
+            try audioSession.setCategory(.playAndRecord, mode: .default, options: [.allowBluetooth, .defaultToSpeaker])
             try audioSession.overrideOutputAudioPort(.speaker)
             try audioSession.setActive(true)
             print("Setup complete")

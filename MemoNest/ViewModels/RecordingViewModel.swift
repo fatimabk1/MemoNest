@@ -28,6 +28,7 @@ final class RecordingViewModel: ObservableObject {
     var recordingDate: Date = Date()
     var recordingParent: UUID? = nil
     var recordingURLFileName: String!
+    let onFileAdded = PassthroughSubject<Void,Never>()
     var formattedDuration: String { FormatterService.formatTimeInterval(seconds: recordingDuration) }
     
     // duration of recording while in progress
@@ -39,23 +40,29 @@ final class RecordingViewModel: ObservableObject {
     init(database: DataManager) {
         self.database = database
         self.recordingManager = RecordingManager()
-        handleInterruptions()
+        self.handleInterruptions()
     }
     
     private func handleInterruptions() {
         NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)
             .sink { notification in
-                guard let reason = notification.userInfo?[AVAudioSession.interruptionNotification] as? UInt else {
+                guard let userInfo = notification.userInfo,
+                    let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+                    let type = AVAudioSession.InterruptionType(rawValue: typeValue) else 
+                {
+                    print("\tno interrtuption type - returning")
                     return
                 }
                 
-                switch AVAudioSession.InterruptionType(rawValue: reason){
+                switch type{
                 case .began:
+                    print("BEGAN recording interruption")
                     if self.isRecording {
-                        print("recording interrupted")
-                        self.stopRecording() // TODO: bubble up errors?
+                        print("stopping recording - calling stopRecording()")
+                        self.stopRecording()
                     }
                 default:
+                    print("playback DEFAULT - no interruption")
                     break
                 }
             }
@@ -110,14 +117,7 @@ final class RecordingViewModel: ObservableObject {
         }
     }
     
-    func stopRecording() {
-        if !isRecording { return }
-        let result = recordingManager.stopRecording()
-        recordingDuration = recordingDate.distance(to: Date())
-        timerSubscription?.cancel()
-        timerSubscription = nil
-        print("timer subscription cancelled")
-        
+    private func handleStopRecordingError(result: Result<Void, RecordingError> ) {
         switch(result){
         case .success:
             isRecording = false
@@ -129,7 +129,18 @@ final class RecordingViewModel: ObservableObject {
         }
     }
     
-    func addFile(completion: @escaping () -> Void) {
+    func stopRecording() {
+        if !isRecording { return }
+        let result = recordingManager.stopRecording()
+        recordingDuration = recordingDate.distance(to: Date())
+        timerSubscription?.cancel()
+        timerSubscription = nil
+        print("timer subscription cancelled")
+        handleStopRecordingError(result: result)
+        addFile()
+    }
+    
+    func addFile() {
         if hasError { return }
         if let recordingURLFileName {
             database.addFile(fileName: recordingName, date: recordingDate,
@@ -144,8 +155,8 @@ final class RecordingViewModel: ObservableObject {
                     case .finished:
                         print("sucess")
                     }
-                }, receiveValue: { _ in
-                  completion()
+                }, receiveValue: { [weak self] in
+                    self?.onFileAdded.send()
                 }
             )
             .store(in: &cancellables)

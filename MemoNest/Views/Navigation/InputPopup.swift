@@ -29,9 +29,10 @@ struct InputPopup: View {
                 VStack {
                     Text(popup.popupTitle)
                         .padding()
-                        .font(.headline)
+                        .customFont(style: .headline)
                         .foregroundStyle(Colors.mainText)
                     TextField("", text: $input, prompt: Text(popup.prompt).foregroundStyle(Colors.blueDark))
+                        .customFont(style: .body)
                         .padding(.horizontal)
                         .foregroundStyle(Colors.blueLight)
                     Divider()
@@ -43,6 +44,7 @@ struct InputPopup: View {
                         } label: {
                             Text("Cancel")
                                 .foregroundStyle(Colors.icon)
+                                .customFont(style: .body)
                         }
                         Spacer()
                         Button {
@@ -50,6 +52,7 @@ struct InputPopup: View {
                         } label: {
                             Text("Save")
                             .foregroundStyle(Colors.blueLight)
+                            .customFont(style: .body)
                         }
                     }
                     .padding()

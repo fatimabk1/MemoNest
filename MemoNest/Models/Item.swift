@@ -43,7 +43,7 @@ struct Item {
         return self.type == .folder
     }
     
-    func isRecording() -> Bool {
+    func isAudio() -> Bool {
         return self.type == .recording
     }
     

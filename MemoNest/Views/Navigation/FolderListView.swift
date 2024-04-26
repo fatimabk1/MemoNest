@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 enum ItemAction {
     case move, delete, rename, add, none
@@ -14,11 +15,24 @@ enum ItemAction {
 struct FolderListView: View {
     @ObservedObject var viewModel: FolderListViewModel
     @ObservedObject var recordingViewModel: RecordingViewModel
+    @State var dragOffset: CGFloat = 0
     
     init(database: DataManager) {
         self.viewModel = FolderListViewModel(database: database)
         self.recordingViewModel = RecordingViewModel(database: database)
     }
+    
+    // TODO: How to reload items in VM when file is saved in recording VM?
+    // difficult because there are manual adds (button click) & automatic adds (on interruption), 
+    // so can't pass a closure
+//    private func setupSubscriptions() {
+//        recordingViewModel.onFileAdded
+//            .receive(on: RunLoop.main)
+//            .sink { _ in
+//                viewModel.loadItems(atFolderID: viewModel.currentFolder?.id)
+//            }
+//            .store(in: &cancellables)
+//    }
     
     var body: some View {
         GeometryReader { geo in
@@ -47,7 +61,7 @@ struct FolderListView: View {
                                      isPresenting: $viewModel.moveViewIsPresented) { destinationFolderID in
                             viewModel.moveItem(item: item, destination: destinationFolderID)
                         }
-                        .navigationBarBackButtonHidden()
+                                     .navigationBarBackButtonHidden()
                     }
                 }
                 .onAppear {
@@ -63,8 +77,9 @@ struct FolderListView: View {
                     ToolbarItem(placement: viewModel.hasParent ? .principal : .topBarLeading) {
                         Text(viewModel.currentFolderTitle)
                             .foregroundColor(Colors.mainText)
-                            .fontWeight(.bold)
-                            .font(viewModel.hasParent ? .title3 : .title)
+                            .customFont(style: (viewModel.hasParent ? .title3 : .title), fontWeight: .bold)
+                            .padding(.top, viewModel.hasParent ? 0 : 50)
+                            .frame(maxWidth: 150)
                     }
                     ToolbarItemGroup(placement: .topBarLeading) {
                         BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()}
@@ -100,26 +115,26 @@ struct FolderListView: View {
         VStack {
             VStack(alignment: .leading) {
                 TextField("Recording Name", text: $recordingViewModel.recordingName)
-                    .fontWeight(.semibold)
+                    .customFont(style: .body, fontWeight: .semibold)
                     .foregroundStyle(Colors.mainText)
                 VStack {
                     HStack {
                         Text(recordingViewModel.recordingParentTitle)
                             .foregroundStyle(Colors.blueLight)
-                            .font(.callout)
+                            .customFont(style: .callout)
                         Spacer()
                         Button {
                             recordingViewModel.updateParentFolder(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
                         } label: {
                             Text("Set Location")
                                 .foregroundStyle(Colors.blueMedium)
-                                .font(.callout)
+                                .customFont(style: .callout)
                         }
                     }
                     Text("\(recordingViewModel.formattedcurrentDuration)")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .foregroundStyle(Colors.blueLight)
-                        .font(.callout)
+                        .customFont(style: .callout)
                 }
             }
             .padding()
@@ -128,15 +143,36 @@ struct FolderListView: View {
     }
     
     private var sortPicker: some View {
-        Picker("Sort", selection: $viewModel.sortType) {
-            ForEach(SortType.allCases, id: \.self) {
-                Text($0.toString())
-            }
+        Menu {
+            Picker(selection: $viewModel.sortType) {
+                ForEach(SortType.allCases, id: \.self) {
+                    Text($0.toString())
+                        .customFont(style: .body)
+                }
+            } label: {}
+//                .pickerStyle(.segmented)
+               
+                
+        } label: {
+            Text(viewModel.sortType.toString())
+                .customFont(style: .body)
         }
-        .pickerStyle(.menu)
         .tint(Colors.blueVeryDark)
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal)
+        .padding(.leading, 200)
+        
+//        Picker(selection: $viewModel.sortType) {
+//            ForEach(SortType.allCases, id: \.self) {
+//                Text($0.toString())
+//                    .customFont(style: .body)
+//            }
+//        } label: {}
+//            .pickerStyle(.segmented)
+//            .tint(Colors.blueVeryDark)
+//            .frame(maxWidth: .infinity, alignment: .trailing)
+//            .padding(.horizontal)
+//            .padding(.leading, 200)
     }
     
     @ViewBuilder
@@ -172,13 +208,10 @@ struct FolderListView: View {
     private var recordButton: some View {
         Button {
             withAnimation {
-//                recordingViewModel.isRecording.toggle()
+                // recordingViewModel.isRecording.toggle()
                 // TODO: REMOVE - TESTING ONLY
                 if recordingViewModel.isRecording {
                     recordingViewModel.stopRecording()
-                    recordingViewModel.addFile {
-                        viewModel.loadItems(atFolderID: viewModel.currentFolder?.id)
-                    }
                 } else {
                     recordingViewModel.startRecording(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
                 }
@@ -205,16 +238,17 @@ struct FolderListView: View {
         .opacity(viewModel.itemAction == .move ? 0 : 1)
     }
     
+    @ViewBuilder
     private func createListRow(item: Item) -> some View {
-        TappableListRowWithMenu(item: item, onListRowTap: viewModel.setFolder) { action in
-            if action == .delete {
-                viewModel.removeItem(item: item)
-            } else if action == .rename {
-                viewModel.setAction(action: action, item: item)
-            } else if action == .move {
-                viewModel.setAction(action: action, item: item)
-                viewModel.moveViewIsPresented = true
-            }
+        if item.isFolder() {
+            FolderRow(item: item, onListRowTap: viewModel.setFolder,
+                      onActionSelected: { action in
+                viewModel.handleMenuTap(item: item, action: action)
+            })
+        } else {
+            RecordingRow(item: item, onActionSelected: { action in
+                viewModel.handleMenuTap(item: item, action: action)
+            })
         }
     }
 }
@@ -223,5 +257,7 @@ struct FolderListView: View {
     let audioInfo = AudioMetaData(duration: 123, recordingURLFileName: "www.sample.com")
     let audio1 = Item(name: "Philosophy Lecture #4, The Self", date: Date(), type: .recording, audioInfo: audioInfo)
     let audio2 = Item(name: "PHilosophy Review nOtes", date: Date(), type: .recording, audioInfo: audioInfo)
-    return FolderListView(database: MockDataManager(folders: MockDataManager.sampleFolders, files: [audio1, audio2]))
+    return NavigationStack {
+        FolderListView(database: MockDataManager(folders: MockDataManager.sampleFolders, files: [audio1, audio2]))
+    }
 }
