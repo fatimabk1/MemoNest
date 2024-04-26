@@ -140,7 +140,7 @@ final class RecordingViewModel: ObservableObject {
         addFile()
     }
     
-    func addFile() {
+    private func addFile() {
         if hasError { return }
         if let recordingURLFileName {
             database.addFile(fileName: recordingName, date: recordingDate,

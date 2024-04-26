@@ -8,20 +8,7 @@
 import Foundation
 import Combine
 
-enum SortType: CaseIterable {
-    case dateAsc, dateDesc, name
-    
-    func toString() -> String {
-        switch(self){
-        case .dateAsc:
-            "Date ↑"
-        case .dateDesc:
-            "Date ↓"
-        case .name:
-            "Name  "
-        }
-    }
-}
+
 
 final class FolderListViewModel: ObservableObject {
     @Published var items = [Item]()
@@ -51,50 +38,31 @@ final class FolderListViewModel: ObservableObject {
     let database: DataManager
     private let queue: DispatchQueue
     private var cancellables = Set<AnyCancellable>()
-    
     var currentFolderTitle: String { currentFolder?.name ?? "Library" }
     var hasParent: Bool { currentFolder != nil }
-    var sortButtonTitle: String { sortType.toString() }
     
     init(database: DataManager, queue: DispatchQueue = .main) {
         self.database = database
         self.queue = queue
     }
     
-    private func sortByName(_ items: [Item]) -> [Item]{
-        return items.sorted(by: { a, b in
-            a.name < b.name
-        })
-    }
-    private func sortByDateAsc(_ items: [Item]) -> [Item]{
-        return items.sorted(by: { a, b in
-            a.date < b.date
-        })
-    }
-    private func sortByDateDesc(_ items: [Item]) -> [Item]{
-        return items.sorted(by: { a, b in
-            a.date > b.date
-        })
-    }
+    // TODO: fix remaining switch in handleErrors -> if case let
     private func handleError(completionStatus: Subscribers.Completion<DatabaseError>) {
-        switch completionStatus {
-        case .failure(let error):
+        if case let .failure(error) = completionStatus {
             self.hasError = true
             self.error = error
             print("Received error: \(error)")
-        case .finished:
-            print("sucess")
         }
     }
     
-    func sortItems(_ items: [Item]) -> [Item] {
-        switch(self.sortType){
+    private func sortItems(_ items: [Item]) -> [Item] {
+        switch sortType {
         case .dateAsc:
-            return sortByDateAsc(items)
+            return items.sortedByDateAsc()
         case .dateDesc:
-            return sortByDateDesc(items)
+            return items.sortedByDateDesc()
         case .name:
-            return sortByName(items)
+            return items.sortedByName()
         }
     }
         
@@ -128,7 +96,8 @@ final class FolderListViewModel: ObservableObject {
         }
     }
     
-    // MARK: main logic
+    // MARK: - main logic
+    // TODO: -- LESS GENERIC Name (UPDATE, change)
     func setFolder(item: Item){
         guard item.type == .folder else { return }
         loadItems(atFolderID: item.id)
@@ -176,7 +145,7 @@ final class FolderListViewModel: ObservableObject {
         guard let currentFolder else { return }
         loadItems(atFolderID: currentFolder.parent)
     }
-    
+    //FIXME: REMOVE if branch after cleaning up DB
     func renameItem(item: Item, name: String) {
         if item.isFolder() {
             database.renameFolder(folderID: item.id, name: name)

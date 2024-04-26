@@ -10,8 +10,8 @@ import SwiftUI
 
 
 struct CustomFontModifier: ViewModifier {
-    var style: Font.TextStyle
-    var fontWeight: Font.Weight = .regular
+    let style: Font.TextStyle
+    let fontWeight: Font.Weight
     
     func body(content: Content) -> some View {
         let uiFontStyle = mapFontTextStyle(style)
@@ -69,6 +69,7 @@ struct CustomFontModifier: ViewModifier {
     }
 }
 
+// TODO: customize font name,
 extension View {
     func customFont(style: Font.TextStyle, fontWeight: Font.Weight = .regular) -> some View {
         self.modifier(CustomFontModifier(style: style, fontWeight: fontWeight))

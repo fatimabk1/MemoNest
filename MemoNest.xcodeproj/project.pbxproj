@@ -43,6 +43,8 @@
 		089B5C562BDBF20E009AFF15 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 089B5C552BDBF20E009AFF15 /* Poppins-Thin.ttf */; };
 		089B5C582BDBF21C009AFF15 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 089B5C572BDBF21C009AFF15 /* Poppins-Medium.ttf */; };
 		089B5C5A2BDBF456009AFF15 /* CustomFontModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089B5C592BDBF456009AFF15 /* CustomFontModifier.swift */; };
+		089B5C5C2BDC3DAA009AFF15 /* SortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089B5C5B2BDC3DAA009AFF15 /* SortType.swift */; };
+		089B5C5E2BDC40A0009AFF15 /* ArraySortExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089B5C5D2BDC40A0009AFF15 /* ArraySortExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +95,8 @@
 		089B5C552BDBF20E009AFF15 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Thin.ttf"; sourceTree = "<group>"; };
 		089B5C572BDBF21C009AFF15 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		089B5C592BDBF456009AFF15 /* CustomFontModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFontModifier.swift; sourceTree = "<group>"; };
+		089B5C5B2BDC3DAA009AFF15 /* SortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortType.swift; sourceTree = "<group>"; };
+		089B5C5D2BDC40A0009AFF15 /* ArraySortExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArraySortExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -267,7 +271,9 @@
 			isa = PBXGroup;
 			children = (
 				085743482B7D262100E546A1 /* FolderListViewModel.swift */,
+				089B5C5B2BDC3DAA009AFF15 /* SortType.swift */,
 				083972E52BB496B300C4B134 /* MoveItemViewModel.swift */,
+				089B5C5D2BDC40A0009AFF15 /* ArraySortExtension.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -401,10 +407,12 @@
 			files = (
 				085743152B7D245E00E546A1 /* ContentView.swift in Sources */,
 				0857434C2B7D265300E546A1 /* MockDataManager.swift in Sources */,
+				089B5C5C2BDC3DAA009AFF15 /* SortType.swift in Sources */,
 				08779CD22BD1DC5C00D94BF3 /* ItemDB.swift in Sources */,
 				083972E62BB496B300C4B134 /* MoveItemViewModel.swift in Sources */,
 				0853B8892BD69D5300066FB4 /* TitledError.swift in Sources */,
 				08866F782BBB5BD20042318B /* PlaybackView.swift in Sources */,
+				089B5C5E2BDC40A0009AFF15 /* ArraySortExtension.swift in Sources */,
 				08866F7E2BBC88430042318B /* RecordingManager.swift in Sources */,
 				08866F8C2BBCB4180042318B /* PopupInput.swift in Sources */,
 				085743442B7D251E00E546A1 /* FolderListView.swift in Sources */,

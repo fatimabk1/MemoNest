@@ -15,7 +15,6 @@ enum ItemAction {
 struct FolderListView: View {
     @ObservedObject var viewModel: FolderListViewModel
     @ObservedObject var recordingViewModel: RecordingViewModel
-    @State var dragOffset: CGFloat = 0
     
     init(database: DataManager) {
         self.viewModel = FolderListViewModel(database: database)
@@ -145,34 +144,19 @@ struct FolderListView: View {
     private var sortPicker: some View {
         Menu {
             Picker(selection: $viewModel.sortType) {
-                ForEach(SortType.allCases, id: \.self) {
-                    Text($0.toString())
+                ForEach(SortType.allCases.map(\.rawValue), id: \.self) {
+                    Text($0)
                         .customFont(style: .body)
                 }
             } label: {}
-//                .pickerStyle(.segmented)
-               
-                
         } label: {
-            Text(viewModel.sortType.toString())
+            Text(viewModel.sortType.rawValue)
                 .customFont(style: .body)
         }
         .tint(Colors.blueVeryDark)
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal)
         .padding(.leading, 200)
-        
-//        Picker(selection: $viewModel.sortType) {
-//            ForEach(SortType.allCases, id: \.self) {
-//                Text($0.toString())
-//                    .customFont(style: .body)
-//            }
-//        } label: {}
-//            .pickerStyle(.segmented)
-//            .tint(Colors.blueVeryDark)
-//            .frame(maxWidth: .infinity, alignment: .trailing)
-//            .padding(.horizontal)
-//            .padding(.leading, 200)
     }
     
     @ViewBuilder

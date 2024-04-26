@@ -9,6 +9,8 @@ import Foundation
 import Combine
 import RealmSwift
 
+// TODO: cleanup functions that can be item instead of separate folder/file
+
 final class RealmDataManager: DataManager {
     private let queue: DispatchQueue = DispatchQueue.global(qos: .background)
     private let configuration = Realm.Configuration (
