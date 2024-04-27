@@ -110,12 +110,9 @@ final class PlaybackViewModel: ObservableObject {
             let path = paths[0].appendingPathComponent(recordingURLFileName)
             
             let result = setupAudioPlayer(fileURL: path)
-            switch(result){
-            case .success:
-                return
-            case .failure(let err):
-                self.error = err
+            if case let .failure(error) = result {
                 self.hasError = true
+                self.error = error
             }
         }
     }

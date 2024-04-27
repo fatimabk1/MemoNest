@@ -16,7 +16,7 @@ extension Array where Element == Item {
     }
     
     func sortedByDateAsc() -> [Element] {
-        return self.sorted(by: { a, b in
+         self.sorted(by: { a, b in
             a.date < b.date
         })
     }

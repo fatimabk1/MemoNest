@@ -60,7 +60,7 @@ final class RealmDataManager: DataManager {
         return Future<[Item], DatabaseError> { promise in
             self.queue.async {
                 guard let realm = try? Realm() else {print("realm not instantiated")
-                    return promise(.failure(.realmNotInstantiated)) }
+                    return promise(.failure(.realmNotInstantiated)) } // TODO: don't use implementation-specific errors
                 
                 let items = realm.objects(ItemDB.self)
                 let folderGroup = items.where { $0.typeRaw == "folder" && $0.parent == parentID }

@@ -14,24 +14,10 @@ enum ItemAction {
 
 struct FolderListView: View {
     @ObservedObject var viewModel: FolderListViewModel
-    @ObservedObject var recordingViewModel: RecordingViewModel
     
     init(database: DataManager) {
         self.viewModel = FolderListViewModel(database: database)
-        self.recordingViewModel = RecordingViewModel(database: database)
     }
-    
-    // TODO: How to reload items in VM when file is saved in recording VM?
-    // difficult because there are manual adds (button click) & automatic adds (on interruption), 
-    // so can't pass a closure
-//    private func setupSubscriptions() {
-//        recordingViewModel.onFileAdded
-//            .receive(on: RunLoop.main)
-//            .sink { _ in
-//                viewModel.loadItems(atFolderID: viewModel.currentFolder?.id)
-//            }
-//            .store(in: &cancellables)
-//    }
     
     var body: some View {
         GeometryReader { geo in
@@ -66,9 +52,6 @@ struct FolderListView: View {
                 .onAppear {
                     viewModel.handleOnAppear()
                 }
-                .alert(isPresented: $recordingViewModel.hasError) {
-                    Alert(title: Text("\(recordingViewModel.error?.title ?? "")"))
-                }
                 .alert(isPresented: $viewModel.hasError) {
                     Alert(title: Text("\(viewModel.error?.title ?? "")"))
                 }
@@ -91,7 +74,7 @@ struct FolderListView: View {
     
     private var bottomToolbar: some View {
         VStack(spacing: 0) {
-            if recordingViewModel.isRecording {
+            if viewModel.isRecording {
                 recordingView
                     .transition(.move(edge: .bottom))
             }
@@ -113,24 +96,24 @@ struct FolderListView: View {
     private var recordingView: some View {
         VStack {
             VStack(alignment: .leading) {
-                TextField("Recording Name", text: $recordingViewModel.recordingName)
+                TextField("Recording Name", text: $viewModel.recordingName)
                     .customFont(style: .body, fontWeight: .semibold)
                     .foregroundStyle(Colors.mainText)
                 VStack {
                     HStack {
-                        Text(recordingViewModel.recordingParentTitle)
+                        Text(viewModel.recordingParentTitle)
                             .foregroundStyle(Colors.blueLight)
                             .customFont(style: .callout)
                         Spacer()
                         Button {
-                            recordingViewModel.updateParentFolder(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
+                            viewModel.updateParentFolder(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
                         } label: {
                             Text("Set Location")
                                 .foregroundStyle(Colors.blueMedium)
                                 .customFont(style: .callout)
                         }
                     }
-                    Text("\(recordingViewModel.formattedcurrentDuration)")
+                    Text("\(viewModel.formattedcurrentDuration)")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .foregroundStyle(Colors.blueLight)
                         .customFont(style: .callout)
@@ -144,8 +127,8 @@ struct FolderListView: View {
     private var sortPicker: some View {
         Menu {
             Picker(selection: $viewModel.sortType) {
-                ForEach(SortType.allCases.map(\.rawValue), id: \.self) {
-                    Text($0)
+                ForEach(SortType.allCases, id: \.self) {
+                    Text($0.rawValue)
                         .customFont(style: .body)
                 }
             } label: {}
@@ -192,21 +175,16 @@ struct FolderListView: View {
     private var recordButton: some View {
         Button {
             withAnimation {
-                // recordingViewModel.isRecording.toggle()
-                // TODO: REMOVE - TESTING ONLY
-                if recordingViewModel.isRecording {
-                    recordingViewModel.stopRecording()
-                } else {
-                    recordingViewModel.startRecording(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
-                }
+//        viewModel.isRecording.toggle() // TODO: REMOVE - TESTING ONLY
+                viewModel.handleRecordButtonPress()
             }
         } label: {
             Image(systemName: "waveform.circle")
                 .resizable()
-                .foregroundStyle(recordingViewModel.isRecording ? Colors.icon : Colors.blueLight)
+                .foregroundStyle(viewModel.isRecording ? Colors.icon : Colors.blueLight)
                 .frame(width: 50, height: 50)
         }
-        .symbolEffect(.variableColor.iterative, options: .repeating.speed(0.5), isActive: recordingViewModel.isRecording)
+        .symbolEffect(.variableColor.iterative, options: .repeating.speed(0.5), isActive: viewModel.isRecording)
     }
     
     private var addFolderButton: some View {

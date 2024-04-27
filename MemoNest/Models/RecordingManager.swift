@@ -11,7 +11,7 @@ import Combine
 
 
 enum RecordingError: TitledError {
-    case unableToSetupRecorder, unableToDeactivateAudioSession, noPermission
+    case unableToSetupRecorder, unableToDeactivateAudioSession, noPermission, incompleteData
     
     var title: String {
         switch(self){
@@ -22,6 +22,8 @@ enum RecordingError: TitledError {
             "Error: Unable to record"
         case .noPermission:
             "Please visit Settings to enable recording permission."
+        case .incompleteData:
+            "Error: Missing data required to save recording."
         }
     }
 }

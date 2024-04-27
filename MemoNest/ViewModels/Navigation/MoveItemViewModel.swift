@@ -30,13 +30,9 @@ final class MoveItemViewModel: ObservableObject {
     }
     
     private func handleError(completionStatus: Subscribers.Completion<DatabaseError>) {
-        switch completionStatus {
-        case .failure(let error):
+        if case let .failure(error) = completionStatus {
             self.hasError = true
             self.error = error
-            print("Received error: \(error)")
-        case .finished:
-            print("sucess")
         }
     }
     
