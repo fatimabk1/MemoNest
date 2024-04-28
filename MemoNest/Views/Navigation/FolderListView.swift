@@ -20,55 +20,61 @@ struct FolderListView: View {
     }
     
     var body: some View {
-        ZStack {
-            VStack(spacing: 0) {
-                sortPicker
-                    .buttonStyle(.borderedProminent)
-                    .padding(.bottom)
-                List {
-                    ForEach(viewModel.items, id: \.id) { item in
-                        createListRow(item: item)
-                            .listRowBackground(Color.clear)
-                            .listRowInsets(EdgeInsets())
+        NavigationStack {
+            ZStack {
+                VStack(spacing: 0) {
+                    titleView
+                    
+                    sortPicker
+                        .buttonStyle(.borderedProminent)
+                    
+                    List {
+                        ForEach(viewModel.items, id: \.id) { item in
+                            createListRow(item: item)
+                                .listRowBackground(Color.clear)
+                                .listRowInsets(EdgeInsets())
+                        }
+                    }
+                    .listStyle(.inset)
+                    .listItemTint(Colors.background)
+                    .scrollContentBackground(.hidden)
+                    .frame(maxHeight: .infinity)
+                    
+                    bottomToolbar
+                }
+                .navigationBarTitleDisplayMode(.inline)
+                .background(Colors.background)
+                .navigationDestination(isPresented: $viewModel.moveViewIsPresented) {
+                    if let item = viewModel.editingItem, viewModel.itemAction == .move {
+                        MoveItemView(moveItem: item, database: viewModel.database,
+                                        isPresenting: $viewModel.moveViewIsPresented) { destinationFolderID in
+                            viewModel.moveItem(item: item, destination: destinationFolderID)
+                        }
+                        .navigationBarBackButtonHidden()
                     }
                 }
-                .listStyle(.inset)
-                .listItemTint(Colors.background)
-                .scrollContentBackground(.hidden)
-                .frame(maxHeight: .infinity)
-                bottomToolbar
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .background(Colors.background)
-            .navigationDestination(isPresented: $viewModel.moveViewIsPresented) {
-                if let item = viewModel.editingItem, viewModel.itemAction == .move {
-                    MoveItemView(moveItem: item, database: viewModel.database,
-                                    isPresenting: $viewModel.moveViewIsPresented) { destinationFolderID in
-                        viewModel.moveItem(item: item, destination: destinationFolderID)
-                    }
-                                    .navigationBarBackButtonHidden()
+                .onAppear {
+                    viewModel.handleOnAppear()
                 }
-            }
-            .onAppear {
-                viewModel.handleOnAppear()
-            }
-            .alert(isPresented: $viewModel.hasError) {
-                Alert(title: Text("\(viewModel.error?.title ?? "")"))
-            }
-            .toolbar {
-                ToolbarItem(placement: viewModel.hasParent ? .principal : .topBarLeading) {
-                    Text(viewModel.currentFolderTitle)
-                        .foregroundColor(Colors.mainText)
-                        .customFont(style: (viewModel.hasParent ? .title3 : .title), fontWeight: .bold)
-                        .padding(.top, viewModel.hasParent ? 0 : 50)
-                        .frame(maxWidth: 150)
+                .alert(isPresented: $viewModel.hasError) {
+                    Alert(title: Text("\(viewModel.error?.title ?? "")"))
                 }
-                ToolbarItemGroup(placement: .topBarLeading) {
-                    BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()}
-                }
+                addRenameInputView
             }
-            addRenameInputView
         }
+    }
+    
+    private var titleView: some View {
+        HStack(alignment: .center) {
+            BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()}
+            Text(viewModel.currentFolderTitle)
+                .foregroundColor(Colors.mainText)
+                .customFont(style: .title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.trailing)
+        .padding(.leading, viewModel.hasParent ? 0 : 15)
+        .padding(.top)
     }
     
     private var bottomToolbar: some View {
@@ -129,16 +135,18 @@ struct FolderListView: View {
                 ForEach(SortType.allCases, id: \.self) {
                     Text($0.rawValue)
                         .customFont(style: .body)
+                        .foregroundStyle(Colors.blueVeryLight)
                 }
             } label: {}
         } label: {
             Text(viewModel.sortType.rawValue)
                 .customFont(style: .body)
+                .foregroundStyle(Colors.blueVeryLight)
         }
+        .buttonStyle(.plain)
         .tint(Colors.blueVeryDark)
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal)
-        .padding(.leading, 200)
     }
     
     @ViewBuilder

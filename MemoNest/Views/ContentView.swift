@@ -11,9 +11,7 @@ struct ContentView: View {
     let database = RealmDataManager()
     
     var body: some View {
-        NavigationStack {
-            FolderListView(database: database)
-        }
+        FolderListView(database: database)
     }
 }
 

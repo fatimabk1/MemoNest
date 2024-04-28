@@ -23,7 +23,7 @@ struct MoveItemView: View {
         VStack(spacing: 0) {
 //            NavigationStack {
                 folderList
-                    .navigationBarTitleDisplayMode(.inline)
+//                    .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle(viewModel.currentFolderTitle)
                     .navigationBarItems(leading: BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()} )
                     .toolbar {
@@ -90,9 +90,11 @@ struct MoveItemView: View {
 }
 
 #Preview {
-    MoveItemView(moveItem: MockDataManager.folderA,
-                 database: MockDataManager(folders: MockDataManager.sampleFolders,
-                                           files: MockDataManager.sampleFiles),
-                 isPresenting: .constant(true),
-                 moveAction: {UUID in })
+    NavigationStack {
+        MoveItemView(moveItem: MockDataManager.folderA,
+                     database: MockDataManager(folders: MockDataManager.sampleFolders,
+                                               files: MockDataManager.sampleFiles),
+                     isPresenting: .constant(true),
+                     moveAction: {UUID in })
+    }
 }
