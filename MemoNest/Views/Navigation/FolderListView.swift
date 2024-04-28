@@ -20,55 +20,54 @@ struct FolderListView: View {
     }
     
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                VStack(spacing: 0) {
-                    sortPicker
-                        .buttonStyle(.borderedProminent)
-                        .padding(.bottom)
-                    List {
-                        ForEach(viewModel.items, id: \.id) { item in
-                            createListRow(item: item)
-                                .listRowBackground(Color.clear)
-                        }
-                    }
-                    .listStyle(.inset)
-                    .listItemTint(Colors.background)
-                    .scrollContentBackground(.hidden)
-                    .frame(maxHeight: .infinity)
-                    bottomToolbar
-                }
-                .navigationBarTitleDisplayMode(.inline)
-                .background(Colors.background)
-                .navigationDestination(isPresented: $viewModel.moveViewIsPresented) {
-                    if let item = viewModel.editingItem, viewModel.itemAction == .move {
-                        MoveItemView(moveItem: item, database: viewModel.database,
-                                     isPresenting: $viewModel.moveViewIsPresented) { destinationFolderID in
-                            viewModel.moveItem(item: item, destination: destinationFolderID)
-                        }
-                                     .navigationBarBackButtonHidden()
+        ZStack {
+            VStack(spacing: 0) {
+                sortPicker
+                    .buttonStyle(.borderedProminent)
+                    .padding(.bottom)
+                List {
+                    ForEach(viewModel.items, id: \.id) { item in
+                        createListRow(item: item)
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(EdgeInsets())
                     }
                 }
-                .onAppear {
-                    viewModel.handleOnAppear()
-                }
-                .alert(isPresented: $viewModel.hasError) {
-                    Alert(title: Text("\(viewModel.error?.title ?? "")"))
-                }
-                .toolbar {
-                    ToolbarItem(placement: viewModel.hasParent ? .principal : .topBarLeading) {
-                        Text(viewModel.currentFolderTitle)
-                            .foregroundColor(Colors.mainText)
-                            .customFont(style: (viewModel.hasParent ? .title3 : .title), fontWeight: .bold)
-                            .padding(.top, viewModel.hasParent ? 0 : 50)
-                            .frame(maxWidth: 150)
-                    }
-                    ToolbarItemGroup(placement: .topBarLeading) {
-                        BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()}
-                    }
-                }
-                addRenameInputView
+                .listStyle(.inset)
+                .listItemTint(Colors.background)
+                .scrollContentBackground(.hidden)
+                .frame(maxHeight: .infinity)
+                bottomToolbar
             }
+            .navigationBarTitleDisplayMode(.inline)
+            .background(Colors.background)
+            .navigationDestination(isPresented: $viewModel.moveViewIsPresented) {
+                if let item = viewModel.editingItem, viewModel.itemAction == .move {
+                    MoveItemView(moveItem: item, database: viewModel.database,
+                                    isPresenting: $viewModel.moveViewIsPresented) { destinationFolderID in
+                        viewModel.moveItem(item: item, destination: destinationFolderID)
+                    }
+                                    .navigationBarBackButtonHidden()
+                }
+            }
+            .onAppear {
+                viewModel.handleOnAppear()
+            }
+            .alert(isPresented: $viewModel.hasError) {
+                Alert(title: Text("\(viewModel.error?.title ?? "")"))
+            }
+            .toolbar {
+                ToolbarItem(placement: viewModel.hasParent ? .principal : .topBarLeading) {
+                    Text(viewModel.currentFolderTitle)
+                        .foregroundColor(Colors.mainText)
+                        .customFont(style: (viewModel.hasParent ? .title3 : .title), fontWeight: .bold)
+                        .padding(.top, viewModel.hasParent ? 0 : 50)
+                        .frame(maxWidth: 150)
+                }
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()}
+                }
+            }
+            addRenameInputView
         }
     }
     

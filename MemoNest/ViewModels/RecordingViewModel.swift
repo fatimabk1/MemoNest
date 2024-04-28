@@ -65,29 +65,34 @@ final class RecordingService {
             .store(in: &cancellables)
     }
     
-    private func checkPermissions() {
+    private func checkPermissions(completion: @escaping () -> Void) {
         recordingManager.requestPermission { [weak self] granted in
             guard let self else { return }
+            print(granted)
             self.hasRecordPermission = granted
+            completion()
         }
     }
     
     func startRecording(parentID: UUID?, folderTitle: String) {
-        checkPermissions()
-        if !hasRecordPermission {
-            status.send(.error(RecordingError.noPermission))
-            return
-        }
-    
-        let result = recordingManager.setupRecorder()
-        switch result {
-        case .success(let fileName):
-            recordingDate = Date()
-            recordingManager.startRecording()
-            recordingURLFileName = fileName
-            status.send(.recording(recordingDate))
-        case .failure(let err):
-            status.send(.error(err))
+        checkPermissions() { [weak self] in
+            guard let self else { return }
+            print("Done calling checkPermissions()")
+            if !hasRecordPermission {
+                status.send(.error(RecordingError.noPermission))
+                return
+            }
+        
+            let result = recordingManager.setupRecorder()
+            switch result {
+            case .success(let fileName):
+                recordingDate = Date()
+                recordingManager.startRecording()
+                recordingURLFileName = fileName
+                status.send(.recording(recordingDate))
+            case .failure(let err):
+                status.send(.error(err))
+            }
         }
     }
     

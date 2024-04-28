@@ -20,10 +20,9 @@ struct MoveItemView: View {
     }
     
     var body: some View {
-        ZStack {
-            NavigationStack {
+        VStack(spacing: 0) {
+//            NavigationStack {
                 folderList
-                    .background(Colors.background)
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle(viewModel.currentFolderTitle)
                     .navigationBarItems(leading: BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()} )
@@ -43,7 +42,7 @@ struct MoveItemView: View {
                             }
                         }
                     }
-            }
+//            }
             .onAppear {
                 viewModel.handleOnAppear()
             }
@@ -68,6 +67,8 @@ struct MoveItemView: View {
         }
         .listStyle(.inset)
         .scrollContentBackground(.hidden)
+        .background(Colors.background)
+        .frame(maxHeight: .infinity)
     }
     
     var moveButton: some View {
@@ -84,7 +85,7 @@ struct MoveItemView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 15))
         }
         .padding()
-        .frame(maxHeight: .infinity, alignment: .bottom)
+        .background(Colors.background)
     }
 }
 

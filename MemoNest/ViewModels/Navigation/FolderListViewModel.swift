@@ -75,6 +75,7 @@ final class FolderListViewModel: ObservableObject {
     
     private func subscribeToRecordingEvents() {
         recordingService.status
+            .receive(on: RunLoop.main)
             .sink { [weak self] status in
                 switch status {
                 case .recording:
@@ -99,6 +100,7 @@ final class FolderListViewModel: ObservableObject {
                     self?.addFile()
                     self?.recordingData = nil
                     self?.recordingName = "New Recording"
+                    self?.currentDuration = 0
                 case .idle:
                     print("status idle")
                     
@@ -281,6 +283,7 @@ final class FolderListViewModel: ObservableObject {
                 })
                 .store(in: &cancellables)
         } else {
+            // TODO: stop playback if playing, then remove
             database.removeFile(fileID: item.id)
                 .sink(receiveCompletion: { [weak self] completion in
                     self?.handleError(completionStatus: completion)

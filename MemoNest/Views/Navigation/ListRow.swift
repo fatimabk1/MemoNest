@@ -33,7 +33,9 @@ struct RowMenu: View {
             }
         } label: {
             Image(systemName: "ellipsis.circle")
+                .padding(.horizontal)
                 .foregroundStyle(Colors.blueMedium)
+                .frame( maxHeight: .infinity)
         }
         
     }
@@ -155,7 +157,8 @@ struct ListRow: View {
                 }
             }
         }
-        .padding()
+        .padding(.vertical)
+        .padding(.leading)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
@@ -170,8 +173,10 @@ struct ListRow: View {
         List {
             FolderRow( item: Item(name: "folder", type: .folder), onListRowTap: {_ in }, onActionSelected: {_ in})
                 .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets())
             RecordingRow( item: longNameAudio, onActionSelected: {_ in})
                 .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets())
         }
         .listStyle(.inset)
         .background(Colors.background)
@@ -180,52 +185,3 @@ struct ListRow: View {
         
     }
 }
-
-//struct TappableListRowWithMenu: View {
-//    let item: Item
-//    let onListRowTap: (Item) -> Void
-//    let onActionSelected: (ItemAction) -> Void
-////    @ObservedObject var playbackViewModel: PlaybackViewModel?
-//    @State var showPlaybackView = false
-//    
-//    init(item: Item, onListRowTap: @escaping (Item) -> Void, onActionSelected: @escaping (ItemAction) -> Void) {
-//        self.item = item
-//        self.onListRowTap = onListRowTap
-//        self.onActionSelected = onActionSelected
-////        if item.isRecording() {
-////            playbackViewModel = PlaybackViewModel(item: item)
-////        } else {
-////            playbackViewModel = nil
-////        }
-//    }
-//
-//    private var formattedDuration: String {
-//        if let duration = item.audioInfo?.duration {
-//            FormatterService.formatTimeInterval(seconds: duration)
-//        } else {
-//            ""
-//        }
-//    }
-//    
-//    var body: some View {
-//        VStack {
-//            HStack {
-//                Button {
-//                    if item.isFolder() {
-//                        onListRowTap(item)
-//                    } else {
-//                        showPlaybackView.toggle()
-//                    }
-//                } label: {
-//                    VStack {
-//                        ListRow(item: item)
-//                    }
-//                }
-////                RowMenu
-//            }
-////            if showPlaybackView, item.isRecording(), let playbackViewModel {
-////                PlaybackView(viewModel: playbackViewModel)
-////            }
-//        }
-//    }
-//}

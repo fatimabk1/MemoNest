@@ -285,8 +285,8 @@
             filePath = "MemoNest/Views/Navigation/FolderListView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "124"
-            endingLineNumber = "124"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
             landmarkName = "recordingView"
             landmarkType = "24">
             <Locations>
@@ -427,8 +427,8 @@
             filePath = "MemoNest/Views/Navigation/FolderListView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
             landmarkName = "addRenameInputView"
             landmarkType = "24">
             <Locations>
@@ -505,8 +505,8 @@
             filePath = "MemoNest/Views/Navigation/FolderListView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
             landmarkName = "body"
             landmarkType = "24">
             <Locations>
@@ -616,8 +616,8 @@
             filePath = "MemoNest/DataManager/RealmDataManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
             landmarkName = "fetchFiles(parentID:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -632,42 +632,10 @@
             filePath = "MemoNest/DataManager/RealmDataManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
             landmarkName = "removeFolder(folderID:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "DCF09660-9D89-4C9B-99DA-E95440F62FD3 - d8dca7b36bf5f2d0"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Sendable () -&gt; () in closure #1 ((Swift.Result&lt;Swift.Array&lt;MemoNest.Item&gt;, MemoNest.DatabaseError&gt;) -&gt; ()) -&gt; () in MemoNest.RealmDataManager.fetchFolders(parentID: Swift.Optional&lt;Foundation.UUID&gt;) -&gt; Combine.AnyPublisher&lt;Swift.Array&lt;MemoNest.Item&gt;, MemoNest.DatabaseError&gt;"
-                  moduleName = "MemoNest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/fatimakahbi/Developer/MemoNest/MemoNest/DataManager/RealmDataManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "80"
-                  endingLineNumber = "80"
-                  offsetFromSymbolStart = "360">
-               </Location>
-               <Location
-                  uuid = "DCF09660-9D89-4C9B-99DA-E95440F62FD3 - d8dca7b36bf5f2d0"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Sendable () -&gt; () in closure #1 ((Swift.Result&lt;Swift.Array&lt;MemoNest.Item&gt;, MemoNest.DatabaseError&gt;) -&gt; ()) -&gt; () in MemoNest.RealmDataManager.fetchFolders(parentID: Swift.Optional&lt;Foundation.UUID&gt;) -&gt; Combine.AnyPublisher&lt;Swift.Array&lt;MemoNest.Item&gt;, MemoNest.DatabaseError&gt;"
-                  moduleName = "MemoNest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/fatimakahbi/Developer/MemoNest/MemoNest/DataManager/RealmDataManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "80"
-                  endingLineNumber = "80"
-                  offsetFromSymbolStart = "612">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -680,8 +648,8 @@
             filePath = "MemoNest/DataManager/RealmDataManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
             landmarkName = "init()"
             landmarkType = "7">
             <Locations>
@@ -743,9 +711,9 @@
             filePath = "MemoNest/ViewModels/Navigation/FolderListViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
-            landmarkName = "sortItems(_:)"
+            startingLineNumber = "155"
+            endingLineNumber = "155"
+            landmarkName = "handleError(completionStatus:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -759,8 +727,8 @@
             filePath = "MemoNest/Views/Navigation/FolderListView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
             landmarkName = "addRenameInputView"
             landmarkType = "24">
             <Locations>
@@ -807,9 +775,9 @@
             filePath = "MemoNest/ViewModels/Navigation/FolderListViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
-            landmarkName = "handleError(completionStatus:)"
+            startingLineNumber = "148"
+            endingLineNumber = "148"
+            landmarkName = "addFile()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -823,8 +791,8 @@
             filePath = "MemoNest/DataManager/RealmDataManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "306"
-            endingLineNumber = "306"
+            startingLineNumber = "307"
+            endingLineNumber = "307"
             landmarkName = "addFile(fileName:date:parentID:duration:recordingURLFileName:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -839,8 +807,8 @@
             filePath = "MemoNest/DataManager/RealmDataManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "296"
-            endingLineNumber = "296"
+            startingLineNumber = "297"
+            endingLineNumber = "297"
             landmarkName = "addFile(fileName:date:parentID:duration:recordingURLFileName:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -855,8 +823,8 @@
             filePath = "MemoNest/ViewModels/Navigation/FolderListViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
+            startingLineNumber = "216"
+            endingLineNumber = "216"
             landmarkName = "loadItems(atFolderID:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -871,42 +839,10 @@
             filePath = "MemoNest/ViewModels/Navigation/FolderListViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "231"
-            endingLineNumber = "231"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
             landmarkName = "loadItems(atFolderID:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "BE50D5DF-0644-4003-9893-F7B0B2CCB466 - 469eea5c6130c3fb"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #4 (Swift.Array&lt;MemoNest.Item&gt;, Swift.Array&lt;MemoNest.Item&gt;) -&gt; () in MemoNest.FolderListViewModel.loadItems(atFolderID: Swift.Optional&lt;Foundation.UUID&gt;) -&gt; ()"
-                  moduleName = "MemoNest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/fatimakahbi/Developer/MemoNest/MemoNest/ViewModels/Navigation/FolderListViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "230"
-                  endingLineNumber = "230"
-                  offsetFromSymbolStart = "232">
-               </Location>
-               <Location
-                  uuid = "BE50D5DF-0644-4003-9893-F7B0B2CCB466 - 469eea5c6130c398"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #4 (Swift.Array&lt;MemoNest.Item&gt;, Swift.Array&lt;MemoNest.Item&gt;) -&gt; () in MemoNest.FolderListViewModel.loadItems(atFolderID: Swift.Optional&lt;Foundation.UUID&gt;) -&gt; ()"
-                  moduleName = "MemoNest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/fatimakahbi/Developer/MemoNest/MemoNest/ViewModels/Navigation/FolderListViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "231"
-                  endingLineNumber = "231"
-                  offsetFromSymbolStart = "232">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -919,42 +855,10 @@
             filePath = "MemoNest/DataManager/RealmDataManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
             landmarkName = "removeFolder(folderID:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "81CB9C8C-8412-4689-BF5C-947E6161B9E2 - d8dca7b36bf5f254"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Sendable () -&gt; () in closure #1 ((Swift.Result&lt;Swift.Array&lt;MemoNest.Item&gt;, MemoNest.DatabaseError&gt;) -&gt; ()) -&gt; () in MemoNest.RealmDataManager.fetchFolders(parentID: Swift.Optional&lt;Foundation.UUID&gt;) -&gt; Combine.AnyPublisher&lt;Swift.Array&lt;MemoNest.Item&gt;, MemoNest.DatabaseError&gt;"
-                  moduleName = "MemoNest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/fatimakahbi/Developer/MemoNest/MemoNest/DataManager/RealmDataManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "84"
-                  endingLineNumber = "84"
-                  offsetFromSymbolStart = "612">
-               </Location>
-               <Location
-                  uuid = "81CB9C8C-8412-4689-BF5C-947E6161B9E2 - d8dca7b36bf5f254"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Sendable () -&gt; () in closure #1 ((Swift.Result&lt;Swift.Array&lt;MemoNest.Item&gt;, MemoNest.DatabaseError&gt;) -&gt; ()) -&gt; () in MemoNest.RealmDataManager.fetchFolders(parentID: Swift.Optional&lt;Foundation.UUID&gt;) -&gt; Combine.AnyPublisher&lt;Swift.Array&lt;MemoNest.Item&gt;, MemoNest.DatabaseError&gt;"
-                  moduleName = "MemoNest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/fatimakahbi/Developer/MemoNest/MemoNest/DataManager/RealmDataManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "84"
-                  endingLineNumber = "84"
-                  offsetFromSymbolStart = "1564">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -967,42 +871,10 @@
             filePath = "MemoNest/DataManager/RealmDataManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
             landmarkName = "fetchFolderInfo(folderID:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "92970753-56BF-4336-8045-BBA11BF0E341 - db8b2f6fbd28fde1"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MemoNest.RealmDataManager.getRealm() -&gt; Swift.Optional&lt;RealmSwift.Realm&gt;"
-                  moduleName = "MemoNest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/fatimakahbi/Developer/MemoNest/MemoNest/DataManager/RealmDataManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30"
-                  offsetFromSymbolStart = "256">
-               </Location>
-               <Location
-                  uuid = "92970753-56BF-4336-8045-BBA11BF0E341 - db8b2f6fbd28fde1"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MemoNest.RealmDataManager.getRealm() -&gt; Swift.Optional&lt;RealmSwift.Realm&gt;"
-                  moduleName = "MemoNest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/fatimakahbi/Developer/MemoNest/MemoNest/DataManager/RealmDataManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30"
-                  offsetFromSymbolStart = "272">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

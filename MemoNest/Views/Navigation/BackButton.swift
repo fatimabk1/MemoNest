@@ -18,6 +18,7 @@ struct BackButton: View {
             } label: {
                 Image(systemName: "chevron.backward")
                     .foregroundStyle(Colors.blueVeryLight)
+                    .padding()
             }
         } else {
             EmptyView()
