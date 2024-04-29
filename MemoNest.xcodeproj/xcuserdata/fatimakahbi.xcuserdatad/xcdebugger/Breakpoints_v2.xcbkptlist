@@ -357,69 +357,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "69992C04-1964-4E5A-B349-26EAE7E3D207"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MemoNest/Models/RecordingManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
-            landmarkName = "init(audioRecorder:cancellables:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "69992C04-1964-4E5A-B349-26EAE7E3D207 - 5b1cb478e9d2c3bc"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "default argument 2 of MemoNest.RecordingManager.init(audioRecorder: Swift.Optional&lt;__C.AVAudioRecorder&gt;, filePath: Swift.Optional&lt;Foundation.URL&gt;, cancellables: Swift.Set&lt;Combine.AnyCancellable&gt;) -&gt; MemoNest.RecordingManager"
-                  moduleName = "MemoNest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/fatimakahbi/Developer/MemoNest/MemoNest/Models/RecordingManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "42"
-                  endingLineNumber = "42"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  uuid = "69992C04-1964-4E5A-B349-26EAE7E3D207 - 66e32232493740cc"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MemoNest.RecordingManager.__allocating_init(audioRecorder: Swift.Optional&lt;__C.AVAudioRecorder&gt;, filePath: Swift.Optional&lt;Foundation.URL&gt;, cancellables: Swift.Set&lt;Combine.AnyCancellable&gt;) -&gt; MemoNest.RecordingManager"
-                  moduleName = "MemoNest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/fatimakahbi/Developer/MemoNest/MemoNest/Models/RecordingManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "32">
-               </Location>
-               <Location
-                  uuid = "69992C04-1964-4E5A-B349-26EAE7E3D207 - a21652ca87be3b54"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MemoNest.RecordingManager.init(audioRecorder: Swift.Optional&lt;__C.AVAudioRecorder&gt;, filePath: Swift.Optional&lt;Foundation.URL&gt;, cancellables: Swift.Set&lt;Combine.AnyCancellable&gt;) -&gt; MemoNest.RecordingManager"
-                  moduleName = "MemoNest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/fatimakahbi/Developer/MemoNest/MemoNest/Models/RecordingManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30"
-                  offsetFromSymbolStart = "276">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "A4D89B8E-72DF-470D-A952-3E8B97BA2D1F"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -748,54 +685,6 @@
             endingLineNumber = "129"
             landmarkName = "removeFolder(folderID:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "48C3915A-855D-48F0-8B20-21CAAA6C6843"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MemoNest/Models/RecordingManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
-            landmarkName = "startRecording()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "48C3915A-855D-48F0-8B20-21CAAA6C6843 - 5fe8231f47ace52c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MemoNest.RecordingManager.startRecording() -&gt; ()"
-                  moduleName = "MemoNest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/fatimakahbi/Developer/MemoNest/MemoNest/Models/RecordingManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "84"
-                  endingLineNumber = "84"
-                  offsetFromSymbolStart = "176">
-               </Location>
-               <Location
-                  uuid = "48C3915A-855D-48F0-8B20-21CAAA6C6843 - 5fe8231f47ace52c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MemoNest.RecordingManager.startRecording() -&gt; ()"
-                  moduleName = "MemoNest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/fatimakahbi/Developer/MemoNest/MemoNest/Models/RecordingManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "84"
-                  endingLineNumber = "84"
-                  offsetFromSymbolStart = "44">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

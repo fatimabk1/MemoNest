@@ -32,9 +32,8 @@
 		08779CD22BD1DC5C00D94BF3 /* ItemDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08779CD12BD1DC5C00D94BF3 /* ItemDB.swift */; };
 		08866EB42BB628080042318B /* MoveItemViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866EB32BB628080042318B /* MoveItemViewModelTest.swift */; };
 		08866F782BBB5BD20042318B /* PlaybackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F772BBB5BD20042318B /* PlaybackView.swift */; };
-		08866F7A2BBB5C490042318B /* RecordingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F792BBB5C490042318B /* RecordingViewModel.swift */; };
+		08866F7A2BBB5C490042318B /* RecordingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F792BBB5C490042318B /* RecordingService.swift */; };
 		08866F7C2BBB5C520042318B /* PlaybackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F7B2BBB5C520042318B /* PlaybackViewModel.swift */; };
-		08866F7E2BBC88430042318B /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F7D2BBC88430042318B /* RecordingManager.swift */; };
 		08866F8C2BBCB4180042318B /* PopupInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08866F8B2BBCB4170042318B /* PopupInput.swift */; };
 		089B5C4F2BDBF1E5009AFF15 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 089B5C4D2BDBF1E5009AFF15 /* Poppins-SemiBold.ttf */; };
 		089B5C502BDBF1E5009AFF15 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 089B5C4E2BDBF1E5009AFF15 /* Poppins-Bold.ttf */; };
@@ -84,9 +83,8 @@
 		08779CD12BD1DC5C00D94BF3 /* ItemDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDB.swift; sourceTree = "<group>"; };
 		08866EB32BB628080042318B /* MoveItemViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemViewModelTest.swift; sourceTree = "<group>"; };
 		08866F772BBB5BD20042318B /* PlaybackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlaybackView.swift; path = ../ViewModels/PlaybackView.swift; sourceTree = "<group>"; };
-		08866F792BBB5C490042318B /* RecordingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingViewModel.swift; sourceTree = "<group>"; };
+		08866F792BBB5C490042318B /* RecordingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingService.swift; sourceTree = "<group>"; };
 		08866F7B2BBB5C520042318B /* PlaybackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewModel.swift; sourceTree = "<group>"; };
-		08866F7D2BBC88430042318B /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
 		08866F8B2BBCB4170042318B /* PopupInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupInput.swift; sourceTree = "<group>"; };
 		089B5C4D2BDBF1E5009AFF15 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		089B5C4E2BDBF1E5009AFF15 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
@@ -201,7 +199,6 @@
 			isa = PBXGroup;
 			children = (
 				085743412B7D24E800E546A1 /* Item.swift */,
-				08866F7D2BBC88430042318B /* RecordingManager.swift */,
 				08866F8B2BBCB4170042318B /* PopupInput.swift */,
 			);
 			path = Models;
@@ -221,7 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				08866F802BBC89D20042318B /* Navigation */,
-				08866F792BBB5C490042318B /* RecordingViewModel.swift */,
+				08866F792BBB5C490042318B /* RecordingService.swift */,
 				08866F7B2BBB5C520042318B /* PlaybackViewModel.swift */,
 			);
 			path = ViewModels;
@@ -413,7 +410,6 @@
 				0853B8892BD69D5300066FB4 /* TitledError.swift in Sources */,
 				08866F782BBB5BD20042318B /* PlaybackView.swift in Sources */,
 				089B5C5E2BDC40A0009AFF15 /* ArraySortExtension.swift in Sources */,
-				08866F7E2BBC88430042318B /* RecordingManager.swift in Sources */,
 				08866F8C2BBCB4180042318B /* PopupInput.swift in Sources */,
 				085743442B7D251E00E546A1 /* FolderListView.swift in Sources */,
 				080145092BCECEF100ACA3C9 /* Playground.swift in Sources */,
@@ -425,7 +421,7 @@
 				085743132B7D245E00E546A1 /* MemoNestApp.swift in Sources */,
 				085743422B7D24E800E546A1 /* Item.swift in Sources */,
 				086ED08C2B98C81E00A30EBC /* DataManager.swift in Sources */,
-				08866F7A2BBB5C490042318B /* RecordingViewModel.swift in Sources */,
+				08866F7A2BBB5C490042318B /* RecordingService.swift in Sources */,
 				084454932BC71049007CDC57 /* FormatterService.swift in Sources */,
 				089B5C5A2BDBF456009AFF15 /* CustomFontModifier.swift in Sources */,
 				086ED08E2B98C9C200A30EBC /* RealmDataManager.swift in Sources */,
