@@ -68,7 +68,6 @@ final class RecordingService {
     private func checkPermissions(completion: @escaping () -> Void) {
         recordingManager.requestPermission { [weak self] granted in
             guard let self else { return }
-            print(granted)
             self.hasRecordPermission = granted
             completion()
         }
@@ -77,7 +76,6 @@ final class RecordingService {
     func startRecording(parentID: UUID?, folderTitle: String) {
         checkPermissions() { [weak self] in
             guard let self else { return }
-            print("Done calling checkPermissions()")
             if !hasRecordPermission {
                 status.send(.error(RecordingError.noPermission))
                 return

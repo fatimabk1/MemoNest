@@ -20,19 +20,18 @@ final class MockDataManager: DataManager {
         self.files = files
     }
     
-    func databaseChangesPublisher() -> AnyPublisher<Void, Never> {
-        return Future<Void, Never> { promise in
-            promise(.success(()))
-        }
-        .eraseToAnyPublisher()
-    }
+//    func databaseChangesPublisher() -> AnyPublisher<Void, Never> {
+//        return Future<Void, Never> { promise in
+//            promise(.success(()))
+//        }
+//        .eraseToAnyPublisher()
+//    }
     
     // MARK: fetch
     func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Item?, DatabaseError>  {
         return Future<Item?, DatabaseError> { promise in
             self.queue.async { [weak self] in
                 guard let self else { return }
-                print(self.queue)
                 promise(.success(self.folders.first(where: {$0.id == folderID})))
             }
         }
