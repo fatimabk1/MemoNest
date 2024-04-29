@@ -27,6 +27,8 @@ enum DatabaseError: TitledError {
 }
 
 protocol DataManager {    
+    func databaseChangesPublisher() -> AnyPublisher<Void, Never>
+    
     // fetch
     func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Item?, DatabaseError>
     func fetchFiles(parentID: UUID?) -> AnyPublisher<[Item], DatabaseError>

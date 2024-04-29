@@ -71,6 +71,7 @@ final class FolderListViewModel: ObservableObject {
         self.database = database
         self.queue = queue
         subscribeToRecordingEvents()
+        loadOnDatabaseChange()
     }
     
     private func subscribeToRecordingEvents() {
@@ -207,6 +208,15 @@ final class FolderListViewModel: ObservableObject {
         loadItems(atFolderID: item.id)
     }
     
+    func loadOnDatabaseChange() {
+        database.databaseChangesPublisher()
+            .sink { [weak self] folder in
+                print("received change")
+                self?.loadItems(atFolderID: self?.currentFolder?.id)
+            }
+            .store(in: &cancellables)
+    }
+    
     func loadItems(atFolderID folderID: UUID?) {
         print("about to call fetch folder info")
         if let folderID {
@@ -233,7 +243,7 @@ final class FolderListViewModel: ObservableObject {
                 let sortedFolders = self.sortItems(folders)
                 let sortedFiles = self.sortItems(files)
                 self.items = sortedFolders + sortedFiles
-                print("finished loading items")
+                print("finished loading items\nAPP STATE - READY")
                 isLoading = false
             })
             .store(in: &cancellables)
@@ -258,7 +268,7 @@ final class FolderListViewModel: ObservableObject {
                 .sink(receiveCompletion: { [weak self] completion in
                     self?.handleError(completionStatus: completion)
                 }, receiveValue: { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolder?.id)
+//                    self?.loadItems(atFolderID: self?.currentFolder?.id)
                 })
                 .store(in: &cancellables)
         } else {
@@ -266,7 +276,7 @@ final class FolderListViewModel: ObservableObject {
                 .sink(receiveCompletion: { [weak self] completion in
                     self?.handleError(completionStatus: completion)
                 }, receiveValue: { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolder?.id)
+//                    self?.loadItems(atFolderID: self?.currentFolder?.id)
                 })
                 .store(in: &cancellables)
         }
@@ -279,7 +289,7 @@ final class FolderListViewModel: ObservableObject {
                     print("completion: \(completion)")
                     self?.handleError(completionStatus: completion)
                 }, receiveValue: { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolder?.id)
+//                    self?.loadItems(atFolderID: self?.currentFolder?.id)
                 })
                 .store(in: &cancellables)
         } else {
@@ -288,7 +298,7 @@ final class FolderListViewModel: ObservableObject {
                 .sink(receiveCompletion: { [weak self] completion in
                     self?.handleError(completionStatus: completion)
                 }, receiveValue: { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolder?.id)
+//                    self?.loadItems(atFolderID: self?.currentFolder?.id)
                 })
                 .store(in: &cancellables)
         }
@@ -300,7 +310,7 @@ final class FolderListViewModel: ObservableObject {
                 .sink(receiveCompletion: { [weak self] completion in
                     self?.handleError(completionStatus: completion)
                 }, receiveValue: { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolder?.id)
+//                    self?.loadItems(atFolderID: self?.currentFolder?.id)
                 })
                 .store(in: &cancellables)
             
@@ -309,7 +319,7 @@ final class FolderListViewModel: ObservableObject {
                 .sink(receiveCompletion: { [weak self] completion in
                     self?.handleError(completionStatus: completion)
                 }, receiveValue: { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolder?.id)
+//                    self?.loadItems(atFolderID: self?.currentFolder?.id)
                 })
                 .store(in: &cancellables)
         }
@@ -326,7 +336,7 @@ final class FolderListViewModel: ObservableObject {
                 self?.handleError(completionStatus: completion)
             }, receiveValue: { [weak self] in
                 print("Success. Reloading with new folder...")
-                self?.loadItems(atFolderID: self?.currentFolder?.id)
+//                self?.loadItems(atFolderID: self?.currentFolder?.id)
             })
             .store(in: &cancellables)
     }
