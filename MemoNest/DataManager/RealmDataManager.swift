@@ -9,7 +9,6 @@ import Foundation
 import Combine
 import RealmSwift
 
-// TODO: cleanup functions that can be item instead of separate folder/file
 
 final class RealmManager {
     let queue = DispatchQueue(label: "serial-queue")
@@ -139,43 +138,21 @@ final class RealmDataManager: DataManager {
         // delete folder itself
             .flatMap { [weak self] _  -> AnyPublisher<Void, DatabaseError> in
                 guard let self else { return Empty().eraseToAnyPublisher() }
-                return self.removeSingleFolder(folderID: folderID)
+                return self.removeItem(itemID: folderID)
             }
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }
     
-    func removeSingleFolder(folderID: UUID) -> AnyPublisher<Void, DatabaseError> {
-        
+    func removeItem(itemID: UUID) -> AnyPublisher<Void, DatabaseError> {
         return Future<Void, DatabaseError> { [weak self] promise in
             self?.permformOperation { realm in
-                let folder = realm.object(ofType: ItemDB.self, forPrimaryKey: folderID)
-                guard let folder else { return promise(.failure(.itemNotFound)) }
+                let item = realm.object(ofType: ItemDB.self, forPrimaryKey: itemID)
+                guard let item else { return promise(.failure(.itemNotFound)) }
                 
                 do {
                     try realm.write {
-                        realm.delete(folder)
-                        promise(.success(()))
-                    }
-                } catch {
-                    promise(.failure((.failedDelete)))
-                }
-            }
-        }
-        .receive(on: RunLoop.main)
-        .eraseToAnyPublisher()
-    }
-    
-    func removeFile(fileID: UUID) -> AnyPublisher<Void, DatabaseError> {
-        
-        return Future<Void, DatabaseError> { [weak self] promise in
-            self?.permformOperation { realm in
-                let file = realm.object(ofType: ItemDB.self, forPrimaryKey: fileID)
-                guard let file else { return promise(.failure(.itemNotFound)) }
-                
-                do {
-                    try realm.write {
-                        realm.delete(file)
+                        realm.delete(item)
                         promise(.success(()))
                     }
                 } catch {
@@ -188,7 +165,6 @@ final class RealmDataManager: DataManager {
     }
     
     func removeAll(ids: [UUID]) -> AnyPublisher<Void, DatabaseError> {
-        
         return Future<Void, DatabaseError> { [weak self] promise in
             self?.permformOperation { realm in
                 let items = realm.objects(ItemDB.self)
@@ -210,16 +186,15 @@ final class RealmDataManager: DataManager {
         .eraseToAnyPublisher()
     }
     
-    func renameFolder(folderID: UUID, name: String) -> AnyPublisher<Void, DatabaseError> {
-        
+    func renameItem(itemID: UUID, name: String) -> AnyPublisher<Void, DatabaseError> {
         return Future<Void, DatabaseError> { [weak self] promise in
             self?.permformOperation { realm in
-                let folderDB = realm.object(ofType: ItemDB.self, forPrimaryKey: folderID)
-                guard let folderDB else { return promise(.failure(.itemNotFound)) }
+                let itemDB = realm.object(ofType: ItemDB.self, forPrimaryKey: itemID)
+                guard let itemDB else { return promise(.failure(.itemNotFound)) }
                 
                 do {
                     try realm.write {
-                        folderDB.name = name
+                        itemDB.name = name
                         promise(.success(()))
                     }
                 } catch {
@@ -231,58 +206,16 @@ final class RealmDataManager: DataManager {
         .eraseToAnyPublisher()
     }
     
-    func renameFile(fileID: UUID, name: String) -> AnyPublisher<Void, DatabaseError> {
-        
-        return Future<Void, DatabaseError> { [weak self]  promise in
-            self?.permformOperation { realm in
-                let fileDB = realm.object(ofType: ItemDB.self, forPrimaryKey: fileID)
-                guard let fileDB else { return promise(.failure(.itemNotFound)) }
-                
-                do {
-                    try realm.write {
-                        fileDB.name = name
-                        promise(.success(()))
-                    }
-                } catch {
-                    promise(.failure((.failedDelete)))
-                }
-            }
-        }
-        .receive(on: RunLoop.main)
-        .eraseToAnyPublisher()
-    }
     
-    func moveFolder(folderID: UUID, newParentID: UUID?) -> AnyPublisher<Void, DatabaseError> {
-        
+    func moveItem(itemID: UUID, newParentID: UUID?) -> AnyPublisher<Void, DatabaseError> {
         return Future<Void, DatabaseError> { [weak self] promise in
             self?.permformOperation { realm in
-                let folderDB = realm.object(ofType: ItemDB.self, forPrimaryKey: folderID)
-                guard let folderDB else { return promise(.failure(.itemNotFound)) }
+                let itemDB = realm.object(ofType: ItemDB.self, forPrimaryKey: itemID)
+                guard let itemDB else { return promise(.failure(.itemNotFound)) }
                 
                 do {
                     try realm.write {
-                        folderDB.parent = newParentID
-                        promise(.success(()))
-                    }
-                } catch {
-                    promise(.failure((.failedDelete)))
-                }
-            }
-        }
-        .receive(on: RunLoop.main)
-        .eraseToAnyPublisher()
-    }
-    
-    func moveFile(fileID: UUID, newParentID: UUID?) -> AnyPublisher<Void, DatabaseError> {
-        
-        return Future<Void, DatabaseError> { [weak self] promise in
-            self?.permformOperation { realm in
-                let fileDB = realm.object(ofType: ItemDB.self, forPrimaryKey: fileID)
-                guard let fileDB else { return promise(.failure(.itemNotFound)) }
-                
-                do {
-                    try realm.write {
-                        fileDB.parent = newParentID
+                        itemDB.parent = newParentID
                         promise(.success(()))
                     }
                 } catch {
@@ -295,7 +228,6 @@ final class RealmDataManager: DataManager {
     }
     
     func addFolder(folderName: String, parentID: UUID?) -> AnyPublisher<Void, DatabaseError> {
-        
         return Future<Void, DatabaseError> { [weak self] promise in
             self?.permformOperation { realm in
                 do {
@@ -314,7 +246,6 @@ final class RealmDataManager: DataManager {
     }
     
     func addFile(fileName: String, date: Date, parentID: UUID?, duration: TimeInterval, recordingURLFileName: String) -> AnyPublisher<Void, DatabaseError> {
-        
         return Future<Void, DatabaseError> { [weak self] promise in
             self?.permformOperation { realm in
                 let fileDB = ItemDB(name: fileName, parent: parentID, date: date, typeRaw: ItemType.recording.rawValue, duration: duration, recordingURLFileName: recordingURLFileName)

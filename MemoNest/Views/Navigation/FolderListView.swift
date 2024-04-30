@@ -182,7 +182,6 @@ struct FolderListView: View {
     private var recordButton: some View {
         Button {
             withAnimation {
-//        viewModel.isRecording.toggle() // TODO: REMOVE - TESTING ONLY
                 viewModel.handleRecordButtonPress()
             }
         } label: {
@@ -210,7 +209,7 @@ struct FolderListView: View {
     @ViewBuilder
     private func createListRow(item: Item) -> some View {
         if item.isFolder() {
-            FolderRow(item: item, onListRowTap: viewModel.setFolder,
+            FolderRow(item: item, onListRowTap: viewModel.changeFolder,
                       onActionSelected: { action in
                 viewModel.handleMenuTap(item: item, action: action)
             })
@@ -274,7 +273,7 @@ struct FolderListView: View {
         .tint(Colors.icon)
         .onAppear {
             UISlider.appearance().maximumTrackTintColor = UIColor(Colors.blueMedium)
-            UISlider.appearance().thumbTintColor = UIColor(Colors.icon) // TODO: test slider
+            UISlider.appearance().thumbTintColor = UIColor(Colors.icon)
         }
     }
     

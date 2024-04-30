@@ -268,20 +268,10 @@ final class FolderListViewModel: ObservableObject {
     }
     
     // MARK: - main logic
-    // TODO: -- LESS GENERIC Name (UPDATE, change)
-    func setFolder(item: Item){
+    func changeFolder(item: Item){
         guard item.type == .folder else { return }
         loadItems(atFolderID: item.id)
     }
-    
-//    func loadOnDatabaseChange() {
-//        database.databaseChangesPublisher()
-//            .sink { [weak self] folder in
-//                print("received change")
-//                self?.loadItems(atFolderID: self?.currentFolder?.id)
-//            }
-//            .store(in: &cancellables)
-//    }
     
     func loadItems(atFolderID folderID: UUID?) {
         if let folderID {
@@ -323,30 +313,22 @@ final class FolderListViewModel: ObservableObject {
         loadItems(atFolderID: currentFolder.parent)
     }
     
-    //FIXME: REMOVE if branch after cleaning up DB
     func renameItem(item: Item, name: String) {
-        if item.isFolder() {
-            database.renameFolder(folderID: item.id, name: name)
-                .sink(receiveCompletion: { [weak self] completion in
-                    self?.handleError(completionStatus: completion)
-                }, receiveValue: { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolder?.id)
-                })
-                .store(in: &cancellables)
-        } else {
-            database.renameFile(fileID: item.id, name: name)
-                .sink(receiveCompletion: { [weak self] completion in
-                    self?.handleError(completionStatus: completion)
-                }, receiveValue: { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolder?.id)
-                })
-                .store(in: &cancellables)
-        }
+        database.renameItem(itemID: item.id, name: name)
+            .sink(receiveCompletion: { [weak self] completion in
+                self?.handleError(completionStatus: completion)
+            }, receiveValue: { [weak self] in
+                self?.loadItems(atFolderID: self?.currentFolder?.id)
+            })
+            .store(in: &cancellables)
     }
     
     func removeItem(item: Item) {
-        if item.isFolder() {
-            database.removeFolder(folderID: item.id)
+        if item.isAudio(), item.id == playbackItemID {
+            playbackService.cancelPlayback(recordingID: item.id)
+        }
+        if item.isAudio() {
+            database.removeItem(itemID: item.id)
                 .sink(receiveCompletion: { [weak self] completion in
                     print("completion: \(completion)")
                     self?.handleError(completionStatus: completion)
@@ -355,43 +337,28 @@ final class FolderListViewModel: ObservableObject {
                 })
                 .store(in: &cancellables)
         } else {
-            // TODO: stop playback if playing, then remove. Think about how to identify if this item is playing
-            if item.id == playbackItemID {
-                playbackService.cancelPlayback(recordingID: item.id)
-            }
-            database.removeFile(fileID: item.id)
+            database.removeFolder(folderID: item.id)
                 .sink(receiveCompletion: { [weak self] completion in
+                    print("completion: \(completion)")
                     self?.handleError(completionStatus: completion)
                 }, receiveValue: { [weak self] in
                     self?.loadItems(atFolderID: self?.currentFolder?.id)
                 })
                 .store(in: &cancellables)
         }
+       
     }
     
     func moveItem(item: Item, destination: UUID?) {
-        if item.isFolder() {
-            database.moveFolder(folderID: item.id, newParentID: destination)
-                .sink(receiveCompletion: { [weak self] completion in
-                    self?.handleError(completionStatus: completion)
-                }, receiveValue: { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolder?.id)
-                })
-                .store(in: &cancellables)
-            
-        } else {
-            database.moveFile(fileID: item.id, newParentID: destination)
-                .sink(receiveCompletion: { [weak self] completion in
-                    self?.handleError(completionStatus: completion)
-                }, receiveValue: { [weak self] in
-                    self?.loadItems(atFolderID: self?.currentFolder?.id)
-                })
-                .store(in: &cancellables)
-        }
+        database.moveItem(itemID: item.id, newParentID: destination)
+            .sink(receiveCompletion: { [weak self] completion in
+                self?.handleError(completionStatus: completion)
+            }, receiveValue: { [weak self] in
+                self?.loadItems(atFolderID: self?.currentFolder?.id)
+            })
+            .store(in: &cancellables)
     }
 
-    // TODO: figure out why first add & first delete are not loading in UI
-    // LoadItems is called, but fetchFolders retunrs 0 items
     func addFolder(folderName: String = "New Folder") {
         print("Adding new folder")
         let name = folderName == "" ? "New Folder" : folderName

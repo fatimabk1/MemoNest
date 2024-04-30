@@ -40,8 +40,8 @@ final class FolderListViewModelTest: XCTestCase {
         
         //then
         XCTAssertEqual(viewModel.popup.popupTitle, "Add Folder")
-        XCTAssertEqual(viewModel.popup.prompt, "Enter folder name")
-        XCTAssertEqual(viewModel.popup.placeholder, "New Folder")
+        XCTAssertEqual(viewModel.popup.prompt, "New Folder")
+        XCTAssertEqual(viewModel.popup.placeholder, "")
     }
     
     // MARK: set folder
@@ -63,7 +63,7 @@ final class FolderListViewModelTest: XCTestCase {
                 expectation.fulfill()
             }
         
-        viewModel.setFolder(item: folderA)
+        viewModel.changeFolder(item: folderA)
         wait(for: [expectation], timeout: 1)
         cancellable.cancel()
         
@@ -382,7 +382,7 @@ final class FolderListViewModelTest: XCTestCase {
     }
     
     // MARK: rename
-    func test_renameItem_updateFolderName_givenItem()  {
+    func test_renameItem_updateItemName_givenItem()  {
         // Given
         let folderA = Item(name: "Folder A", type: .folder)
         let folders = [folderA]
@@ -408,33 +408,7 @@ final class FolderListViewModelTest: XCTestCase {
         // Then
         XCTAssertEqual(result, expected)
     }
-    
-    func test_renameItem_updateFileName_givenFile()  {
-        // Given
-        let folderA = Item(name: "Folder A", type: .folder)
-        let file1 = Item(name: "File1", type: .recording, audioInfo: Item.sampleAudioInfo)
-        let queue = DispatchQueue.main
-        let database = MockDataManager(folders: [folderA], files: [file1])
-        let viewModel = FolderListViewModel(database: database, queue: queue)
         
-        // When
-        let expectation = XCTestExpectation(description: "async function did not return")
-        var result = ""
-        let cancellable = viewModel.$items
-            .dropFirst()
-            .sink { items in
-                result = items.first(where: {$0.id == file1.id})?.name ?? "NO ITEMS"
-                expectation.fulfill()
-            }
-        let expected = "MyFile"
-        viewModel.renameItem(item: file1, name: expected)
-        wait(for: [expectation], timeout: 1)
-        cancellable.cancel()
-        
-        // Then
-        XCTAssertEqual(result, expected)
-    }
-    
     // MARK: remove
     func test_removeItem_removesEmptyFolder_givenFolderID()  {
         // Given
@@ -475,6 +449,10 @@ final class FolderListViewModelTest: XCTestCase {
                                        files: [file1, fileA, fileAA, fileAAA])
         let viewModel = FolderListViewModel(database: database, queue: queue)
         
+        for item in database.items {
+            print(item.name)
+        }
+        
         // When
         let expectation = XCTestExpectation(description: "async function did not return")
         let cancellable = viewModel.$items // make a disposable cancellable for testing
@@ -487,6 +465,10 @@ final class FolderListViewModelTest: XCTestCase {
         wait(for: [expectation], timeout: 1)
         cancellable.cancel() // removes from combine's dispose bag
         
+        for item in database.items {
+            print(item.name)
+        }
+        
         // Then
         // PASS CONDITION 1: root has one less item
         var expected = 1
@@ -495,21 +477,21 @@ final class FolderListViewModelTest: XCTestCase {
         
         // PASS CONDITION 2: no items with folder A as parent
         expected = 0
-        result = database.files.filterByParent(folderA.id).count + database.folders.filterByParent(folderA.id).count
+        result = database.items.filterByParent(folderA.id).count
         XCTAssertEqual(result, expected)
         
         // PASS CONDITION 3: no items with folder AA as parent
         expected = 0
-        result = database.files.filterByParent(folderAA.id).count + database.folders.filterByParent(folderAA.id).count
+        result = database.items.filterByParent(folderAA.id).count
         XCTAssertEqual(result, expected)
         
         // PASS CONDITION 4: no items with folder AAA as parent
         expected = 0
-        result = database.files.filterByParent(folderAAA.id).count + database.folders.filterByParent(folderAAA.id).count
+        result = database.items.filterByParent(folderAAA.id).count
         XCTAssertEqual(result, expected)
     }
     
-    func test_removeItem_removesFile_givenFileID()  {
+    func test_removeItem_removesItem_givenItemID()  {
         // Given
         let folderA = Item(name: "folderA", type: .folder)
         let file1 = Item(name: "file1", type: .recording, audioInfo: Item.sampleAudioInfo)
@@ -534,7 +516,7 @@ final class FolderListViewModelTest: XCTestCase {
         XCTAssertEqual(result, expected)
     }
     
-    func test_addFolder_updatesFolders_givenFolderNameAndParentFolderID()  {
+    func test_addFolder_updatesItems_givenFolderNameAndParentFolderID()  {
         // Given
         let queue = DispatchQueue.main
         let database = MockDataManager(folders: [], files: [])
