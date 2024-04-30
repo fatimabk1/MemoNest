@@ -54,12 +54,78 @@ final class FolderListViewModel: ObservableObject {
     // Data used for recording display
     @Published var isRecording = false
     @Published var recordingParentTitle: String = "Library"
-    @Published var currentDuration: TimeInterval = 0 // TODO: CHECK IF THIS CAN BE PRIVATE, UNPUBLISHED
-    var formattedcurrentDuration: String { FormatterService.formatTimeInterval(seconds: currentDuration) }
-    private var timerSubscription: AnyCancellable?
-    var formattedDuration: String {
-        FormatterService.formatTimeInterval(seconds: recordingData?.recordingDuration ?? 0)
+    @Published var currentRecordingDuration: TimeInterval = 0
+    var formattedcurrentDuration: String { FormatterService.formatTimeInterval(seconds: currentRecordingDuration) }
+    private var recordingTimerSubscription: AnyCancellable?
+    
+    // MARK: - Playback Data
+    private let playbackService = PlaybackService()
+    @Published var isPlaying = false
+    @Published var currentPlaybackTime: TimeInterval = 0
+    @Published var playbackDuration: TimeInterval = 0
+    @Published var playbackItemID:  UUID? = nil
+    private var playbackTimerSubscription: AnyCancellable?
+    var playbackFormattedDuration: String {
+        FormatterService.formatTimeInterval(seconds: playbackDuration)
     }
+    
+    private func subscribeToPlaybackEvents() {
+        playbackService.status
+            .receive(on: RunLoop.main)
+            .sink { [weak self] status in
+                switch status {
+                case .ready(let duration):
+                    self?.playbackDuration = duration
+                case .playing(let currentTime):
+                    self?.isPlaying = true
+                    self?.currentPlaybackTime = currentTime
+                    // keep current time synced with audio play time
+                    self?.playbackTimerSubscription = Timer.publish(every: 0.01, on: .main, in: .common)
+                        .autoconnect()
+                        .receive(on: DispatchQueue.main)
+                        .sink { [weak self] time in
+                            if let current = self?.currentPlaybackTime, let duration = self?.playbackDuration,
+                                current >= duration {
+                                self?.playbackTimerSubscription?.cancel()
+                                self?.isPlaying = false
+                                return
+                            }
+                            
+                            self?.currentPlaybackTime += 0.01
+                        }
+                case .paused:
+                    self?.isPlaying = false
+                    self?.playbackTimerSubscription?.cancel()
+                case .seek(let targetTime):
+                    self?.currentPlaybackTime = targetTime
+                case .idle:
+                    print("idle")
+                case .error(let err):
+                    self?.hasError = true
+                    self?.error = err
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    func setRecording(item: Item) {
+        if item.id != playbackItemID {
+            print("setting recording")
+            playbackService.setupPlayback(item: item)
+            playbackItemID = item.id
+        }
+    }
+    func cancelRecording() {
+        if let id = playbackItemID {
+            playbackService.cancelPlayback(recordingID: id)
+            playbackItemID = nil
+        }
+    }
+    func playRecording() { playbackService.play() }
+    func pauseRecording() { playbackService.pause() }
+    func seek(to time: TimeInterval) { playbackService.seek(to: time) }
+    func seekForward() { playbackService.seekForward() }
+    func seekBackward() { playbackService.seekBackward() }
     
 
     // MARK: - shared data
@@ -71,6 +137,7 @@ final class FolderListViewModel: ObservableObject {
         self.database = database
         self.queue = queue
         subscribeToRecordingEvents()
+        subscribeToPlaybackEvents()
 //        loadOnDatabaseChange()
     }
     
@@ -84,24 +151,24 @@ final class FolderListViewModel: ObservableObject {
                     self?.isRecording = true
                     self?.recordingData = RecordingData(recordingParent: self?.currentFolder?.id)
                     self?.recordingParentTitle = self?.currentFolderTitle ?? "Library"
-                    self?.timerSubscription = Timer.publish(every: 1, on: .main, in: .common)
+                    self?.recordingTimerSubscription = Timer.publish(every: 1, on: .main, in: .common)
                         .autoconnect()
                         .sink { [weak self] date in
                             if let startTime = self?.recordingData?.recordingDate {
-                                self?.currentDuration = startTime.distance(to: date)
+                                self?.currentRecordingDuration = startTime.distance(to: date)
                             }
                         }
                 case .finished(let duration, let urlFileName):
                     print("status finished")
                     self?.isRecording = false
-                    self?.timerSubscription?.cancel()
-                    self?.timerSubscription = nil
+                    self?.recordingTimerSubscription?.cancel()
+                    self?.recordingTimerSubscription = nil
                     self?.recordingData?.recordingURLFileName = urlFileName
                     self?.recordingData?.recordingDuration = duration
                     self?.addFile()
                     self?.recordingData = nil
                     self?.recordingName = "New Recording"
-                    self?.currentDuration = 0
+                    self?.currentRecordingDuration = 0
                 case .idle:
                     print("status idle")
                     
@@ -288,7 +355,10 @@ final class FolderListViewModel: ObservableObject {
                 })
                 .store(in: &cancellables)
         } else {
-            // TODO: stop playback if playing, then remove
+            // TODO: stop playback if playing, then remove. Think about how to identify if this item is playing
+            if item.id == playbackItemID {
+                playbackService.cancelPlayback(recordingID: item.id)
+            }
             database.removeFile(fileID: item.id)
                 .sink(receiveCompletion: { [weak self] completion in
                     self?.handleError(completionStatus: completion)

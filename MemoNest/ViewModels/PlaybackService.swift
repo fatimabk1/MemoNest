@@ -17,31 +17,32 @@ enum PlaybackError: TitledError {
     }
 }
 
-final class PlaybackViewModel: ObservableObject {
-    @Published var isPlaying = false
-    @Published var currentTime: TimeInterval = 0
-    @Published var duration: TimeInterval = 0
-    @Published var hasError = false
-    @Published var error: PlaybackError?
-    @Published var title: String
+enum PlaybackStatus {
+    case ready(TimeInterval)
+    case playing(TimeInterval)
+    case paused
+    case seek(TimeInterval)
+    case idle
+    case error(TitledError)
     
-    let item: Item
-    var audioPlayer: AVAudioPlayer?
+    var isPlaying: Bool {
+        if case .playing = self {
+            return true
+        }
+        return false
+    }
+}
+
+final class PlaybackService {
+    let status = CurrentValueSubject<PlaybackStatus, Never>(PlaybackStatus.idle)
+    var hasError = false
+    private var audioPlayer: AVAudioPlayer?
     private var audioWasInterrupted = false
     private var cancellables = Set<AnyCancellable>()
-    private var timerSubscription: AnyCancellable?
-    
-    var formattedDuration: String {
-        FormatterService.formatTimeInterval(seconds: duration)
-    }
-    
-    init(item: Item) {
-        self.item = item
-        self.title = item.name
+
+    init() {
         self.handleAudioRouteChanges()
         self.handleInterruptions()
-        self.setupPlayback()
-        print("Calling playback VM init() for \(title)")
     }
     
     private func handleAudioRouteChanges() {
@@ -72,7 +73,7 @@ final class PlaybackViewModel: ObservableObject {
         NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)
             .sink { notification in
                 print("handleInterruptions - recieved notification")
-                guard let userInfo = notification.userInfo, 
+                guard let userInfo = notification.userInfo,
                     let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
                     let type = AVAudioSession.InterruptionType(rawValue: typeValue) else
                 {
@@ -104,64 +105,46 @@ final class PlaybackViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func setupPlayback() {
+    func cancelPlayback(recordingID: UUID) {
+        pause()
+    }
+    
+    func setupPlayback(item: Item) {
         if let recordingURLFileName = item.audioInfo?.recordingURLFileName {
             let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
             let path = paths[0].appendingPathComponent(recordingURLFileName)
-            
-            let result = setupAudioPlayer(fileURL: path)
-            if case let .failure(error) = result {
-                self.hasError = true
-                self.error = error
-            }
+            setupAudioPlayer(fileURL: path)
         }
     }
     
-    private func setupAudioPlayer(fileURL: URL) -> Result<Void, PlaybackError> {
+    private func setupAudioPlayer(fileURL: URL) {
         do {
-            print("setup Audio player fileURL: \(fileURL)")
             audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
-            duration = audioPlayer?.duration ?? 0
+            let duration = audioPlayer?.duration ?? 0
             audioPlayer?.prepareToPlay()
-            return .success(())
-        } catch (let err) {
-            print(err)
-            print(audioPlayer ?? "failed audio player?")
-            print("Error setting up audio player")
-            return .failure(PlaybackError.cannotCreatePlayerFromURL)
+            status.send(.ready(duration))
+        } catch {
+            status.send(.error(PlaybackError.cannotCreatePlayerFromURL))
         }
     }
     
     func play() {
         if hasError { return }
+        guard let audioPlayer else { return }
+        print("current time: \(String(describing: audioPlayer.currentTime))")
+        print("current duration: \(String(describing: audioPlayer.duration))")
         
-        // reset time when replaying
-        if audioPlayer?.currentTime == audioPlayer?.duration {
-            audioPlayer?.currentTime = 0
+        if audioPlayer.currentTime == audioPlayer.duration {
+            audioPlayer.currentTime = 0
         }
-        
-        audioPlayer?.play()
-        
-        // keep current time synced with audio play time
-        timerSubscription = Timer.publish(every: 0.01, on: .main, in: .common)
-            .autoconnect()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] date in
-                if let audioPlayerCurrentTime = self?.audioPlayer?.currentTime {
-                    self?.currentTime = audioPlayerCurrentTime
-                    let isCurrentlyPlaying = self?.audioPlayer?.isPlaying ?? false
-                    if self?.isPlaying != isCurrentlyPlaying {
-                        self?.isPlaying = isCurrentlyPlaying
-                    }
-                }
-            }
+        audioPlayer.play()
+        status.send(.playing(audioPlayer.currentTime))
     }
     
     func pause() {
         if hasError { return }
         audioPlayer?.pause()
-        isPlaying = false
-        timerSubscription?.cancel()
+        status.send(.paused)
     }
     
     func seek(to time: TimeInterval) {
@@ -170,15 +153,25 @@ final class PlaybackViewModel: ObservableObject {
     }
     
     func seekForward() {
-        if let currentTime = audioPlayer?.currentTime {
-            seek(to: currentTime + 15)
+        if let currentTime = audioPlayer?.currentTime, let duration = audioPlayer?.duration {
+            var targetTime =  currentTime + 15
+            targetTime = targetTime > duration ? duration : targetTime
+            seek(to: targetTime)
+            status.send(.seek(targetTime))
+            
+            if targetTime == duration {
+                status.send(.paused)
+            }
         }
     }
     
     func seekBackward() {
         if let currentTime = audioPlayer?.currentTime {
-            seek(to: currentTime - 15)
+            var targetTime =  currentTime - 15
+            targetTime = targetTime < 0 ? 0 : targetTime
+            seek(to: targetTime)
+            status.send(.seek(targetTime))
         }
     }
-        
+    
 }

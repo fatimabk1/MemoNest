@@ -44,7 +44,6 @@ enum RecordingStatus {
 
 
 final class RecordingService:  NSObject, AVAudioRecorderDelegate {
-//    private var recordingManager: RecordingManager
     private var hasRecordPermission = false
     let status = CurrentValueSubject<RecordingStatus, Never>(.idle)
     private(set) var recordingURLFileName: String!
@@ -137,30 +136,16 @@ final class RecordingService:  NSObject, AVAudioRecorderDelegate {
                
                 recordingDate = Date()
                 audioRecorder?.record()
-//                recordingManager.startRecording()
                 recordingURLFileName = fileName
                 status.send(.recording(recordingDate))
             } catch {
                 status.send(.error(RecordingError.unableToSetupRecorder))
             }
-            
-//            let result = recordingManager.setupRecorder()
-//            switch result {
-//            case .success(let fileName):
-//                recordingDate = Date()
-//                recordingManager.startRecording()
-//                recordingURLFileName = fileName
-//                status.send(.recording(recordingDate))
-//            case .failure(let err):
-//                status.send(.error(err))
-//            }
         }
     }
     
     func stopRecording() {
-//        let result = recordingManager.stopRecording()
         audioRecorder?.stop()
-//        self.isRecording = false
         print("Ending recording")
         audioRecorder = nil
         do {

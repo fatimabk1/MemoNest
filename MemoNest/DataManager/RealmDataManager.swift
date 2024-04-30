@@ -78,7 +78,6 @@ final class RealmDataManager: DataManager {
 
     
     func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Item?, DatabaseError> {
-        
         return Future<Item?, DatabaseError> { [weak self] promise in
             self?.permformOperation { realm in
                 let folder = realm.object(ofType: ItemDB.self, forPrimaryKey: folderID)
@@ -90,7 +89,6 @@ final class RealmDataManager: DataManager {
     }
     
     func fetchFiles(parentID: UUID?) -> AnyPublisher<[Item], DatabaseError> {
-        
         return Future<[Item], DatabaseError> { [weak self] promise in
             self?.permformOperation { realm in
                 let items = realm.objects(ItemDB.self)
@@ -116,6 +114,7 @@ final class RealmDataManager: DataManager {
         .eraseToAnyPublisher()
     }
     
+    // TODO: REALM BFS SYNC DELETIONs
     func removeFolder(folderID: UUID) -> AnyPublisher<Void, DatabaseError> {
         self.fetchFolders(parentID: folderID)
         // handle child folders

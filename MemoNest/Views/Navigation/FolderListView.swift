@@ -215,10 +215,111 @@ struct FolderListView: View {
                 viewModel.handleMenuTap(item: item, action: action)
             })
         } else {
-            RecordingRow(item: item, onActionSelected: { action in
+            RecordingRow(item: item,
+                         showPlaybackView: item.id == viewModel.playbackItemID,
+                         onListRowTap: { item in
+                viewModel.setRecording(item: item)
+            },
+                         playbackView: { AnyView(PlaybackView) },
+                         onActionSelected: { action in
                 viewModel.handleMenuTap(item: item, action: action)
             })
         }
+    }
+    
+    @ViewBuilder
+    var PlaybackView: some View {
+        VStack(spacing: 0) {
+            playbackCurrentDuration
+            if viewModel.playbackDuration > 0 {
+                playbackSlider
+            }
+            controlButtons
+        }
+        .padding()
+        .background(Colors.background)
+        .alert(isPresented: $viewModel.hasError) {
+            Alert(title: Text("\(viewModel.error?.title ?? "")"))
+        }
+    }
+    
+    private var controlButtons: some View {
+        HStack(spacing: 50) {
+            Spacer()
+            seekBackwardButton
+            playPauseButton
+            seekForwardButton
+            Spacer()
+        }
+        .padding(.top)
+    }
+    
+    private var playbackCurrentDuration: some View {
+        Text("\(FormatterService.formatTimeInterval(seconds: viewModel.currentPlaybackTime))")
+            .frame(maxWidth: 100)
+            .frame(maxWidth: .infinity, alignment: .trailing)
+            .foregroundStyle(Colors.blueLight)
+            .customFont(style: .caption)
+    }
+    
+    private var playbackSlider: some View {
+        Slider(value: $viewModel.currentPlaybackTime,
+               in: 0...viewModel.playbackDuration,
+               step: 0.1,
+               onEditingChanged: { editing in
+            if !editing {
+                viewModel.seek(to: viewModel.currentPlaybackTime)
+            }
+        })
+        .tint(Colors.icon)
+        .onAppear {
+            UISlider.appearance().maximumTrackTintColor = UIColor(Colors.blueMedium)
+            UISlider.appearance().thumbTintColor = UIColor(Colors.icon) // TODO: test slider
+        }
+    }
+    
+    private var playPauseButton: some View {
+        Button {
+            if viewModel.isPlaying {
+                viewModel.pauseRecording()
+            } else {
+                viewModel.playRecording()
+            }
+        } label: {
+            Image(systemName: viewModel.isPlaying ? "pause.circle" : "play.circle")
+                .resizable()
+                .frame(width: 25, height: 25)
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(Colors.blueMedium)
+    }
+    
+    private var seekForwardButton: some View {
+        Button {
+            if viewModel.isPlaying {
+                viewModel.seekForward()
+            }
+        } label: {
+            Image(systemName: "goforward.15")
+                .resizable()
+                .frame(width: 25, height: 25)
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(Colors.blueMedium)
+    }
+    
+    private var seekBackwardButton: some View {
+        Button {
+            if viewModel.isPlaying {
+                viewModel.seekBackward()
+            }
+        } label: {
+            Image(systemName: "gobackward.15")
+                .resizable()
+                .frame(width: 25, height: 25)
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(Colors.blueMedium)
     }
 }
 

@@ -62,15 +62,17 @@ struct FolderRow: View {
 
 struct RecordingRow: View {
     let item: Item
+    let showPlaybackView: Bool
+    let onListRowTap: (Item) -> Void
     let onActionSelected: (ItemAction) -> Void
+    let playbackView: () -> AnyView
     
-    @State var showPlaybackView = false
-    @ObservedObject var playbackViewModel: PlaybackViewModel
-    
-    init(item: Item, onActionSelected: @escaping (ItemAction) -> Void) {
+    init(item: Item, showPlaybackView: Bool, onListRowTap: @escaping (Item) -> Void, playbackView: @escaping () -> AnyView, onActionSelected: @escaping (ItemAction) -> Void) {
         self.item = item
+        self.showPlaybackView = showPlaybackView
+        self.onListRowTap = onListRowTap
+        self.playbackView = playbackView
         self.onActionSelected = onActionSelected
-        playbackViewModel = PlaybackViewModel(item: item)
     }
     
     private var formattedDuration: String {
@@ -85,14 +87,14 @@ struct RecordingRow: View {
         VStack {
             HStack {
                 Button {
-                    showPlaybackView.toggle()
+                    onListRowTap(item)
                 } label: {
                     ListRow(item: item)
                 }
                 RowMenu(onActionSelected: onActionSelected)
             }
             if showPlaybackView, item.isAudio() {
-                PlaybackView(viewModel: playbackViewModel)
+                playbackView()
             }
         }
     }
@@ -174,7 +176,10 @@ struct ListRow: View {
             FolderRow( item: Item(name: "folder", type: .folder), onListRowTap: {_ in }, onActionSelected: {_ in})
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets())
-            RecordingRow( item: longNameAudio, onActionSelected: {_ in})
+            RecordingRow( item: longNameAudio, showPlaybackView: true, onListRowTap: {_ in }, playbackView: {AnyView(Text("playback view"))}, onActionSelected: {_ in})
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets())
+            RecordingRow( item: longNameAudio, showPlaybackView: true, onListRowTap: {_ in }, playbackView: {AnyView(RoundedRectangle(cornerRadius: 15).foregroundStyle(.red))}, onActionSelected: {_ in})
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets())
         }
