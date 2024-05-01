@@ -30,7 +30,7 @@ struct MoveItemView: View {
                         ToolbarItem(placement: .principal) {
                             Text(viewModel.currentFolderTitle)
                                 .foregroundColor(Colors.mainText)
-                                .customFont(style: .body, fontWeight: .bold)
+                                .memoNestFont(style: .body, fontWeight: .bold)
                         }
                         ToolbarItemGroup(placement: .automatic) {
                             Button {
@@ -38,7 +38,7 @@ struct MoveItemView: View {
                             } label: {
                                 Text("Cancel")
                                     .foregroundStyle(Colors.blueMedium)
-                                    .customFont(style: .body)
+                                    .memoNestFont(style: .body)
                             }
                         }
                     }
@@ -77,7 +77,7 @@ struct MoveItemView: View {
             isPresenting = false
         } label: {
             Text("Move")
-                .customFont(style: .body)
+                .memoNestFont(style: .body)
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(Colors.blueMedium)

@@ -17,19 +17,19 @@ struct RowMenu: View {
                 onActionSelected(.rename)
             } label: {
                 Text("Rename")
-                    .customFont(style: .body)
+                    .memoNestFont(style: .body)
             }
             Button {
                 onActionSelected(.delete)
             } label: {
                 Text("Delete")
-                    .customFont(style: .body)
+                    .memoNestFont(style: .body)
             }
             Button {
                 onActionSelected(.move)
             } label: {
                 Text("Move")
-                    .customFont(style: .body)
+                    .memoNestFont(style: .body)
             }
         } label: {
             Image(systemName: "ellipsis.circle")
@@ -142,19 +142,19 @@ struct ListRow: View {
                     Text(item.name)
                         .lineLimit(2)
                         .foregroundStyle(Colors.mainText)
-                        .customFont(style: .body, fontWeight: item.isFolder() ? .semibold : .regular)
+                        .memoNestFont(style: .body, fontWeight: item.isFolder() ? .semibold : .regular)
                     Spacer()
                     if item.isAudio() {
                         Text("\(formattedDuration)")
                             .foregroundStyle(Colors.blueLight)
-                            .customFont(style: .footnote, fontWeight: .light)
+                            .memoNestFont(style: .footnote, fontWeight: .light)
                     }
                 }
                 
                 if item.isAudio() {
                     Text(formattedDate)
                         .foregroundStyle(Colors.blueVeryLight)
-                        .customFont(style: .footnote, fontWeight: .light)
+                        .memoNestFont(style: .footnote, fontWeight: .light)
                         .padding(.trailing)
                 }
             }

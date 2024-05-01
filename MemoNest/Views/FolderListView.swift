@@ -69,7 +69,7 @@ struct FolderListView: View {
             BackButton(hasParentFolder: viewModel.hasParent) {viewModel.goBack()}
             Text(viewModel.currentFolderTitle)
                 .foregroundColor(Colors.mainText)
-                .customFont(style: .title)
+                .memoNestFont(style: .title)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.trailing)
@@ -102,26 +102,26 @@ struct FolderListView: View {
         VStack {
             VStack(alignment: .leading) {
                 TextField("Recording Name", text: $viewModel.recordingName)
-                    .customFont(style: .body, fontWeight: .semibold)
+                    .memoNestFont(style: .body, fontWeight: .semibold)
                     .foregroundStyle(Colors.mainText)
                 VStack {
                     HStack {
                         Text(viewModel.recordingParentTitle)
                             .foregroundStyle(Colors.blueLight)
-                            .customFont(style: .callout)
+                            .memoNestFont(style: .callout)
                         Spacer()
                         Button {
                             viewModel.updateParentFolder(parentID: viewModel.currentFolder?.id, folderTitle: viewModel.currentFolderTitle)
                         } label: {
                             Text("Set Location")
                                 .foregroundStyle(Colors.blueMedium)
-                                .customFont(style: .callout)
+                                .memoNestFont(style: .callout)
                         }
                     }
                     Text("\(viewModel.formattedcurrentDuration)")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .foregroundStyle(Colors.blueLight)
-                        .customFont(style: .callout)
+                        .memoNestFont(style: .callout)
                 }
             }
             .padding()
@@ -134,13 +134,13 @@ struct FolderListView: View {
             Picker(selection: $viewModel.sortType) {
                 ForEach(SortType.allCases, id: \.self) {
                     Text($0.rawValue)
-                        .customFont(style: .body)
+                        .memoNestFont(style: .body)
                         .foregroundStyle(Colors.blueVeryLight)
                 }
             } label: {}
         } label: {
             Text(viewModel.sortType.rawValue)
-                .customFont(style: .body)
+                .memoNestFont(style: .body)
                 .foregroundStyle(Colors.blueVeryLight)
         }
         .buttonStyle(.plain)
@@ -258,7 +258,7 @@ struct FolderListView: View {
             .frame(maxWidth: 100)
             .frame(maxWidth: .infinity, alignment: .trailing)
             .foregroundStyle(Colors.blueLight)
-            .customFont(style: .caption)
+            .memoNestFont(style: .caption)
     }
     
     private var playbackSlider: some View {

@@ -8,23 +8,6 @@
 import Foundation
 import Combine
 
-enum DatabaseError: TitledError {
-    case failedDelete, itemNotFound, failedAdd, realmNotInstantiated
-    
-    var title: String {
-        switch(self){
-            
-        case .failedDelete:
-            "Unable to delete. Please try again."
-        case .itemNotFound:
-            "Item not found. Please try again."
-        case .failedAdd:
-            "Unable to add item. Please try again."
-        case .realmNotInstantiated:
-            "Database not instantitated. Please reinstall app."
-        }
-    }
-}
 
 protocol DataManager {
     func fetchFolderInfo(folderID: UUID?) -> AnyPublisher<Item?, DatabaseError>

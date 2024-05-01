@@ -7,22 +7,21 @@
 
 import Foundation
 import Combine
+import AVFoundation
 
-struct RecordingData {
-    var recordingDate: Date = Date()
-    var recordingParent: UUID? = nil
-    var recordingDuration: TimeInterval = 0
-    var recordingURLFileName: String?
-}
 
 final class FolderListViewModel: ObservableObject {
+    // MARK: - shared data
+    let database: DataManager
+    private let queue: DispatchQueue
+    private var cancellables = Set<AnyCancellable>()
+    
     // MARK: - Folder List Data
     @Published var items = [Item]()
     @Published var currentFolder: Item?
     @Published var isLoading = false
     @Published var hasError = false
     @Published var error: TitledError?
-    
     @Published var sortType = SortType.dateAsc {
         didSet {
             let folders = items.filter({$0.isFolder()})
@@ -45,30 +44,55 @@ final class FolderListViewModel: ObservableObject {
     var hasParent: Bool { currentFolder != nil }
     
     // MARK: - Recording Data
-    private let recordingService = RecordingService()
-    
-    // Data used for addFile()
     @Published var recordingData: RecordingData? = nil
     @Published var recordingName: String = "New Recording"
-    
-    // Data used for recording display
     @Published var isRecording = false
     @Published var recordingParentTitle: String = "Library"
     @Published var currentRecordingDuration: TimeInterval = 0
-    var formattedcurrentDuration: String { FormatterService.formatTimeInterval(seconds: currentRecordingDuration) }
+    
+    private let recordingService = RecordingService()
     private var recordingTimerSubscription: AnyCancellable?
     
+    var formattedcurrentDuration: String {
+        FormatterService.formatTimeInterval(seconds: currentRecordingDuration)
+    }
+    
     // MARK: - Playback Data
-    private let playbackService = PlaybackService()
     @Published var isPlaying = false
     @Published var currentPlaybackTime: TimeInterval = 0
     @Published var playbackDuration: TimeInterval = 0
     @Published var playbackItemID:  UUID? = nil
+    
+    private let playbackService = PlaybackService()
     private var playbackTimerSubscription: AnyCancellable?
+    
     var playbackFormattedDuration: String {
         FormatterService.formatTimeInterval(seconds: playbackDuration)
     }
     
+    
+    init(database: DataManager, queue: DispatchQueue = .main) {
+        self.database = database
+        self.queue = queue
+        subscribeToRecordingEvents()
+        subscribeToPlaybackEvents()
+        setupAudioSession()
+    }
+   
+    
+    private func setupAudioSession() {
+        print("calling setupAudioSession()")
+        let audioSession = AVAudioSession()
+        do {
+            try audioSession.setCategory(.playAndRecord, mode: .default, options: [.allowBluetooth, .defaultToSpeaker])
+            try audioSession.overrideOutputAudioPort(.speaker)
+            try audioSession.setActive(true)
+        } catch {
+            
+        }
+    }
+    
+    // MARK: - Playback Functions
     private func subscribeToPlaybackEvents() {
         playbackService.status
             .receive(on: RunLoop.main)
@@ -110,44 +134,30 @@ final class FolderListViewModel: ObservableObject {
     
     func setRecording(item: Item) {
         if item.id != playbackItemID {
-            print("setting recording")
             playbackService.setupPlayback(item: item)
             playbackItemID = item.id
         }
     }
-    func cancelRecording() {
-        if let id = playbackItemID {
-            playbackService.cancelPlayback(recordingID: id)
-            playbackItemID = nil
-        }
-    }
+    
     func playRecording() { playbackService.play() }
+    
     func pauseRecording() { playbackService.pause() }
+    
     func seek(to time: TimeInterval) { playbackService.seek(to: time) }
+    
     func seekForward() { playbackService.seekForward() }
+    
     func seekBackward() { playbackService.seekBackward() }
     
 
-    // MARK: - shared data
-    let database: DataManager
-    private let queue: DispatchQueue
-    private var cancellables = Set<AnyCancellable>()
     
-    init(database: DataManager, queue: DispatchQueue = .main) {
-        self.database = database
-        self.queue = queue
-        subscribeToRecordingEvents()
-        subscribeToPlaybackEvents()
-//        loadOnDatabaseChange()
-    }
-    
+    // MARK: - Recording Functions
     private func subscribeToRecordingEvents() {
         recordingService.status
             .receive(on: RunLoop.main)
             .sink { [weak self] status in
                 switch status {
                 case .recording:
-                    print("status: recording")
                     self?.isRecording = true
                     self?.recordingData = RecordingData(recordingParent: self?.currentFolder?.id)
                     self?.recordingParentTitle = self?.currentFolderTitle ?? "Library"
@@ -159,7 +169,6 @@ final class FolderListViewModel: ObservableObject {
                             }
                         }
                 case .finished(let duration, let urlFileName):
-                    print("status finished")
                     self?.isRecording = false
                     self?.recordingTimerSubscription?.cancel()
                     self?.recordingTimerSubscription = nil
@@ -171,7 +180,6 @@ final class FolderListViewModel: ObservableObject {
                     self?.currentRecordingDuration = 0
                 case .idle:
                     print("status idle")
-                    
                 case .error(let err):
                     self?.hasError = true
                     self?.error = err
@@ -222,7 +230,6 @@ final class FolderListViewModel: ObservableObject {
         if case let .failure(error) = completionStatus {
             self.hasError = true
             self.error = error
-            print("Received error: \(error)")
         }
     }
     
@@ -267,7 +274,7 @@ final class FolderListViewModel: ObservableObject {
         }
     }
     
-    // MARK: - main logic
+    // MARK: - Folder List Functions
     func changeFolder(item: Item){
         guard item.type == .folder else { return }
         loadItems(atFolderID: item.id)
@@ -297,7 +304,6 @@ final class FolderListViewModel: ObservableObject {
                 let sortedFolders = self.sortItems(folders)
                 let sortedFiles = self.sortItems(files)
                 self.items = sortedFolders + sortedFiles
-                print("finished loading items\nAPP STATE - READY")
                 isLoading = false
             })
             .store(in: &cancellables)
@@ -326,11 +332,11 @@ final class FolderListViewModel: ObservableObject {
     func removeItem(item: Item) {
         if item.isAudio(), item.id == playbackItemID {
             playbackService.cancelPlayback(recordingID: item.id)
+            playbackItemID = nil
         }
         if item.isAudio() {
             database.removeItem(itemID: item.id)
                 .sink(receiveCompletion: { [weak self] completion in
-                    print("completion: \(completion)")
                     self?.handleError(completionStatus: completion)
                 }, receiveValue: { [weak self] in
                     self?.loadItems(atFolderID: self?.currentFolder?.id)
@@ -339,7 +345,6 @@ final class FolderListViewModel: ObservableObject {
         } else {
             database.removeFolder(folderID: item.id)
                 .sink(receiveCompletion: { [weak self] completion in
-                    print("completion: \(completion)")
                     self?.handleError(completionStatus: completion)
                 }, receiveValue: { [weak self] in
                     self?.loadItems(atFolderID: self?.currentFolder?.id)
@@ -360,7 +365,6 @@ final class FolderListViewModel: ObservableObject {
     }
 
     func addFolder(folderName: String = "New Folder") {
-        print("Adding new folder")
         let name = folderName == "" ? "New Folder" : folderName
         database.addFolder(folderName: name, parentID: currentFolder?.id)
             .sink(receiveCompletion: { [weak self] completion in

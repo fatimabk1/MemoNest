@@ -69,9 +69,8 @@ struct CustomFontModifier: ViewModifier {
     }
 }
 
-// TODO: customize font name,
 extension View {
-    func customFont(style: Font.TextStyle, fontWeight: Font.Weight = .regular) -> some View {
+    func memoNestFont(style: Font.TextStyle, fontWeight: Font.Weight = .regular) -> some View {
         self.modifier(CustomFontModifier(style: style, fontWeight: fontWeight))
     }
 }

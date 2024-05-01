@@ -9,29 +9,6 @@ import Foundation
 import AVFoundation
 import Combine
 
-enum PlaybackError: TitledError {
-    case cannotCreatePlayerFromURL
-    
-    var title: String {
-        "Error: cannot play file"
-    }
-}
-
-enum PlaybackStatus {
-    case ready(TimeInterval)
-    case playing(TimeInterval)
-    case paused
-    case seek(TimeInterval)
-    case idle
-    case error(TitledError)
-    
-    var isPlaying: Bool {
-        if case .playing = self {
-            return true
-        }
-        return false
-    }
-}
 
 final class PlaybackService {
     let status = CurrentValueSubject<PlaybackStatus, Never>(PlaybackStatus.idle)
@@ -46,23 +23,17 @@ final class PlaybackService {
     }
     
     private func handleAudioRouteChanges() {
-        print("calling handleAudioRouteChanges")
         NotificationCenter.default.publisher(for: AVAudioSession.routeChangeNotification)
             .sink { notification in
-                print("handleAudioRouteChanges - received notification")
                 guard let reason = notification.userInfo?[AVAudioSessionRouteChangeReasonKey] as? UInt else {
                     return
                 }
                 switch AVAudioSession.RouteChangeReason(rawValue: reason) {
                 case .newDeviceAvailable:
-                    print("setting audioPort to none")
                     try? AVAudioSession.sharedInstance().overrideOutputAudioPort(.none)
                 case .oldDeviceUnavailable:
-                    print("setting audioPort to speakers")
                     try? AVAudioSession.sharedInstance().overrideOutputAudioPort(.speaker)
                 default:
-                    print(AVAudioSession.RouteChangeReason(rawValue: reason) ?? "No route change found")
-                    print("defaulting audioport")
                     break
                 }
             }
@@ -72,27 +43,21 @@ final class PlaybackService {
     private func handleInterruptions() {
         NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)
             .sink { notification in
-                print("handleInterruptions - recieved notification")
                 guard let userInfo = notification.userInfo,
                     let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
                     let type = AVAudioSession.InterruptionType(rawValue: typeValue) else
                 {
-                    print("\tno interrtuption type - returning")
                     return
                 }
                 
                 switch type {
                 case .began:
-                    print("BEGAN playback interruption")
                     if let isPlaying = self.audioPlayer?.isPlaying, isPlaying, !self.audioWasInterrupted  {
                         self.audioWasInterrupted = true
-                        print("now pausing - calling pause()")
                         self.pause()
                     }
                 case .ended:
-                    print("ENDED playback interruption")
                     if self.audioWasInterrupted {
-                        print("now playing again - calling play()")
                         self.audioWasInterrupted = false
                         self.play()
                     }
@@ -131,8 +96,6 @@ final class PlaybackService {
     func play() {
         if hasError { return }
         guard let audioPlayer else { return }
-        print("current time: \(String(describing: audioPlayer.currentTime))")
-        print("current duration: \(String(describing: audioPlayer.duration))")
         
         if audioPlayer.currentTime == audioPlayer.duration {
             audioPlayer.currentTime = 0

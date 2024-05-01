@@ -14,10 +14,10 @@ final class MoveItemViewModel: ObservableObject {
     @Published var currentFolder: Item?
     @Published var hasError = false
     @Published var error: TitledError?
+    
     private let database: DataManager
     private let queue: DispatchQueue
     private var cancellables = Set<AnyCancellable>()
-    
     let moveItem: Item
 
     var currentFolderTitle: String { currentFolder?.name ?? "Library" }
@@ -53,7 +53,6 @@ final class MoveItemViewModel: ObservableObject {
                     self?.handleError(completionStatus: completion)
                 }, receiveValue: { [weak self] folder in
                     self?.currentFolder = folder
-                    print("Updated load folder: \(String(describing: self?.currentFolder?.name))" )
                 })
                 .store(in: &cancellables)
         }

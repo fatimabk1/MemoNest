@@ -9,19 +9,6 @@ import Foundation
 import RealmSwift
 
 
-enum ItemType: String, PersistableEnum {
-    case folder, recording
-    
-    func icon() -> String {
-        switch(self) {
-        case .folder:
-            "folder.fill"
-        case .recording:
-            "headphones"
-        }
-    }
-}
-
 struct Item {
     let id: UUID
     var name: String

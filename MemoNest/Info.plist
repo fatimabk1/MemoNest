@@ -19,8 +19,8 @@
 	</array>
 	<key>UILaunchScreen</key>
 	<dict>
-		<key>UIImageRespectsSafeAreaInsets</key>
-		<true/>
+		<key>UIColorName</key>
+		<string>Background</string>
 	</dict>
 </dict>
 </plist>

@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct Colors {
-    static let background = Color("Background") // spacecadet
-    static let blueDark = Color("BlueDark")
-    static let icon = Color("IconColor")
-    static let blueLight = Color("BlueLight")
+    static let background = Color("Background")
     static let mainText = Color.white
-    static let blueMedium = Color("BlueMedium")
+    static let icon = Color("IconColor")
+    
     static let blueVeryLight = Color("BlueVeryLight")
+    static let blueLight = Color("BlueLight")
+    static let blueMedium = Color("BlueMedium")
+    static let blueDark = Color("BlueDark")
     static let blueVeryDark = Color("BlueVeryDark")
 }
