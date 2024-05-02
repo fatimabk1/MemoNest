@@ -14,8 +14,8 @@ final class RecordingService:  NSObject, AVAudioRecorderDelegate {
     let status = CurrentValueSubject<RecordingStatus, Never>(.idle)
     private let audioSettings =  [
         AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-        AVSampleRateKey: 12000,
-        AVNumberOfChannelsKey: 1,
+        AVSampleRateKey: 44100,
+        AVNumberOfChannelsKey: 2,
         AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
     ]
     
@@ -24,9 +24,6 @@ final class RecordingService:  NSObject, AVAudioRecorderDelegate {
     private(set) var recordingURLFileName: String?
     private(set) var recordingDate: Date = Date()
     private var cancellables = Set<AnyCancellable>()
-    
-   
-    
     
     init(audioRecorder: AVAudioRecorder? = nil, cancellables: Set<AnyCancellable> = Set<AnyCancellable>()) {
         super.init()
@@ -90,7 +87,6 @@ final class RecordingService:  NSObject, AVAudioRecorderDelegate {
                 status.send(.error(RecordingError.noPermission))
                 return
             }
-        
             do {
                 let fileName = getNewFileName()
                 let fileURL = getFileURL(fileName: fileName)

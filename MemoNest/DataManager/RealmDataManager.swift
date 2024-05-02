@@ -149,8 +149,11 @@ final class RealmDataManager: DataManager {
             self?.permformOperation { realm in
                 let item = realm.object(ofType: ItemDB.self, forPrimaryKey: itemID)
                 guard let item else { return promise(.failure(.itemNotFound)) }
-                
+
                 do {
+                    if item.typeRaw == "recording", let urlString = item.recordingURLFileName, let url = URL(string: urlString) {
+                        try FileManager.default.removeItem(at: url)
+                    }
                     try realm.write {
                         realm.delete(item)
                         promise(.success(()))
@@ -158,6 +161,8 @@ final class RealmDataManager: DataManager {
                 } catch {
                     promise(.failure((.failedDelete)))
                 }
+                
+                
             }
         }
         .receive(on: RunLoop.main)

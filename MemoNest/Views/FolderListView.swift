@@ -14,6 +14,8 @@ enum ItemAction {
 
 struct FolderListView: View {
     @ObservedObject var viewModel: FolderListViewModel
+    @State var itemToDelete: Item?
+    @State var showDeletionAlert = false
     
     init(database: DataManager) {
         self.viewModel = FolderListViewModel(database: database)
@@ -58,6 +60,21 @@ struct FolderListView: View {
                 }
                 .alert(isPresented: $viewModel.hasError) {
                     Alert(title: Text("\(viewModel.error?.title ?? "")"))
+                }
+                .alert(isPresented: $showDeletionAlert) {
+                    Alert(
+                        title: Text("Are you sure you want to delete this?"),
+                        message: Text("Deletions cannot be undone."),
+                        primaryButton: .destructive(Text("Delete")) {
+                            if let itemToDelete {
+                                viewModel.handleMenuTap(item: itemToDelete, action: .delete)
+                            } else {
+                                viewModel.hasError = true
+                                viewModel.error = DatabaseError.itemNotFound
+                            }
+                        },
+                        secondaryButton: .cancel()
+                    )
                 }
                 addRenameInputView
             }
@@ -211,6 +228,11 @@ struct FolderListView: View {
         if item.isFolder() {
             FolderRow(item: item, onListRowTap: viewModel.changeFolder,
                       onActionSelected: { action in
+                if action == .delete {
+                    itemToDelete = item
+                    showDeletionAlert = true
+                    return
+                }
                 viewModel.handleMenuTap(item: item, action: action)
             })
         } else {
@@ -221,6 +243,11 @@ struct FolderListView: View {
             },
                          playbackView: { AnyView(PlaybackView) },
                          onActionSelected: { action in
+                if action == .delete {
+                    itemToDelete = item
+                    showDeletionAlert = true
+                    return
+                }
                 viewModel.handleMenuTap(item: item, action: action)
             })
         }
