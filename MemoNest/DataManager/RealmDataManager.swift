@@ -133,7 +133,11 @@ final class RealmDataManager: DataManager {
         // delete files
             .flatMap { [weak self] files  -> AnyPublisher<Void, DatabaseError> in
                 guard let self else { return Empty().eraseToAnyPublisher() }
-                return self.removeAll(ids: files.map({$0.id}))
+                let fileDeletions = files.compactMap({ self.removeItem(itemID: $0.id)})
+                return Publishers.MergeMany(fileDeletions) // merge into a single event stream
+                    .collect() // wait for all sync deletions to finish
+                    .map { _ in () } // transform output to void to match AnyPublisher type
+                    .eraseToAnyPublisher()
             }
         // delete folder itself
             .flatMap { [weak self] _  -> AnyPublisher<Void, DatabaseError> in
@@ -151,14 +155,18 @@ final class RealmDataManager: DataManager {
                 guard let item else { return promise(.failure(.itemNotFound)) }
 
                 do {
-                    if item.typeRaw == "recording", let urlString = item.recordingURLFileName, let url = URL(string: urlString) {
+                    if let fileName = item.recordingURLFileName {
+                        let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(fileName)
                         try FileManager.default.removeItem(at: url)
                     }
+                    
                     try realm.write {
                         realm.delete(item)
                         promise(.success(()))
                     }
-                } catch {
+                   
+                } catch let err {
+                    print("error: \(err)")
                     promise(.failure((.failedDelete)))
                 }
                 
@@ -169,27 +177,28 @@ final class RealmDataManager: DataManager {
         .eraseToAnyPublisher()
     }
     
-    func removeAll(ids: [UUID]) -> AnyPublisher<Void, DatabaseError> {
-        return Future<Void, DatabaseError> { [weak self] promise in
-            self?.permformOperation { realm in
-                let items = realm.objects(ItemDB.self)
-                let itemsToRemove = items.filter { item in
-                    ids.contains(item.id)
-                }
-                
-                do {
-                    try realm.write {
-                        realm.delete(itemsToRemove)
-                        promise(.success(()))
-                    }
-                } catch {
-                    promise(.failure((.failedDelete)))
-                }
-            }
-        }
-        .receive(on: RunLoop.main)
-        .eraseToAnyPublisher()
-    }
+//    func removeAll(ids: [UUID]) -> AnyPublisher<Void, DatabaseError> {
+//        return Future<Void, DatabaseError> { [weak self] promise in
+//            self?.permformOperation { realm in
+//                let items = realm.objects(ItemDB.self)
+//                let itemsToRemove = items.filter { item in
+//                    ids.contains(item.id)
+//                }
+//                
+//                
+//                do {
+//                    try realm.write {
+//                        realm.delete(itemsToRemove)
+//                        promise(.success(()))
+//                    }
+//                } catch {
+//                    promise(.failure((.failedDelete)))
+//                }
+//            }
+//        }
+//        .receive(on: RunLoop.main)
+//        .eraseToAnyPublisher()
+//    }
     
     func renameItem(itemID: UUID, name: String) -> AnyPublisher<Void, DatabaseError> {
         return Future<Void, DatabaseError> { [weak self] promise in

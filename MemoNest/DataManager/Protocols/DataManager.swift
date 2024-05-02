@@ -15,7 +15,7 @@ protocol DataManager {
     func fetchFolders(parentID: UUID?) -> AnyPublisher<[Item], DatabaseError>
     func removeFolder(folderID: UUID) -> AnyPublisher<Void, DatabaseError> // for nested folder
     func removeItem(itemID: UUID) -> AnyPublisher<Void, DatabaseError>
-    func removeAll(ids: [UUID]) -> AnyPublisher<Void, DatabaseError>
+//    func removeAll(ids: [UUID]) -> AnyPublisher<Void, DatabaseError>
     func renameItem(itemID: UUID, name: String) -> AnyPublisher<Void, DatabaseError>
     func moveItem(itemID: UUID, newParentID: UUID?) -> AnyPublisher<Void, DatabaseError>
     func addFolder(folderName: String, parentID: UUID?) -> AnyPublisher<Void, DatabaseError>
