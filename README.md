@@ -1,5 +1,13 @@
 # MemoNest
-MemoNest is a voice memo app designed to enhance organization through nested structure capabilities. It allows users to categorize their memos into hierarchical folders, providing a structured approach to managing and accessing recordings. Users can easily reorganize files and folders within the app, facilitating intuitive management of their memo collection.
+Voice recording software is a versatile tool used for a wide range of purposes from personal diaries and notes to recordings of lectures. Despite the variety of powerful features offered by existing apps, such as transcription and enhanced search, many neglect a simple but strongly desired feature: nested organization. Existing solutions either do not offer organizing capabilities, requiring users to manually search or scroll through a long list, or only offer a single level of folders. 
+
+MemoNest seeks to improve user experience by providing capability for nested organization. Users will be able to create groupings and sub-groupings for their recordings, making it easier for users to organize and find their recordings. The scope of this project will focus on these key features: 
+
+- Creating recordings (start, stop, automatic save to local database)
+- Playing recordings (play, pause, seek)
+- Managing audio (delete, rename)
+- Organizing recordings (create folders, rename folders, sort items in a folder, move recordings between folders, move folders between folders)
+the app, facilitating intuitive management of their memo collection.
 
 **Key Technologies:** Swift, SwiftUI, Realm, XCTest, AVAudioPlayer, and AVAudioRecorder.
 
