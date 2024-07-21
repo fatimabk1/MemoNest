@@ -18,7 +18,7 @@ https://github.com/user-attachments/assets/1cc99d8b-ad51-48a4-8083-511cad9052e4
 
 I chose to design a streamlined, single page interface for recording and playback. The main view model owns the ```RecordingService``` and ```PlaybackService```. The view model subscribes to state updates via Combine, driving the UI to reflect recording and playback states in real-time. Creating separate services makes the code more modular in case I want to reuse these functionalities in the future. The use of Combine reduces the complexity of handling state changes.
 
- **Single Page UI for Navigation**
+ **Not Using ```NavigationStack``` and ```NavigationLink``` for Navigation**
  
 Navigating through many nested folders could potentially lead to a stack overflow by stacking multiple screens. Updating the displayed folder within a single page UI prevents the screen stack from growing too large, thus avoiding stack overflow issues. Using a single page UI for navigation enhances performance and reliability, especially with deep folder structures, while keeping the navigation flow straightforward.
 
